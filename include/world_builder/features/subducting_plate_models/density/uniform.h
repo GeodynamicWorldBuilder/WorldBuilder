@@ -80,7 +80,8 @@ namespace WorldBuilder
 
           private:
             // uniform density submodule parameters
-            std::vector<double> densities;
+            double min_depth;
+            double max_depth;
             Operations operation;
             std::vector<unsigned int> compositions;
 

@@ -3775,9 +3775,9 @@
 :name: closed_features_items_oneOf_1_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:density object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_1_density-models_items_oneOf_1_model
@@ -3797,24 +3797,6 @@
 - **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositional densities
-:::::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::::::
-
-::::::::::::::::
-
 ::::::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/compositions
 :name: closed_features_items_oneOf_1_density-models_items_oneOf_1_compositions
 
@@ -3830,6 +3812,174 @@
 - **type**:integer
 - **description**:
 :::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/min depth
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_min-depth
+
+- **description**:The depth in meters from which the composition of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/min depth/oneOf
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_min-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/min depth/oneOf/1
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_min-depth_oneOf_1
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/min depth/oneOf/2
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_min-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/min depth/oneOf/2/items
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_min-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/min depth/oneOf/2/items/items
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_min-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/1
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:0.0
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items/items
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/min depth/oneOf/3
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/max depth
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_max-depth
+
+- **description**:The depth in meters to which the composition of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/max depth/oneOf
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_max-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/max depth/oneOf/1
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_max-depth_oneOf_1
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/max depth/oneOf/2
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_max-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/max depth/oneOf/2/items
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_max-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/max depth/oneOf/2/items/items
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_max-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/1
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:1.7976931348623157e308
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items/items
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/max depth/oneOf/3
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -4955,9 +5105,9 @@
 :name: closed_features_items_oneOf_2_segments_items_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:density object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_2_segments_items_density-models_items_oneOf_1_model
@@ -4966,24 +5116,6 @@
 - **type**:string
 - **description**:The name of the density model.
 - **enum**:[uniform]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_2_segments_items_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositional densities
-:::::::::::::{dropdown} /features/items/oneOf/2/segments/items/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_2_segments_items_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::::
-
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/density models/items/oneOf/1/compositions
@@ -5002,6 +5134,22 @@
 - **description**:
 :::::::::::::
 
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/density models/items/oneOf/1/min distance fault center
+:name: closed_features_items_oneOf_2_segments_items_density-models_items_oneOf_1_min-distance-fault-center
+
+- **default value**:0.0
+- **type**:number
+- **description**:The distance in meters from which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/density models/items/oneOf/1/max distance fault center
+:name: closed_features_items_oneOf_2_segments_items_density-models_items_oneOf_1_max-distance-fault-center
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The distance in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/density models/items/oneOf/1/operation
@@ -5976,9 +6124,9 @@
 :name: closed_features_items_oneOf_2_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:density object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_2_density-models_items_oneOf_1_model
@@ -5987,24 +6135,6 @@
 - **type**:string
 - **description**:The name of the density model.
 - **enum**:[uniform]
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/2/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_2_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositional densities
-:::::::::::::::{dropdown} /features/items/oneOf/2/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_2_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::::::
-
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/density models/items/oneOf/1/compositions
@@ -6023,6 +6153,22 @@
 - **description**:
 :::::::::::::::
 
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/2/density models/items/oneOf/1/min distance fault center
+:name: closed_features_items_oneOf_2_density-models_items_oneOf_1_min-distance-fault-center
+
+- **default value**:0.0
+- **type**:number
+- **description**:The distance in meters from which the composition of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/2/density models/items/oneOf/1/max distance fault center
+:name: closed_features_items_oneOf_2_density-models_items_oneOf_1_max-distance-fault-center
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The distance in meters to which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/density models/items/oneOf/1/operation
@@ -7101,9 +7247,9 @@
 :name: closed_features_items_oneOf_2_sections_items_segments_items_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:density object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_2_sections_items_segments_items_density-models_items_oneOf_1_model
@@ -7112,24 +7258,6 @@
 - **type**:string
 - **description**:The name of the density model.
 - **enum**:[uniform]
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_2_sections_items_segments_items_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositional densities
-:::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_2_sections_items_segments_items_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::
-
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/density models/items/oneOf/1/compositions
@@ -7148,6 +7276,22 @@
 - **description**:
 :::::::::::
 
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/density models/items/oneOf/1/min distance fault center
+:name: closed_features_items_oneOf_2_sections_items_segments_items_density-models_items_oneOf_1_min-distance-fault-center
+
+- **default value**:0.0
+- **type**:number
+- **description**:The distance in meters from which the composition of this feature is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/density models/items/oneOf/1/max distance fault center
+:name: closed_features_items_oneOf_2_sections_items_segments_items_density-models_items_oneOf_1_max-distance-fault-center
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The distance in meters to which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/density models/items/oneOf/1/operation
@@ -8122,9 +8266,9 @@
 :name: closed_features_items_oneOf_2_sections_items_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:density object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_2_sections_items_density-models_items_oneOf_1_model
@@ -8133,24 +8277,6 @@
 - **type**:string
 - **description**:The name of the density model.
 - **enum**:[uniform]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_2_sections_items_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositional densities
-:::::::::::::{dropdown} /features/items/oneOf/2/sections/items/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_2_sections_items_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::::
-
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/density models/items/oneOf/1/compositions
@@ -8169,6 +8295,22 @@
 - **description**:
 :::::::::::::
 
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/density models/items/oneOf/1/min distance fault center
+:name: closed_features_items_oneOf_2_sections_items_density-models_items_oneOf_1_min-distance-fault-center
+
+- **default value**:0.0
+- **type**:number
+- **description**:The distance in meters from which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/density models/items/oneOf/1/max distance fault center
+:name: closed_features_items_oneOf_2_sections_items_density-models_items_oneOf_1_max-distance-fault-center
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The distance in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/density models/items/oneOf/1/operation
@@ -10585,9 +10727,9 @@
 :name: closed_features_items_oneOf_3_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:density object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_3_density-models_items_oneOf_1_model
@@ -10607,24 +10749,6 @@
 - **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositional densities
-:::::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::::::
-
-::::::::::::::::
-
 ::::::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/compositions
 :name: closed_features_items_oneOf_3_density-models_items_oneOf_1_compositions
 
@@ -10640,6 +10764,174 @@
 - **type**:integer
 - **description**:
 :::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/min depth
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_min-depth
+
+- **description**:The depth in meters from which the composition of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/min depth/oneOf
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_min-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/min depth/oneOf/1
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_min-depth_oneOf_1
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/min depth/oneOf/2
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_min-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/min depth/oneOf/2/items
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_min-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/min depth/oneOf/2/items/items
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_min-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/1
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:0.0
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items/items
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/min depth/oneOf/3
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/max depth
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_max-depth
+
+- **description**:The depth in meters to which the composition of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/max depth/oneOf
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_max-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/max depth/oneOf/1
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_max-depth_oneOf_1
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/max depth/oneOf/2
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_max-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/max depth/oneOf/2/items
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_max-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/max depth/oneOf/2/items/items
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_max-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/1
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:1.7976931348623157e308
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items/items
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/max depth/oneOf/3
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -14787,9 +15079,9 @@
 :name: closed_features_items_oneOf_4_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:density object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_4_density-models_items_oneOf_1_model
@@ -14809,24 +15101,6 @@
 - **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositionalk densities
-:::::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::::::
-
-::::::::::::::::
-
 ::::::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/compositions
 :name: closed_features_items_oneOf_4_density-models_items_oneOf_1_compositions
 
@@ -14842,6 +15116,174 @@
 - **type**:integer
 - **description**:
 :::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/min depth
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_min-depth
+
+- **description**:The depth in meters from which the composition of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/min depth/oneOf
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_min-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/min depth/oneOf/1
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_min-depth_oneOf_1
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/min depth/oneOf/2
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_min-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/min depth/oneOf/2/items
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_min-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/min depth/oneOf/2/items/items
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_min-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/1
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:0.0
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items/items
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/min depth/oneOf/3
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/max depth
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_max-depth
+
+- **description**:The depth in meters to which the composition of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/max depth/oneOf
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_max-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/max depth/oneOf/1
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_max-depth_oneOf_1
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/max depth/oneOf/2
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_max-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/max depth/oneOf/2/items
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_max-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/max depth/oneOf/2/items/items
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_max-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/1
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:1.7976931348623157e308
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items/items
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/max depth/oneOf/3
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -15712,9 +16154,9 @@
 :name: closed_features_items_oneOf_5_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:density object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_5_density-models_items_oneOf_1_model
@@ -15734,24 +16176,6 @@
 - **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_5_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositional densities
-:::::::::::::::{dropdown} /features/items/oneOf/5/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_5_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::::::
-
-::::::::::::::::
-
 ::::::::::::::::{dropdown} /features/items/oneOf/5/density models/items/oneOf/1/compositions
 :name: closed_features_items_oneOf_5_density-models_items_oneOf_1_compositions
 
@@ -15768,6 +16192,22 @@
 - **description**:
 :::::::::::::::
 
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/density models/items/oneOf/1/min depth
+:name: closed_features_items_oneOf_5_density-models_items_oneOf_1_min-depth
+
+- **default value**:0.0
+- **type**:number
+- **description**:The depth in meters from which the temperature of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/density models/items/oneOf/1/max depth
+:name: closed_features_items_oneOf_5_density-models_items_oneOf_1_max-depth
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The depth in meters to which the temperature of this feature is present.
 ::::::::::::::::
 
 
@@ -17397,9 +17837,9 @@
 :name: closed_features_items_oneOf_6_segments_items_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:composition object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_6_segments_items_density-models_items_oneOf_1_model
@@ -17408,24 +17848,6 @@
 - **type**:string
 - **description**:The name of the composition model.
 - **enum**:[uniform]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_6_segments_items_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositional densities
-:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_6_segments_items_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::::
-
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/density models/items/oneOf/1/compositions
@@ -17444,6 +17866,22 @@
 - **description**:
 :::::::::::::
 
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/density models/items/oneOf/1/min distance slab top
+:name: closed_features_items_oneOf_6_segments_items_density-models_items_oneOf_1_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/density models/items/oneOf/1/max distance slab top
+:name: closed_features_items_oneOf_6_segments_items_density-models_items_oneOf_1_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/density models/items/oneOf/1/operation
@@ -18923,9 +19361,9 @@
 :name: closed_features_items_oneOf_6_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:composition object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::::::{dropdown} /features/items/oneOf/6/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_6_density-models_items_oneOf_1_model
@@ -18934,24 +19372,6 @@
 - **type**:string
 - **description**:The name of the composition model.
 - **enum**:[uniform]
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/6/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_6_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositional densities
-:::::::::::::::{dropdown} /features/items/oneOf/6/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_6_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::::::
-
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/6/density models/items/oneOf/1/compositions
@@ -18970,6 +19390,22 @@
 - **description**:
 :::::::::::::::
 
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/density models/items/oneOf/1/min distance slab top
+:name: closed_features_items_oneOf_6_density-models_items_oneOf_1_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/density models/items/oneOf/1/max distance slab top
+:name: closed_features_items_oneOf_6_density-models_items_oneOf_1_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/6/density models/items/oneOf/1/operation
@@ -20553,9 +20989,9 @@
 :name: closed_features_items_oneOf_6_sections_items_segments_items_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:composition object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_6_sections_items_segments_items_density-models_items_oneOf_1_model
@@ -20564,24 +21000,6 @@
 - **type**:string
 - **description**:The name of the composition model.
 - **enum**:[uniform]
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_6_sections_items_segments_items_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositional densities
-:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_6_sections_items_segments_items_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::
-
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/density models/items/oneOf/1/compositions
@@ -20600,6 +21018,22 @@
 - **description**:
 :::::::::::
 
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/density models/items/oneOf/1/min distance slab top
+:name: closed_features_items_oneOf_6_sections_items_segments_items_density-models_items_oneOf_1_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/density models/items/oneOf/1/max distance slab top
+:name: closed_features_items_oneOf_6_sections_items_segments_items_density-models_items_oneOf_1_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/density models/items/oneOf/1/operation
@@ -22079,9 +22513,9 @@
 :name: closed_features_items_oneOf_6_sections_items_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:composition object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_6_sections_items_density-models_items_oneOf_1_model
@@ -22090,24 +22524,6 @@
 - **type**:string
 - **description**:The name of the composition model.
 - **enum**:[uniform]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_6_sections_items_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositional densities
-:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_6_sections_items_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::::
-
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/density models/items/oneOf/1/compositions
@@ -22126,6 +22542,22 @@
 - **description**:
 :::::::::::::
 
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/density models/items/oneOf/1/min distance slab top
+:name: closed_features_items_oneOf_6_sections_items_density-models_items_oneOf_1_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/density models/items/oneOf/1/max distance slab top
+:name: closed_features_items_oneOf_6_sections_items_density-models_items_oneOf_1_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/density models/items/oneOf/1/operation
@@ -22183,6 +22615,37 @@
 - **default value**:3300.0
 - **type**:number
 - **description**:Density for the background material without any compositions.
+::::::::::::::::::::::::
+
+::::::::::::::::::::::::{dropdown} /compensation depth
+:name: closed_compensation-depth
+
+- **default value**:250000.0
+- **type**:number
+- **description**:Compensation depth for isostatic topography.
+::::::::::::::::::::::::
+
+::::::::::::::::::::::::{dropdown} /number of integration points
+:name: closed_number-of-integration-points
+
+- **default value**:100
+- **type**:integer
+- **description**:Number of integration points for calculating the compensation pressure.
+::::::::::::::::::::::::
+
+::::::::::::::::::::::::{dropdown} /Reference profile point
+:name: closed_Reference-profile-point
+
+- **type**:array
+- **minItems**:2
+- **maxItems**:2
+- **description**:This is an array of two points along where the cross section is taken
+:::::::::::::::::::::::{dropdown} /Reference profile point/items
+:name: closed_Reference-profile-point_items
+
+- **type**:number
+:::::::::::::::::::::::
+
 ::::::::::::::::::::::::
 
 

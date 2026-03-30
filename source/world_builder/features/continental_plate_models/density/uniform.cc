@@ -41,7 +41,8 @@ namespace WorldBuilder
       {
         Uniform::Uniform(WorldBuilder::World *world_)
           :
-          densities(0,NaN::DSNAN),
+          min_depth(NaN::DSNAN),
+          max_depth(NaN::DSNAN),
           operation(Operations::REPLACE)
         {
           this->world = world_;
@@ -55,16 +56,18 @@ namespace WorldBuilder
         Uniform::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
           // Document plugin and require entries if needed.
-          // Add `densities` to the required parameters.
-          // Declare entries of this plugin
-          prm.declare_entry("", Types::Object({"densities"}),
-                            "Uniform density model. Set the density to a constant value.");
-
-          prm.declare_entry("densities", Types::Array(Types::Double(3300)),
-                            "list of compositional densities");
-
           prm.declare_entry("compositions", Types::Array(Types::UnsignedInt(),0),
                             "A list with the labels of the composition which are present there.");
+
+          prm.declare_entry("min depth", Types::OneOf(Types::Double(0),
+                                                      Types::Array(Types::ValueAtPoints(0.,2)),
+                                                      Types::String("")),
+                            "The depth in meters from which the composition of this feature is present.");
+
+          prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),
+                                                      Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max(),2)),
+                                                      Types::String("")),
+                            "The depth in meters to which the composition of this feature is present.");
 
           prm.declare_entry("operation", Types::String("replace", std::vector<std::string> {"replace", "replace defined only", "add", "subtract"}),
                             "Whether the value should replace any value previously defined at this location (replace) or "
@@ -74,17 +77,19 @@ namespace WorldBuilder
         }
 
         void
-        Uniform::parse_entries(Parameters &prm, const std::vector<Point<2>> & /*coordinates*/)
+        Uniform::parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates)
         {
-
+          min_depth_surface = Objects::Surface(prm.get("min depth",coordinates));
+          min_depth = min_depth_surface.minimum;
+          max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
+          max_depth = max_depth_surface.maximum;
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
-          densities = prm.get_vector<double>("densities");
           compositions = prm.get_vector<unsigned int>("compositions");
         }
 
         double
         Uniform::get_density(const Point<3> &position_in_cartesian_coordinates,
-                             const Objects::NaturalCoordinate & /*position_in_natural_coordinates*/,
+                             const Objects::NaturalCoordinate &position_in_natural_coordinates,
                              const double depth,
                              const double  /*gravity*/,
                              double density_,
@@ -93,21 +98,28 @@ namespace WorldBuilder
         {
           // If the composition is greater than 0, average it into the density.
           // By calling the world property for composition, fractions will be included.
-          double compositional_density = 0.0;
-          double sum_compositions = 0.0;
-          for (unsigned int i = 0; i < compositions.size(); ++i)
+          const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
+          const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
+          if (depth <= max_depth_local &&  depth >= min_depth_local)
             {
-              if (world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0] > 0.0)
-              {
-                compositional_density += world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0] * densities[i];
-                sum_compositions += world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0];
-              }
+              double compositional_density = 0.0;
+              double sum_compositions = 0.0;
+              for (unsigned int i = 0; i < compositions.size(); ++i)
+                {
+                  if (world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0] > 0.0)
+                  {
+                    const double density = this->world->composition_properties[compositions[i]].reference_density;
+                    compositional_density += world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0] * density;
+                    sum_compositions += world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0];
+                  }
+                }
+
+              // Add in the background_density component.
+              compositional_density += this->world->background_density * (1 - sum_compositions);
+              return apply_operation(operation,density_,compositional_density);
             }
 
-          // Add in the background_density component.
-          compositional_density += this->world->background_density* (1 - sum_compositions);
-
-          return apply_operation(operation,density_,compositional_density);
+          return density_;
         }
 
         WB_REGISTER_FEATURE_CONTINENTAL_PLATE_DENSITY_MODEL(Uniform, uniform)
