@@ -8106,3 +8106,19 @@ TEST_CASE("WorldBuilder Utilities function: calculate_effective_trench_and_plate
   CHECK_THROWS_WITH(Utilities::calculate_effective_trench_and_plate_ages(ridge_parameters_4, distance_along_plane_4),
                     Contains("The age of trench at subducting initiation is less than 0. "));
 }
+
+TEST_CASE("WorldBuilder composition property maps")
+{
+  std::vector<std::pair<std::string,double>> approval_tests;
+
+  const std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/composition_properties_map.wb";
+  WorldBuilder::World world(file_name);
+
+  world.parse_entries(world.parameters);
+
+  CHECK(world.composition_properties[0].index == 0);
+  CHECK(world.composition_properties[0].name == "0");
+
+  CHECK(world.composition_properties[1].name == "harzburgite");
+  CHECK(world.composition_properties[3].reference_density == Approx(3350.0));
+}
