@@ -239,7 +239,7 @@ namespace WorldBuilder
           return total / max_value_local;
         }
 
-        WB_REGISTER_FEATURE_CONTINENTAL_PLATE_TOPOGRAPHY_MODEL(PerlinNoise, perlin noise)
+        WB_REGISTER_FEATURE_CONTINENTAL_PLATE_TOPOGRAPHY_MODEL(PerlinNoise, perlin_noise)
       }
     }
   }
