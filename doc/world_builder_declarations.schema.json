@@ -2515,11 +2515,10 @@
                                     "oneOf": [
                                         {
                                             "type": "object",
-                                            "description": "Uniform density model. Set the density to a constant value.",
+                                            "description": "density object",
                                             "additionalProperties": false,
                                             "required": [
-                                                "model",
-                                                "densities"
+                                                "model"
                                             ],
                                             "properties": {
                                                 "model": {
@@ -2543,18 +2542,6 @@
                                                         "add",
                                                         "subtract"
                                                     ]
-                                                },
-                                                "densities": {
-                                                    "type": "array",
-                                                    "minItems": 0,
-                                                    "maxItems": 4294967295,
-                                                    "uniqueItems": false,
-                                                    "description": "list of compositional densities",
-                                                    "items": {
-                                                        "default value": 3300.0,
-                                                        "type": "number",
-                                                        "description": ""
-                                                    }
                                                 },
                                                 "compositions": {
                                                     "type": "array",
@@ -3374,11 +3361,10 @@
                                                 "oneOf": [
                                                     {
                                                         "type": "object",
-                                                        "description": "Uniform density model. Set the density to a constant value.",
+                                                        "description": "density object",
                                                         "additionalProperties": false,
                                                         "required": [
-                                                            "model",
-                                                            "densities"
+                                                            "model"
                                                         ],
                                                         "properties": {
                                                             "model": {
@@ -3388,18 +3374,6 @@
                                                                 "enum": [
                                                                     "uniform"
                                                                 ]
-                                                            },
-                                                            "densities": {
-                                                                "type": "array",
-                                                                "minItems": 0,
-                                                                "maxItems": 4294967295,
-                                                                "uniqueItems": false,
-                                                                "description": "list of compositional densities",
-                                                                "items": {
-                                                                    "default value": 3300.0,
-                                                                    "type": "number",
-                                                                    "description": ""
-                                                                }
                                                             },
                                                             "compositions": {
                                                                 "type": "array",
@@ -4122,11 +4096,10 @@
                                     "oneOf": [
                                         {
                                             "type": "object",
-                                            "description": "Uniform density model. Set the density to a constant value.",
+                                            "description": "density object",
                                             "additionalProperties": false,
                                             "required": [
-                                                "model",
-                                                "densities"
+                                                "model"
                                             ],
                                             "properties": {
                                                 "model": {
@@ -4136,18 +4109,6 @@
                                                     "enum": [
                                                         "uniform"
                                                     ]
-                                                },
-                                                "densities": {
-                                                    "type": "array",
-                                                    "minItems": 0,
-                                                    "maxItems": 4294967295,
-                                                    "uniqueItems": false,
-                                                    "description": "list of compositional densities",
-                                                    "items": {
-                                                        "default value": 3300.0,
-                                                        "type": "number",
-                                                        "description": ""
-                                                    }
                                                 },
                                                 "compositions": {
                                                     "type": "array",
@@ -4940,11 +4901,10 @@
                                                             "oneOf": [
                                                                 {
                                                                     "type": "object",
-                                                                    "description": "Uniform density model. Set the density to a constant value.",
+                                                                    "description": "density object",
                                                                     "additionalProperties": false,
                                                                     "required": [
-                                                                        "model",
-                                                                        "densities"
+                                                                        "model"
                                                                     ],
                                                                     "properties": {
                                                                         "model": {
@@ -4954,18 +4914,6 @@
                                                                             "enum": [
                                                                                 "uniform"
                                                                             ]
-                                                                        },
-                                                                        "densities": {
-                                                                            "type": "array",
-                                                                            "minItems": 0,
-                                                                            "maxItems": 4294967295,
-                                                                            "uniqueItems": false,
-                                                                            "description": "list of compositional densities",
-                                                                            "items": {
-                                                                                "default value": 3300.0,
-                                                                                "type": "number",
-                                                                                "description": ""
-                                                                            }
                                                                         },
                                                                         "compositions": {
                                                                             "type": "array",
@@ -5688,11 +5636,10 @@
                                                 "oneOf": [
                                                     {
                                                         "type": "object",
-                                                        "description": "Uniform density model. Set the density to a constant value.",
+                                                        "description": "density object",
                                                         "additionalProperties": false,
                                                         "required": [
-                                                            "model",
-                                                            "densities"
+                                                            "model"
                                                         ],
                                                         "properties": {
                                                             "model": {
@@ -5702,18 +5649,6 @@
                                                                 "enum": [
                                                                     "uniform"
                                                                 ]
-                                                            },
-                                                            "densities": {
-                                                                "type": "array",
-                                                                "minItems": 0,
-                                                                "maxItems": 4294967295,
-                                                                "uniqueItems": false,
-                                                                "description": "list of compositional densities",
-                                                                "items": {
-                                                                    "default value": 3300.0,
-                                                                    "type": "number",
-                                                                    "description": ""
-                                                                }
                                                             },
                                                             "compositions": {
                                                                 "type": "array",
@@ -7290,11 +7225,10 @@
                                     "oneOf": [
                                         {
                                             "type": "object",
-                                            "description": "Uniform density model. Set the density to a constant value.",
+                                            "description": "density object",
                                             "additionalProperties": false,
                                             "required": [
-                                                "model",
-                                                "densities"
+                                                "model"
                                             ],
                                             "properties": {
                                                 "model": {
@@ -7318,18 +7252,6 @@
                                                         "add",
                                                         "subtract"
                                                     ]
-                                                },
-                                                "densities": {
-                                                    "type": "array",
-                                                    "minItems": 0,
-                                                    "maxItems": 4294967295,
-                                                    "uniqueItems": false,
-                                                    "description": "list of compositional densities",
-                                                    "items": {
-                                                        "default value": 3300.0,
-                                                        "type": "number",
-                                                        "description": ""
-                                                    }
                                                 },
                                                 "compositions": {
                                                     "type": "array",
@@ -10011,11 +9933,10 @@
                                     "oneOf": [
                                         {
                                             "type": "object",
-                                            "description": "Uniform density model. Set the density to a constant value.",
+                                            "description": "density object",
                                             "additionalProperties": false,
                                             "required": [
-                                                "model",
-                                                "densities"
+                                                "model"
                                             ],
                                             "properties": {
                                                 "model": {
@@ -10039,18 +9960,6 @@
                                                         "add",
                                                         "subtract"
                                                     ]
-                                                },
-                                                "densities": {
-                                                    "type": "array",
-                                                    "minItems": 0,
-                                                    "maxItems": 4294967295,
-                                                    "uniqueItems": false,
-                                                    "description": "list of compositionalk densities",
-                                                    "items": {
-                                                        "default value": 3300.0,
-                                                        "type": "number",
-                                                        "description": ""
-                                                    }
                                                 },
                                                 "compositions": {
                                                     "type": "array",
@@ -10682,11 +10591,10 @@
                                     "oneOf": [
                                         {
                                             "type": "object",
-                                            "description": "Uniform density model. Set the density to a constant value.",
+                                            "description": "density object",
                                             "additionalProperties": false,
                                             "required": [
-                                                "model",
-                                                "densities"
+                                                "model"
                                             ],
                                             "properties": {
                                                 "model": {
@@ -10710,18 +10618,6 @@
                                                         "add",
                                                         "subtract"
                                                     ]
-                                                },
-                                                "densities": {
-                                                    "type": "array",
-                                                    "minItems": 0,
-                                                    "maxItems": 4294967295,
-                                                    "uniqueItems": false,
-                                                    "description": "list of compositional densities",
-                                                    "items": {
-                                                        "default value": 3300.0,
-                                                        "type": "number",
-                                                        "description": ""
-                                                    }
                                                 },
                                                 "compositions": {
                                                     "type": "array",
@@ -11889,11 +11785,10 @@
                                                 "oneOf": [
                                                     {
                                                         "type": "object",
-                                                        "description": "Uniform density model. Set the density to a constant value.",
+                                                        "description": "composition object",
                                                         "additionalProperties": false,
                                                         "required": [
-                                                            "model",
-                                                            "densities"
+                                                            "model"
                                                         ],
                                                         "properties": {
                                                             "model": {
@@ -11903,18 +11798,6 @@
                                                                 "enum": [
                                                                     "uniform"
                                                                 ]
-                                                            },
-                                                            "densities": {
-                                                                "type": "array",
-                                                                "minItems": 0,
-                                                                "maxItems": 4294967295,
-                                                                "uniqueItems": false,
-                                                                "description": "list of compositional densities",
-                                                                "items": {
-                                                                    "default value": 3300.0,
-                                                                    "type": "number",
-                                                                    "description": ""
-                                                                }
                                                             },
                                                             "compositions": {
                                                                 "type": "array",
@@ -12985,11 +12868,10 @@
                                     "oneOf": [
                                         {
                                             "type": "object",
-                                            "description": "Uniform density model. Set the density to a constant value.",
+                                            "description": "composition object",
                                             "additionalProperties": false,
                                             "required": [
-                                                "model",
-                                                "densities"
+                                                "model"
                                             ],
                                             "properties": {
                                                 "model": {
@@ -12999,18 +12881,6 @@
                                                     "enum": [
                                                         "uniform"
                                                     ]
-                                                },
-                                                "densities": {
-                                                    "type": "array",
-                                                    "minItems": 0,
-                                                    "maxItems": 4294967295,
-                                                    "uniqueItems": false,
-                                                    "description": "list of compositional densities",
-                                                    "items": {
-                                                        "default value": 3300.0,
-                                                        "type": "number",
-                                                        "description": ""
-                                                    }
                                                 },
                                                 "compositions": {
                                                     "type": "array",
@@ -14151,11 +14021,10 @@
                                                             "oneOf": [
                                                                 {
                                                                     "type": "object",
-                                                                    "description": "Uniform density model. Set the density to a constant value.",
+                                                                    "description": "composition object",
                                                                     "additionalProperties": false,
                                                                     "required": [
-                                                                        "model",
-                                                                        "densities"
+                                                                        "model"
                                                                     ],
                                                                     "properties": {
                                                                         "model": {
@@ -14165,18 +14034,6 @@
                                                                             "enum": [
                                                                                 "uniform"
                                                                             ]
-                                                                        },
-                                                                        "densities": {
-                                                                            "type": "array",
-                                                                            "minItems": 0,
-                                                                            "maxItems": 4294967295,
-                                                                            "uniqueItems": false,
-                                                                            "description": "list of compositional densities",
-                                                                            "items": {
-                                                                                "default value": 3300.0,
-                                                                                "type": "number",
-                                                                                "description": ""
-                                                                            }
                                                                         },
                                                                         "compositions": {
                                                                             "type": "array",
@@ -15247,11 +15104,10 @@
                                                 "oneOf": [
                                                     {
                                                         "type": "object",
-                                                        "description": "Uniform density model. Set the density to a constant value.",
+                                                        "description": "composition object",
                                                         "additionalProperties": false,
                                                         "required": [
-                                                            "model",
-                                                            "densities"
+                                                            "model"
                                                         ],
                                                         "properties": {
                                                             "model": {
@@ -15261,18 +15117,6 @@
                                                                 "enum": [
                                                                     "uniform"
                                                                 ]
-                                                            },
-                                                            "densities": {
-                                                                "type": "array",
-                                                                "minItems": 0,
-                                                                "maxItems": 4294967295,
-                                                                "uniqueItems": false,
-                                                                "description": "list of compositional densities",
-                                                                "items": {
-                                                                    "default value": 3300.0,
-                                                                    "type": "number",
-                                                                    "description": ""
-                                                                }
                                                             },
                                                             "compositions": {
                                                                 "type": "array",

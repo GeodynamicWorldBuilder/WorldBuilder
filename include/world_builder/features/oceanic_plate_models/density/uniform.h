@@ -84,7 +84,6 @@ namespace WorldBuilder
             // uniform density submodule parameters
             Objects::Surface min_depth_surface;
             Objects::Surface max_depth_surface;
-            std::vector<double> densities;
             Operations operation;
             std::vector<unsigned int> compositions;
 

@@ -2,13 +2,23 @@
   "version":"1.2",
   "cross section":[[0,0],[100,0]],
   "background density":0,
+  "composition properties":[
+    {
+      "index":2,
+      "reference density":1000
+    },
+    {
+      "index":4,
+      "reference density":3000
+    }
+  ],
   "features":
   [
 
     {"model":"mantle layer", "name":"mantle", "min depth":0, "max depth":750e3, "coordinates":[[-1e3,-1e3],[2001e3,-1e3],[2001e3,1e3],[-1e3,1e3]],
      "temperature models":[{"model":"linear", "min depth":95e3, "max depth":750e3, "top temperature":1600, "bottom temperature":1700}],
      "composition models":[{"model":"uniform", "compositions":[4]}],
-     "density models":[{"model":"uniform", "compositions":[4], "densities":[3000]}]
+     "density models":[{"model":"uniform", "compositions":[4]}]
      },
 
     {
@@ -28,7 +38,7 @@
         }
       ],
       "composition models":[{"model":"uniform", "compositions":[2]}],
-      "density models":[{"model":"uniform", "compositions":[2], "densities":[1000]}]
+      "density models":[{"model":"uniform", "compositions":[2]}]
     }
   ]
 }
