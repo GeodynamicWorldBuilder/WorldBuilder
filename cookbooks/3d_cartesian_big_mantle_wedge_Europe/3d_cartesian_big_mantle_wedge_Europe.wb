@@ -242,7 +242,7 @@
       "model":"plume",                                                                                  
       "name":"Massif Central Plume",  
       "max depth":500e3,                                                                              
-      "coordinates":[[1427718,1460174],[1427718,1460174],[1427718,1460174],[1427718,1460174],[1427718,1460174],[1427718,1460174]],  
+      "coordinates":[[1427718,1460174],[1427718,1460174],[1427718,1460174],[1427718,1460174],[1427718,1460174]],  
       "cross section depths":[50e3,100e3,200e3,400e3,500e3],                                      
       "semi-major axis":[150e3, 100e3, 50e3,50e3,50e3],                                            
       "eccentricity":[0.5, 0.5, 0.5, 0.5, 0.5],                                                   
@@ -252,8 +252,8 @@
         {
          "model":"gaussian",                                                                            
          "operation":"add",                                                                             
-         "centerline temperatures":[200, 200, 185, 200, 200],                                      
-         "gaussian sigmas":[0.3, 0.3, 0.3,0.3,0.3],                                                 
+         "centerline temperatures":[200, 200, 200, 200, 200],                                      
+         "gaussian sigmas":[0.3, 0.3, 0.3, 0.3, 0.3],                                                 
          "depths":[50e3, 100e3, 200e3, 400e3, 500e3]                                                  
         }
       ], 
@@ -269,8 +269,8 @@
       {
       "model":"plume",                                                                                  
       "name":"Eifel Plume",     
-      "max depth":500e3,                                                                            
-      "coordinates":[[1747060,1990287],[1747060,1990287],[1747060,1990287],[1747060,1990287],[1747060,1990287],[1747060,1990287]],  
+      "max depth":600e3,                                                                            
+      "coordinates":[[1747060,1990287],[1747060,1990287],[1747060,1990287],[1747060,1990287],[1747060,1990287]],  
       "cross section depths":[50e3,100e3,200e3,400e3,500e3],                                      
       "semi-major axis":[150e3,100e3,50e3,50e3,50e3],                                            
       "eccentricity":[0.5, 0.5, 0.5, 0.5, 0.5],                                                   
@@ -280,8 +280,8 @@
         {
          "model":"gaussian",                                                                            
          "operation":"add",                                                                             
-         "centerline temperatures":[200, 200, 185, 200, 200],                                      
-         "gaussian sigmas":[0.3, 0.3, 0.3,0.3,0.3],                                                 
+         "centerline temperatures":[200, 200, 200, 200, 200],                                      
+         "gaussian sigmas":[0.3, 0.3, 0.3, 0.3, 0.3],                                                 
          "depths":[50e3, 100e3, 200e3, 400e3, 500e3]                                                  
         }
       ], 
@@ -297,10 +297,10 @@
     {
       "model":"plume",                                                                                  
       "name":"Bohemian Plume",   
-      "max depth":500e3,                                                                              
-      "coordinates":[[2139640,1978267],[2139640,1978267],[2139640,1978267],[2139640,1978267],[2139640,1978267],[2139640,1978267]],  
+      "max depth":600e3,                                                                              
+      "coordinates":[[2139640,1978267],[2139640,1978267],[2139640,1978267],[2139640,1978267],[2139640,1978267]],  
       "cross section depths":[50e3,100e3,200e3,400e3,500e3],                                      
-      "semi-major axis":[150e3, 100e3, 50e3,50e3,50e3],                                            
+      "semi-major axis":[150e3, 100e3, 50e3, 50e3, 50e3],                                            
       "eccentricity":[0.5, 0.5, 0.5, 0.5, 0.5],                                                   
       "rotation angles":[0, 0, 0, 0, 0],                                                        
       "temperature models":                                                                             
@@ -308,8 +308,8 @@
         {
          "model":"gaussian",                                                                            
          "operation":"add",                                                                             
-         "centerline temperatures":[200, 200, 185, 200, 200],                                      
-         "gaussian sigmas":[0.3, 0.3, 0.3,0.3,0.3],                                                 
+         "centerline temperatures":[200, 200, 200, 200, 200],                                      
+         "gaussian sigmas":[0.3, 0.3, 0.3, 0.3, 0.3],                                                 
          "depths":[50e3, 100e3, 200e3, 400e3, 500e3]                                                  
         }
       ], 
@@ -326,11 +326,11 @@
       "model":"plume",                                                                                  
       "name":"Pannonian Plume",   
       "max depth":250e3,                                                                              
-      "coordinates":[[2381976,1576355],[2381976,1576355],[2381976,1576355],[2381976,1576355],[2381976,1576355],[2381976,1576355]],  
+      "coordinates":[[2381976,1576355],[2381976,1576355],[2381976,1576355]],  
       "cross section depths":[50e3,100e3,250e3],                                      
       "semi-major axis":[150e3, 100e3, 50e3],                                            
-      "eccentricity":[0.5, 0.5, 0.5, 0.5, 0.5],                                                   
-      "rotation angles":[0, 0, 0, 0, 0],                                                        
+      "eccentricity":[0.5, 0.5, 0.5],                                                   
+      "rotation angles":[0, 0, 0],                                                        
       "temperature models":                                                                             
       [
         {
@@ -350,6 +350,6 @@
         }
       ]
     }
-    ]
+  ]
 }
 
