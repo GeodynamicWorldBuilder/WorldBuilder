@@ -2554,6 +2554,106 @@
                                                         "type": "integer",
                                                         "description": ""
                                                     }
+                                                },
+                                                "min depth": {
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 0.0,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 0.0
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
+                                                        }
+                                                    ]
+                                                },
+                                                "max depth": {
+                                                    "description": "The depth in meters to which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 1.7976931348623157e308,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 1.7976931348623157e308
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
+                                                        }
+                                                    ]
                                                 }
                                             }
                                         }
@@ -3387,6 +3487,16 @@
                                                                     "description": ""
                                                                 }
                                                             },
+                                                            "min distance fault center": {
+                                                                "default value": 0.0,
+                                                                "type": "number",
+                                                                "description": "The distance in meters from which the composition of this feature is present."
+                                                            },
+                                                            "max distance fault center": {
+                                                                "default value": 1.7976931348623157e308,
+                                                                "type": "number",
+                                                                "description": "The distance in meters to which the composition of this feature is present."
+                                                            },
                                                             "operation": {
                                                                 "default value": "replace",
                                                                 "type": "string",
@@ -4121,6 +4231,16 @@
                                                         "type": "integer",
                                                         "description": ""
                                                     }
+                                                },
+                                                "min distance fault center": {
+                                                    "default value": 0.0,
+                                                    "type": "number",
+                                                    "description": "The distance in meters from which the composition of this feature is present."
+                                                },
+                                                "max distance fault center": {
+                                                    "default value": 1.7976931348623157e308,
+                                                    "type": "number",
+                                                    "description": "The distance in meters to which the composition of this feature is present."
                                                 },
                                                 "operation": {
                                                     "default value": "replace",
@@ -4927,6 +5047,16 @@
                                                                                 "description": ""
                                                                             }
                                                                         },
+                                                                        "min distance fault center": {
+                                                                            "default value": 0.0,
+                                                                            "type": "number",
+                                                                            "description": "The distance in meters from which the composition of this feature is present."
+                                                                        },
+                                                                        "max distance fault center": {
+                                                                            "default value": 1.7976931348623157e308,
+                                                                            "type": "number",
+                                                                            "description": "The distance in meters to which the composition of this feature is present."
+                                                                        },
                                                                         "operation": {
                                                                             "default value": "replace",
                                                                             "type": "string",
@@ -5661,6 +5791,16 @@
                                                                     "type": "integer",
                                                                     "description": ""
                                                                 }
+                                                            },
+                                                            "min distance fault center": {
+                                                                "default value": 0.0,
+                                                                "type": "number",
+                                                                "description": "The distance in meters from which the composition of this feature is present."
+                                                            },
+                                                            "max distance fault center": {
+                                                                "default value": 1.7976931348623157e308,
+                                                                "type": "number",
+                                                                "description": "The distance in meters to which the composition of this feature is present."
                                                             },
                                                             "operation": {
                                                                 "default value": "replace",
@@ -7264,6 +7404,106 @@
                                                         "type": "integer",
                                                         "description": ""
                                                     }
+                                                },
+                                                "min depth": {
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 0.0,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 0.0
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
+                                                        }
+                                                    ]
+                                                },
+                                                "max depth": {
+                                                    "description": "The depth in meters to which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 1.7976931348623157e308,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 1.7976931348623157e308
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
+                                                        }
+                                                    ]
                                                 }
                                             }
                                         }
@@ -9972,6 +10212,106 @@
                                                         "type": "integer",
                                                         "description": ""
                                                     }
+                                                },
+                                                "min depth": {
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 0.0,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 0.0
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
+                                                        }
+                                                    ]
+                                                },
+                                                "max depth": {
+                                                    "description": "The depth in meters to which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 1.7976931348623157e308,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 1.7976931348623157e308
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
+                                                        }
+                                                    ]
                                                 }
                                             }
                                         }
@@ -10630,6 +10970,16 @@
                                                         "type": "integer",
                                                         "description": ""
                                                     }
+                                                },
+                                                "min depth": {
+                                                    "default value": 0.0,
+                                                    "type": "number",
+                                                    "description": "The depth in meters from which the temperature of this feature is present."
+                                                },
+                                                "max depth": {
+                                                    "default value": 1.7976931348623157e308,
+                                                    "type": "number",
+                                                    "description": "The depth in meters to which the temperature of this feature is present."
                                                 }
                                             }
                                         }
@@ -11811,6 +12161,16 @@
                                                                     "description": ""
                                                                 }
                                                             },
+                                                            "min distance slab top": {
+                                                                "default value": 0.0,
+                                                                "type": "number",
+                                                                "description": "todo The depth in meters from which the composition of this feature is present."
+                                                            },
+                                                            "max distance slab top": {
+                                                                "default value": 1.7976931348623157e308,
+                                                                "type": "number",
+                                                                "description": "todo The depth in meters to which the composition of this feature is present."
+                                                            },
                                                             "operation": {
                                                                 "default value": "replace",
                                                                 "type": "string",
@@ -12893,6 +13253,16 @@
                                                         "type": "integer",
                                                         "description": ""
                                                     }
+                                                },
+                                                "min distance slab top": {
+                                                    "default value": 0.0,
+                                                    "type": "number",
+                                                    "description": "todo The depth in meters from which the composition of this feature is present."
+                                                },
+                                                "max distance slab top": {
+                                                    "default value": 1.7976931348623157e308,
+                                                    "type": "number",
+                                                    "description": "todo The depth in meters to which the composition of this feature is present."
                                                 },
                                                 "operation": {
                                                     "default value": "replace",
@@ -14047,6 +14417,16 @@
                                                                                 "description": ""
                                                                             }
                                                                         },
+                                                                        "min distance slab top": {
+                                                                            "default value": 0.0,
+                                                                            "type": "number",
+                                                                            "description": "todo The depth in meters from which the composition of this feature is present."
+                                                                        },
+                                                                        "max distance slab top": {
+                                                                            "default value": 1.7976931348623157e308,
+                                                                            "type": "number",
+                                                                            "description": "todo The depth in meters to which the composition of this feature is present."
+                                                                        },
                                                                         "operation": {
                                                                             "default value": "replace",
                                                                             "type": "string",
@@ -15129,6 +15509,16 @@
                                                                     "type": "integer",
                                                                     "description": ""
                                                                 }
+                                                            },
+                                                            "min distance slab top": {
+                                                                "default value": 0.0,
+                                                                "type": "number",
+                                                                "description": "todo The depth in meters from which the composition of this feature is present."
+                                                            },
+                                                            "max distance slab top": {
+                                                                "default value": 1.7976931348623157e308,
+                                                                "type": "number",
+                                                                "description": "todo The depth in meters to which the composition of this feature is present."
                                                             },
                                                             "operation": {
                                                                 "default value": "replace",
