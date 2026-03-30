@@ -36,10 +36,10 @@ Perlin noise is a gradient-based noise function that produces smooth, natural-lo
 
 - `min temperature` / `max temperature`: Set the output value range for the noise field.
 - `octaves`: Number of noise layers combined; more octaves add detail and complexity.
-- `lacunarity`: Frequency multiplier for each octave (e.g., `frequency *= lacunarity`, default: 2.0). So the next layer has double the frequncy, thus lower wavelength and more detail.
+- `lacunarity`: Frequency multiplier for each octave (e.g., `frequency *= lacunarity`, default: 2.0). So the next layer has double the frequency, thus lower wavelength and more detail.
 - `persistence`: Amplitude multiplier for each octave (e.g., `amplitude *= persistence`, default: 0.5). So the next layers impact of the overall field is have as small.
 - `frequency`: Sets the initial scale of the noise pattern.
-- `operation`: How the noise is combined with the base field (e.g. `add` or `replace`, defaukt: "add").
+- `operation`: How the noise is combined with the base field (e.g. `add` or `replace`, default: "add").
 
 Default values are used if parameters are omitted. If more than one octave is used, `min temperature` / `max temperature` are likely not fully reached, as multiple noise fields are superposed.
 
@@ -63,7 +63,7 @@ Some more figures to demonstrate different perlin noise and how different parame
 :::
 
 ---
-higher frequncy
+higher frequency
 :::{figure} freq5.png
 :align: center
 :::
