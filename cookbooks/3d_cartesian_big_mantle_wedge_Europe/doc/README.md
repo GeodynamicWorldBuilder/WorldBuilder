@@ -8,7 +8,7 @@ In the Big Mantle Wedge (BMW) hypothesis {cite:p}`Zhao_etal_2009`, intra-contine
 
 In the Mediterranean region there are several volcanic provinces which are not related to either converging or diverging margin, and are collectively referred to as the Circum-Mediterranean Anorogenic Cenozoic Igneous Province (CiMACI) {cite:p}`Lustrino_&_Wilson_2007`. Within the CiMACI, there are four volcanic provinces located north of the Alps: (1) Massif Central (France), (2) Eifel (Germany), (3) Eger Rift (Czech Republic), and (4) the Pannonian Basin (Hungary). These four regions together constitute the European Cenozoic Rift system (ECRiS) {cite:p}`Ziegler_1992`. 
 
-Seismic tomography of Europe reveals slow-velocity anomalies in the upper mantle beneath the volcanic provinces of the ECRiS and fast-velocity anomalies in the underlying MTZ {cite:p}`Piromallo_&_Faccenna_2004`, which have been interpreted as different generations of Mediterranean slabs now stagnating on top of the 660 km discontinuity {cite:p}`Piromallo_etal_2008`. Potentially, the four volcanic regions of the ECRiS are fed by a common mantle reservoir {cite:p}`Granet_etal_1995`, represented by the recycling (i.e., flux meltin) of subducted oceanic crust (meta-sediments and meta-basalts) {cite:p}`Yaxley_etal_2022`, induced by the dehydration of the inner portions of slab {cite:p}`Xing_etal_2024`. This process may lead to the formation of secondary mantle plumes driven by the chemical buoyancy of low-density, water-rich melt {cite:p}`Sakamaki_&_Ohtani_2022` that ascends toward the surface and may be responsible for the slow-velocity anomaly observed in the upper mantle beneath ECRiS.
+Seismic tomography of Europe reveals slow-velocity anomalies in the upper mantle beneath the volcanic provinces of the ECRiS and fast-velocity anomalies in the underlying MTZ {cite:p}`Piromallo_&_Faccenna_2004`, which have been interpreted as different generations of Mediterranean slabs now stagnating on top of the 660 km discontinuity {cite:p}`Piromallo_etal_2008`. Potentially, the four volcanic regions of the ECRiS are fed by a common mantle reservoir {cite:p}`Granet_etal_1995`, represented by the recycling (i.e., flux melting) of subducted oceanic crust (meta-sediments and meta-basalts) {cite:p}`Yaxley_etal_2022`, induced by the dehydration of the inner portions of slab {cite:p}`Xing_etal_2024`. This process may lead to the formation of secondary mantle plumes driven by the chemical buoyancy of low-density, water-rich melt {cite:p}`Sakamaki_&_Ohtani_2022` that ascends toward the surface and may be responsible for the slow-velocity anomaly observed in the upper mantle beneath ECRiS.
 
 The Big Mantle Wedge hypothesis was originally proposed to explain the intra-continental volcanism in the Changbaishan volcanic province (NE China), located more than 1000 km away from the Japan Trench {cite:p}`Zhao_etal_2004`, and may also explain the intra-continental volcanism of the ECRiS.
 
@@ -18,14 +18,14 @@ The region is 4000 x 3000 x 660 km Cartesian box (x,y,z) representing continenta
 
 1. Mantle Layer: uniform composition [0]; no distinction between upper mantle and MTZ
 
-2. Oceanic Plate: relative thin lithosphere (100 km), uniform composition [1]; it represents the ocean and seas surrounding Europe
+2. Oceanic Plate: relatively thin lithosphere (100 km), uniform composition [1]; it represents the ocean and seas surrounding Europe
 
 3. Continental Plates 
 
-    3a.Continental Europe: relative thick lithosphere (200 km), uniform composition [2]
+    3a.Continental Europe: relatively thick lithosphere (200 km), uniform composition [2]
     3b.Alps: mountain chain, thick lithosphere (250 km), uniform composition [3]
-    3c.Appennine: mountain chain, thick lithosphere (250 km), uniform composition [3]
-    3d.Pyrennes: mountain chain, thick lithosphere (250 km), uniform composition [3]
+    3c.Appennines: mountain chain, thick lithosphere (250 km), uniform composition [3]
+    3d.Pyrenees: mountain chain, thick lithosphere (250 km), uniform composition [3]
     3e.Massif Central: ECRiS volcanic province; thinned continental lithosphere (100 km), uniform composition [4]
     3f.Eifel: ECRiS volcanic province; thinned continental lithosphere (100 km), uniform composition [4]
     3g.Bohemian Massif: ECRiS volcanic province; thinned continental lithosphere (100 km), uniform composition [4]
@@ -44,15 +44,15 @@ The region is 4000 x 3000 x 660 km Cartesian box (x,y,z) representing continenta
 
 :::{figure}  big_mantle_wedge_Europe_surface_view.png
 :name:  big_mantle_wedge_Europe_surface_view
-:alt: European continental plate including the Alps, Appennines, Pyrennes and the ECRiS regions. 
+:alt: European continental plate including the Alps, Appennines, Pyrenees and the ECRiS regions. 
 :align: center
 
 :::{figure}  big_mantle_wedge_Europe_mantle_view.png
-:name:  big_mantle_wedge_Europe_mantle_view.png
+:name:  big_mantle_wedge_Europe_mantle_view
 :alt: Alpine slab subducting beneath Central Europe 
 :align: center
 
 :::{figure}  big_mantle_wedge_Europe_plumes_view.png
-:name:  big_mantle_wedge_Europe_plumes_view.png
+:name:  big_mantle_wedge_Europe_plumes_view
 :alt: Mantle plumes feeding the ECRiS intra-continental volcanic regions 
 :align: center
