@@ -19,7 +19,15 @@
      "composition models":[{"model":"uniform", "compositions":[0], "min depth":-1e2}]},
 
     {"model":"continental plate", "name":"Continent plate B", "coordinates":[[20e3,12e3],[31e3,12e3],[31e3,15e3],[20e3,15e3]], "min depth":-1e2,
-     "topography models":[{"model":"uniform","topography":7000}],
+     "topography models":[{"model":"uniform","topography":7000},
+                          {"model":"perlin_noise",
+                            "max depth":660e3,
+                            "min topography": -1000.0,
+                            "max topography": 1000.0,
+                            "frequency": 0.0001,
+                            "octaves": 0,
+                            "lacunarity": 4,
+                            "persistence": 0.2}],
      "temperature models":[{"model":"uniform", "min depth":-1e2, "max depth":95e3, "temperature":500}],
      "composition models":[{"model":"uniform", "compositions":[1], "min depth":-1e2}]},
 
@@ -34,6 +42,15 @@
 
     {"model":"oceanic plate", "name":"oceanic plate A", "coordinates":[[-1e3,0],[41e3,0],[41e3,10e3],[-1e3,10e3]], "min depth":-1e2,
      "temperature models":[{"model":"half space model", "max depth":95e3, "min depth":-1e2, "spreading velocity":0.005, "ridge coordinates":[[[10,0], [10,5]],[[20,5],[20,10]]]}],
+    "topography models":[{"model":"uniform", "topography":100},
+                      {"model":"perlin_noise",
+                              "max depth":660e3,
+                              "min topography": -1000.0,
+                              "max topography": 1000.0,
+                              "frequency": 0.0001,
+                              "octaves": 0,
+                              "lacunarity": 4,
+                              "persistence": 0.2}],
      "composition models":[{"model":"uniform", "compositions":[4], "min depth":-1e2}]},
 
     {"model":"oceanic plate", "name":"oceanic plate B", "coordinates":[[12.5e3,2.5e3],[17.5e3,2.5e3],[17.5e3,5e3],[12.5e3,5e3]], "min depth":-1e2,
