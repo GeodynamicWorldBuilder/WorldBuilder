@@ -40,6 +40,8 @@ namespace WorldBuilder
       {
         Uniform::Uniform(WorldBuilder::World *world_)
           :
+          min_depth(NaN::DSNAN),
+          max_depth(NaN::DSNAN),
           operation(Operations::REPLACE)
         {
           this->world = world_;
@@ -56,6 +58,11 @@ namespace WorldBuilder
           prm.declare_entry("compositions", Types::Array(Types::UnsignedInt(),0),
                             "A list with the labels of the composition which are present there.");
 
+          prm.declare_entry("min depth", Types::Double(0),
+                            "The depth in meters from which the temperature of this feature is present.");
+          prm.declare_entry("max depth", Types::Double(std::numeric_limits<double>::max()),
+                            "The depth in meters to which the temperature of this feature is present.");
+
           prm.declare_entry("operation", Types::String("replace", std::vector<std::string> {"replace", "replace defined only", "add", "subtract"}),
                             "Whether the value should replace any value previously defined at this location (replace) or "
                             "add the value to the previously define value. Replacing implies that all compositions not "
@@ -66,7 +73,8 @@ namespace WorldBuilder
         void
         Uniform::parse_entries(Parameters &prm)
         {
-
+          min_depth = prm.get<double>("min depth");
+          max_depth = prm.get<double>("max depth");
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
           compositions = prm.get_vector<unsigned int>("compositions");
         }
@@ -77,12 +85,12 @@ namespace WorldBuilder
                              const double depth,
                              const double  /*gravity*/,
                              double density_,
-                             const double feature_min_depth,
-                             const double feature_max_depth) const
+                             const double /*feature_min_depth*/,
+                             const double /*feature_max_depth*/) const
         {
           // If the composition is greater than 0, average it into the density.
           // By calling the world property for composition, fractions will be included.
-          if (depth >= feature_min_depth && depth <= feature_max_depth)
+          if (depth <= max_depth && depth >= min_depth)
             {
               double compositional_density = 0.0;
               double sum_compositions = 0.0;
