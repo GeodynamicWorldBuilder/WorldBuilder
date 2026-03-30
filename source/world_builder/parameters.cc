@@ -254,9 +254,9 @@ namespace WorldBuilder
         const double reference_density = entry.HasMember("reference density") ? entry["reference density"].GetDouble() : Types::CompositionProperty::get_default_reference_density();
 
         parsed_composition_entries.emplace_back(Parameters::composition_property {composition_index,
-                                                                                     composition_name,
-                                                                                     reference_density
-                                                                                    });
+                                                                                  composition_name,
+                                                                                  reference_density
+                                                                                 });
       }
 
     return parsed_composition_entries;
