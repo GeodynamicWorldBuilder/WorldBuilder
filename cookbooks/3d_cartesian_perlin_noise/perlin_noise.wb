@@ -1,6 +1,7 @@
 {
   "version": "1.2",
   "coordinate system":{"model":"cartesian"},
+  // "random number seed":420, // This seed is used to generate the perlin noise parameters in the test file. Changing it will change the noise pattern.
   "features":
   [
     {
@@ -17,8 +18,7 @@
             "frequency": 0.000001,
             "octaves": 8,
             "lacunarity": 4,
-            "persistence": 0.2,
-            "operation": "add"}
+            "persistence": 0.2}
          ]
     },
     {
@@ -32,16 +32,14 @@
             "min temperature": -100.0,
             "max temperature": 100.0,
             "frequency": 0.00001,
-            "octaves": 8,
-            "operation": "add"}
+            "octaves": 8}
          ],
        "composition models":
          [
            {"model":"perlin_noise", "compositions":[1],
             "max depth":[[100e3],[200e3,[[-250e3,0],[-750e3,1000e3]]]],
             "frequency": 0.00001,
-            "octaves": 8,
-            "operation": "add"},
+            "octaves": 8},
            {"model":"uniform", "compositions":[0],
             "min depth":[[100e3],[200e3,[[-250e3,0],[-750e3,1000e3]]]]}
          ]
