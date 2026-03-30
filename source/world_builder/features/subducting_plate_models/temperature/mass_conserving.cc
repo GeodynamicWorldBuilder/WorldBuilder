@@ -91,7 +91,7 @@ namespace WorldBuilder
                             "this is not perfect, and is affected by the value of \"top truncation\" parameter "
                             "subducting plate. Notes:"
                             "1) the parameter \"thickness\" for the subducting plate segments needs to be defined but is not used. "
-                            "2) because we use a negative truncation for distance above the slab, it is recommended to use"
+                            "2) because we use a negative truncation for distance above the slab, it is recommended to use "
                             "depth method:begin at end segment, in the main part of the world-builder file."
                             "Other methods may lead to gpas in temperatures at the segment boundaries."
                             "3)the empirical model used to define how Tmin increases with depth "
@@ -111,9 +111,9 @@ namespace WorldBuilder
           prm.declare_entry("max distance slab top", Types::Double(std::numeric_limits<double>::max()),
                             "The distance in meters from the top surface of the slab over which the temperature is "
                             "determined by this feature. This parameter should be positive and approximately 2.5-3.0 times "
-                            "larger than the nominal slab thickness to allow the diffusion of cold"
+                            "larger than the nominal slab thickness to allow the diffusion of cold "
                             "temperatures from in the slab into the mantle below the slab surface."
-                            "For example if the slab starts with cold temperatures over a 100 km wide region, this"
+                            "For example if the slab starts with cold temperatures over a 100 km wide region, this "
                             "parameters should be about 250 km.");
 
           prm.declare_entry("density", Types::Double(3300),
