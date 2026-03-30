@@ -1608,9 +1608,9 @@
 
 \section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1}
 \begin{itemize}[leftmargin=2em]\item {\bf type}: object
-\item {\bf description}: Uniform density model. Set the density to a constant value.
+\item {\bf description}: density object
 \item {\bf additionalProperties}: false
-\item {\bf required}: [model, densities]\end{itemize}
+\item {\bf required}: [model]\end{itemize}
 \subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/model}
 \begin{itemize}[leftmargin=3em]\item {\bf default value}: 
 \item {\bf type}: string
@@ -1619,17 +1619,7 @@
 \begin{itemize}[leftmargin=3em]\item {\bf default value}: replace
 \item {\bf type}: string
 \item {\bf description}: Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-\item {\bf enum}: [replace, add, subtract, replace, replace defined only, add, subtract]\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/densities}
-\begin{itemize}[leftmargin=3em]\item {\bf type}: array
-\item {\bf minItems}: 0
-\item {\bf maxItems}: 4294967295
-\item {\bf uniqueItems}: false
-\item {\bf description}: list of compositional densities
-\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/densities/items}
-\begin{itemize}[leftmargin=4em]\item {\bf default value}: 3300.0
-\item {\bf type}: number
-\item {\bf description}: 
-\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/compositions}
+\item {\bf enum}: [replace, add, subtract, replace, replace defined only, add, subtract]\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/compositions}
 \begin{itemize}[leftmargin=3em]\item {\bf type}: array
 \item {\bf minItems}: 0
 \item {\bf maxItems}: 4294967295
@@ -1639,7 +1629,73 @@
 \begin{itemize}[leftmargin=4em]\item {\bf default value}: 0
 \item {\bf type}: integer
 \item {\bf description}: 
-\end{itemize}\section{(0) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf}
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/min depth}
+\begin{itemize}[leftmargin=3em]\item {\bf description}: The depth in meters from which the composition of this feature is present.
+\end{itemize}
+\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/min depth/oneOf/1}
+\begin{itemize}[leftmargin=4em]\item {\bf default value}: 0.0
+\item {\bf type}: number
+\item {\bf description}: 
+\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/min depth/oneOf/2}
+\begin{itemize}[leftmargin=4em]\item {\bf type}: array
+\item {\bf minItems}: 0
+\item {\bf maxItems}: 4294967295
+\item {\bf uniqueItems}: false
+\item {\bf description}: 
+\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/min depth/oneOf/2/items}
+\begin{itemize}[leftmargin=5em]\item {\bf type}: array
+\item {\bf additionalProperties}: false
+\item {\bf minItems}: 1
+\item {\bf maxItems}: 2
+\item {\bf description}: 
+\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/min depth/oneOf/2/items/items}
+\begin{itemize}[leftmargin=6em]\item {\bf anyOf}: [\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/min depth/oneOf/2/items/items}
+\begin{itemize}[leftmargin=6em]\item {\bf type}: number\item {\bf default value}: 0.0
+\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/min depth/oneOf/2/items}
+\begin{itemize}[leftmargin=5em]\item {\bf type}: , array\item {\bf minItems}: 1
+\item {\bf maxItems}: 4294967295
+\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/min depth/oneOf/2/items/items}
+\begin{itemize}[leftmargin=6em]\item {\bf type}: , array\item {\bf minItems}: 1
+\item {\bf maxItems}: 2
+\end{itemize}\subsubsection{(7) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/min depth/oneOf/2/items/items/items}
+\begin{itemize}[leftmargin=7em]\item {\bf type}: , number\end{itemize}]\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/min depth}
+\begin{itemize}[leftmargin=2em]\item {\bf default value}: 
+\item {\bf type}: string
+\item {\bf description}: 
+\end{itemize}]\item {\bf max depth}: \section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1}
+\begin{itemize}[leftmargin=1em]\item {\bf description}: The depth in meters to which the composition of this feature is present.
+\end{itemize}
+\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/oneOf/1}
+\begin{itemize}[leftmargin=2em]\item {\bf default value}: 1.7976931348623157e308
+\item {\bf type}: number
+\item {\bf description}: 
+\end{itemize}\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/oneOf/2}
+\begin{itemize}[leftmargin=2em]\item {\bf type}: array
+\item {\bf minItems}: 0
+\item {\bf maxItems}: 4294967295
+\item {\bf uniqueItems}: false
+\item {\bf description}: 
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/oneOf/2/items}
+\begin{itemize}[leftmargin=3em]\item {\bf type}: array
+\item {\bf additionalProperties}: false
+\item {\bf minItems}: 1
+\item {\bf maxItems}: 2
+\item {\bf description}: 
+\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/oneOf/2/items/items}
+\begin{itemize}[leftmargin=4em]\item {\bf anyOf}: [\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/oneOf/2/items/items}
+\begin{itemize}[leftmargin=4em]\item {\bf type}: number\item {\bf default value}: 1.7976931348623157e308
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/oneOf/2/items}
+\begin{itemize}[leftmargin=3em]\item {\bf type}: , array\item {\bf minItems}: 1
+\item {\bf maxItems}: 4294967295
+\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/oneOf/2/items/items}
+\begin{itemize}[leftmargin=4em]\item {\bf type}: , array\item {\bf minItems}: 1
+\item {\bf maxItems}: 2
+\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/oneOf/2/items/items/items}
+\begin{itemize}[leftmargin=5em]\item {\bf type}: , number\end{itemize}]\section{(0) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1}
+\begin{itemize}[leftmargin=0em]\item {\bf default value}: 
+\item {\bf type}: string
+\item {\bf description}: 
+\end{itemize}]]\section{(0) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf}
 \begin{itemize}[leftmargin=0em]\item {\bf type}: object
 \item {\bf description}: Fault object. Requires properties `model` and `coordinates`.
 \item {\bf additionalProperties}: false
@@ -2190,24 +2246,14 @@
 
 \subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/segments/items/density models/items/oneOf/1}
 \begin{itemize}[leftmargin=5em]\item {\bf type}: object
-\item {\bf description}: Uniform density model. Set the density to a constant value.
+\item {\bf description}: density object
 \item {\bf additionalProperties}: false
-\item {\bf required}: [model, densities]\end{itemize}
+\item {\bf required}: [model]\end{itemize}
 \subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/segments/items/density models/items/oneOf/1/model}
 \begin{itemize}[leftmargin=6em]\item {\bf default value}: 
 \item {\bf type}: string
 \item {\bf description}: The name of the density model.
-\item {\bf enum}: [uniform]\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/segments/items/density models/items/oneOf/1/densities}
-\begin{itemize}[leftmargin=6em]\item {\bf type}: array
-\item {\bf minItems}: 0
-\item {\bf maxItems}: 4294967295
-\item {\bf uniqueItems}: false
-\item {\bf description}: list of compositional densities
-\end{itemize}\subsubsection{(7) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/segments/items/density models/items/oneOf/1/densities/items}
-\begin{itemize}[leftmargin=7em]\item {\bf default value}: 3300.0
-\item {\bf type}: number
-\item {\bf description}: 
-\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/segments/items/density models/items/oneOf/1/compositions}
+\item {\bf enum}: [uniform]\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/segments/items/density models/items/oneOf/1/compositions}
 \begin{itemize}[leftmargin=6em]\item {\bf type}: array
 \item {\bf minItems}: 0
 \item {\bf maxItems}: 4294967295
@@ -2217,6 +2263,14 @@
 \begin{itemize}[leftmargin=7em]\item {\bf default value}: 0
 \item {\bf type}: integer
 \item {\bf description}: 
+\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/segments/items/density models/items/oneOf/1/min distance fault center}
+\begin{itemize}[leftmargin=6em]\item {\bf default value}: 0.0
+\item {\bf type}: number
+\item {\bf description}: The distance in meters from which the composition of this feature is present.
+\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/segments/items/density models/items/oneOf/1/max distance fault center}
+\begin{itemize}[leftmargin=6em]\item {\bf default value}: 1.7976931348623157e308
+\item {\bf type}: number
+\item {\bf description}: The distance in meters to which the composition of this feature is present.
 \end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/segments/items/density models/items/oneOf/1/operation}
 \begin{itemize}[leftmargin=6em]\item {\bf default value}: replace
 \item {\bf type}: string
@@ -2692,24 +2746,14 @@
 
 \subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/density models/items/oneOf/1}
 \begin{itemize}[leftmargin=3em]\item {\bf type}: object
-\item {\bf description}: Uniform density model. Set the density to a constant value.
+\item {\bf description}: density object
 \item {\bf additionalProperties}: false
-\item {\bf required}: [model, densities]\end{itemize}
+\item {\bf required}: [model]\end{itemize}
 \subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/density models/items/oneOf/1/model}
 \begin{itemize}[leftmargin=4em]\item {\bf default value}: 
 \item {\bf type}: string
 \item {\bf description}: The name of the density model.
-\item {\bf enum}: [uniform]\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/density models/items/oneOf/1/densities}
-\begin{itemize}[leftmargin=4em]\item {\bf type}: array
-\item {\bf minItems}: 0
-\item {\bf maxItems}: 4294967295
-\item {\bf uniqueItems}: false
-\item {\bf description}: list of compositional densities
-\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/density models/items/oneOf/1/densities/items}
-\begin{itemize}[leftmargin=5em]\item {\bf default value}: 3300.0
-\item {\bf type}: number
-\item {\bf description}: 
-\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/density models/items/oneOf/1/compositions}
+\item {\bf enum}: [uniform]\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/density models/items/oneOf/1/compositions}
 \begin{itemize}[leftmargin=4em]\item {\bf type}: array
 \item {\bf minItems}: 0
 \item {\bf maxItems}: 4294967295
@@ -2719,6 +2763,14 @@
 \begin{itemize}[leftmargin=5em]\item {\bf default value}: 0
 \item {\bf type}: integer
 \item {\bf description}: 
+\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/density models/items/oneOf/1/min distance fault center}
+\begin{itemize}[leftmargin=4em]\item {\bf default value}: 0.0
+\item {\bf type}: number
+\item {\bf description}: The distance in meters from which the composition of this feature is present.
+\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/density models/items/oneOf/1/max distance fault center}
+\begin{itemize}[leftmargin=4em]\item {\bf default value}: 1.7976931348623157e308
+\item {\bf type}: number
+\item {\bf description}: The distance in meters to which the composition of this feature is present.
 \end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/density models/items/oneOf/1/operation}
 \begin{itemize}[leftmargin=4em]\item {\bf default value}: replace
 \item {\bf type}: string
@@ -3251,24 +3303,14 @@
 
 \subsubsection{(7) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/sections/items/segments/items/density models/items/oneOf/1}
 \begin{itemize}[leftmargin=7em]\item {\bf type}: object
-\item {\bf description}: Uniform density model. Set the density to a constant value.
+\item {\bf description}: density object
 \item {\bf additionalProperties}: false
-\item {\bf required}: [model, densities]\end{itemize}
+\item {\bf required}: [model]\end{itemize}
 \subsubsection{(8) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/sections/items/segments/items/density models/items/oneOf/1/model}
 \begin{itemize}[leftmargin=8em]\item {\bf default value}: 
 \item {\bf type}: string
 \item {\bf description}: The name of the density model.
-\item {\bf enum}: [uniform]\end{itemize}\subsubsection{(8) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/sections/items/segments/items/density models/items/oneOf/1/densities}
-\begin{itemize}[leftmargin=8em]\item {\bf type}: array
-\item {\bf minItems}: 0
-\item {\bf maxItems}: 4294967295
-\item {\bf uniqueItems}: false
-\item {\bf description}: list of compositional densities
-\end{itemize}\paragraph{(9) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/sections/items/segments/items/density models/items/oneOf/1/densities/items}
-\begin{itemize}[leftmargin=9em]\item {\bf default value}: 3300.0
-\item {\bf type}: number
-\item {\bf description}: 
-\end{itemize}\subsubsection{(8) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/sections/items/segments/items/density models/items/oneOf/1/compositions}
+\item {\bf enum}: [uniform]\end{itemize}\subsubsection{(8) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/sections/items/segments/items/density models/items/oneOf/1/compositions}
 \begin{itemize}[leftmargin=8em]\item {\bf type}: array
 \item {\bf minItems}: 0
 \item {\bf maxItems}: 4294967295
@@ -3278,6 +3320,14 @@
 \begin{itemize}[leftmargin=9em]\item {\bf default value}: 0
 \item {\bf type}: integer
 \item {\bf description}: 
+\end{itemize}\subsubsection{(8) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/sections/items/segments/items/density models/items/oneOf/1/min distance fault center}
+\begin{itemize}[leftmargin=8em]\item {\bf default value}: 0.0
+\item {\bf type}: number
+\item {\bf description}: The distance in meters from which the composition of this feature is present.
+\end{itemize}\subsubsection{(8) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/sections/items/segments/items/density models/items/oneOf/1/max distance fault center}
+\begin{itemize}[leftmargin=8em]\item {\bf default value}: 1.7976931348623157e308
+\item {\bf type}: number
+\item {\bf description}: The distance in meters to which the composition of this feature is present.
 \end{itemize}\subsubsection{(8) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/sections/items/segments/items/density models/items/oneOf/1/operation}
 \begin{itemize}[leftmargin=8em]\item {\bf default value}: replace
 \item {\bf type}: string
@@ -3753,24 +3803,14 @@
 
 \subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/sections/items/density models/items/oneOf/1}
 \begin{itemize}[leftmargin=5em]\item {\bf type}: object
-\item {\bf description}: Uniform density model. Set the density to a constant value.
+\item {\bf description}: density object
 \item {\bf additionalProperties}: false
-\item {\bf required}: [model, densities]\end{itemize}
+\item {\bf required}: [model]\end{itemize}
 \subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/sections/items/density models/items/oneOf/1/model}
 \begin{itemize}[leftmargin=6em]\item {\bf default value}: 
 \item {\bf type}: string
 \item {\bf description}: The name of the density model.
-\item {\bf enum}: [uniform]\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/sections/items/density models/items/oneOf/1/densities}
-\begin{itemize}[leftmargin=6em]\item {\bf type}: array
-\item {\bf minItems}: 0
-\item {\bf maxItems}: 4294967295
-\item {\bf uniqueItems}: false
-\item {\bf description}: list of compositional densities
-\end{itemize}\subsubsection{(7) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/sections/items/density models/items/oneOf/1/densities/items}
-\begin{itemize}[leftmargin=7em]\item {\bf default value}: 3300.0
-\item {\bf type}: number
-\item {\bf description}: 
-\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/sections/items/density models/items/oneOf/1/compositions}
+\item {\bf enum}: [uniform]\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/sections/items/density models/items/oneOf/1/compositions}
 \begin{itemize}[leftmargin=6em]\item {\bf type}: array
 \item {\bf minItems}: 0
 \item {\bf maxItems}: 4294967295
@@ -3780,6 +3820,14 @@
 \begin{itemize}[leftmargin=7em]\item {\bf default value}: 0
 \item {\bf type}: integer
 \item {\bf description}: 
+\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/sections/items/density models/items/oneOf/1/min distance fault center}
+\begin{itemize}[leftmargin=6em]\item {\bf default value}: 0.0
+\item {\bf type}: number
+\item {\bf description}: The distance in meters from which the composition of this feature is present.
+\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/sections/items/density models/items/oneOf/1/max distance fault center}
+\begin{itemize}[leftmargin=6em]\item {\bf default value}: 1.7976931348623157e308
+\item {\bf type}: number
+\item {\bf description}: The distance in meters to which the composition of this feature is present.
 \end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/sections/items/density models/items/oneOf/1/operation}
 \begin{itemize}[leftmargin=6em]\item {\bf default value}: replace
 \item {\bf type}: string
@@ -4793,9 +4841,9 @@
 
 \section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1}
 \begin{itemize}[leftmargin=2em]\item {\bf type}: object
-\item {\bf description}: Uniform density model. Set the density to a constant value.
+\item {\bf description}: density object
 \item {\bf additionalProperties}: false
-\item {\bf required}: [model, densities]\end{itemize}
+\item {\bf required}: [model]\end{itemize}
 \subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/model}
 \begin{itemize}[leftmargin=3em]\item {\bf default value}: 
 \item {\bf type}: string
@@ -4804,17 +4852,7 @@
 \begin{itemize}[leftmargin=3em]\item {\bf default value}: replace
 \item {\bf type}: string
 \item {\bf description}: Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-\item {\bf enum}: [replace, add, subtract, replace, replace defined only, add, subtract]\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/densities}
-\begin{itemize}[leftmargin=3em]\item {\bf type}: array
-\item {\bf minItems}: 0
-\item {\bf maxItems}: 4294967295
-\item {\bf uniqueItems}: false
-\item {\bf description}: list of compositional densities
-\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/densities/items}
-\begin{itemize}[leftmargin=4em]\item {\bf default value}: 3300.0
-\item {\bf type}: number
-\item {\bf description}: 
-\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/compositions}
+\item {\bf enum}: [replace, add, subtract, replace, replace defined only, add, subtract]\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/compositions}
 \begin{itemize}[leftmargin=3em]\item {\bf type}: array
 \item {\bf minItems}: 0
 \item {\bf maxItems}: 4294967295
@@ -4824,7 +4862,73 @@
 \begin{itemize}[leftmargin=4em]\item {\bf default value}: 0
 \item {\bf type}: integer
 \item {\bf description}: 
-\end{itemize}\section{(0) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf}
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/min depth}
+\begin{itemize}[leftmargin=3em]\item {\bf description}: The depth in meters from which the composition of this feature is present.
+\end{itemize}
+\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/min depth/oneOf/1}
+\begin{itemize}[leftmargin=4em]\item {\bf default value}: 0.0
+\item {\bf type}: number
+\item {\bf description}: 
+\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/min depth/oneOf/2}
+\begin{itemize}[leftmargin=4em]\item {\bf type}: array
+\item {\bf minItems}: 0
+\item {\bf maxItems}: 4294967295
+\item {\bf uniqueItems}: false
+\item {\bf description}: 
+\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/min depth/oneOf/2/items}
+\begin{itemize}[leftmargin=5em]\item {\bf type}: array
+\item {\bf additionalProperties}: false
+\item {\bf minItems}: 1
+\item {\bf maxItems}: 2
+\item {\bf description}: 
+\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/min depth/oneOf/2/items/items}
+\begin{itemize}[leftmargin=6em]\item {\bf anyOf}: [\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/min depth/oneOf/2/items/items}
+\begin{itemize}[leftmargin=6em]\item {\bf type}: number\item {\bf default value}: 0.0
+\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/min depth/oneOf/2/items}
+\begin{itemize}[leftmargin=5em]\item {\bf type}: , array\item {\bf minItems}: 1
+\item {\bf maxItems}: 4294967295
+\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/min depth/oneOf/2/items/items}
+\begin{itemize}[leftmargin=6em]\item {\bf type}: , array\item {\bf minItems}: 1
+\item {\bf maxItems}: 2
+\end{itemize}\subsubsection{(7) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/min depth/oneOf/2/items/items/items}
+\begin{itemize}[leftmargin=7em]\item {\bf type}: , number\end{itemize}]\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/min depth}
+\begin{itemize}[leftmargin=2em]\item {\bf default value}: 
+\item {\bf type}: string
+\item {\bf description}: 
+\end{itemize}]\item {\bf max depth}: \section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1}
+\begin{itemize}[leftmargin=1em]\item {\bf description}: The depth in meters to which the composition of this feature is present.
+\end{itemize}
+\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/oneOf/1}
+\begin{itemize}[leftmargin=2em]\item {\bf default value}: 1.7976931348623157e308
+\item {\bf type}: number
+\item {\bf description}: 
+\end{itemize}\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/oneOf/2}
+\begin{itemize}[leftmargin=2em]\item {\bf type}: array
+\item {\bf minItems}: 0
+\item {\bf maxItems}: 4294967295
+\item {\bf uniqueItems}: false
+\item {\bf description}: 
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/oneOf/2/items}
+\begin{itemize}[leftmargin=3em]\item {\bf type}: array
+\item {\bf additionalProperties}: false
+\item {\bf minItems}: 1
+\item {\bf maxItems}: 2
+\item {\bf description}: 
+\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/oneOf/2/items/items}
+\begin{itemize}[leftmargin=4em]\item {\bf anyOf}: [\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/oneOf/2/items/items}
+\begin{itemize}[leftmargin=4em]\item {\bf type}: number\item {\bf default value}: 1.7976931348623157e308
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/oneOf/2/items}
+\begin{itemize}[leftmargin=3em]\item {\bf type}: , array\item {\bf minItems}: 1
+\item {\bf maxItems}: 4294967295
+\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/oneOf/2/items/items}
+\begin{itemize}[leftmargin=4em]\item {\bf type}: , array\item {\bf minItems}: 1
+\item {\bf maxItems}: 2
+\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/oneOf/2/items/items/items}
+\begin{itemize}[leftmargin=5em]\item {\bf type}: , number\end{itemize}]\section{(0) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1}
+\begin{itemize}[leftmargin=0em]\item {\bf default value}: 
+\item {\bf type}: string
+\item {\bf description}: 
+\end{itemize}]]\section{(0) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf}
 \begin{itemize}[leftmargin=0em]\item {\bf type}: object
 \item {\bf description}: Oceanic plate object. Requires properties `model` and `coordinates`.
 \item {\bf additionalProperties}: false
@@ -6560,9 +6664,9 @@
 
 \section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1}
 \begin{itemize}[leftmargin=2em]\item {\bf type}: object
-\item {\bf description}: Uniform density model. Set the density to a constant value.
+\item {\bf description}: density object
 \item {\bf additionalProperties}: false
-\item {\bf required}: [model, densities]\end{itemize}
+\item {\bf required}: [model]\end{itemize}
 \subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/model}
 \begin{itemize}[leftmargin=3em]\item {\bf default value}: 
 \item {\bf type}: string
@@ -6571,17 +6675,7 @@
 \begin{itemize}[leftmargin=3em]\item {\bf default value}: replace
 \item {\bf type}: string
 \item {\bf description}: Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-\item {\bf enum}: [replace, add, subtract, replace, replace defined only, add, subtract]\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/densities}
-\begin{itemize}[leftmargin=3em]\item {\bf type}: array
-\item {\bf minItems}: 0
-\item {\bf maxItems}: 4294967295
-\item {\bf uniqueItems}: false
-\item {\bf description}: list of compositionalk densities
-\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/densities/items}
-\begin{itemize}[leftmargin=4em]\item {\bf default value}: 3300.0
-\item {\bf type}: number
-\item {\bf description}: 
-\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/compositions}
+\item {\bf enum}: [replace, add, subtract, replace, replace defined only, add, subtract]\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/compositions}
 \begin{itemize}[leftmargin=3em]\item {\bf type}: array
 \item {\bf minItems}: 0
 \item {\bf maxItems}: 4294967295
@@ -6591,7 +6685,73 @@
 \begin{itemize}[leftmargin=4em]\item {\bf default value}: 0
 \item {\bf type}: integer
 \item {\bf description}: 
-\end{itemize}\section{(0) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf}
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/min depth}
+\begin{itemize}[leftmargin=3em]\item {\bf description}: The depth in meters from which the composition of this feature is present.
+\end{itemize}
+\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/min depth/oneOf/1}
+\begin{itemize}[leftmargin=4em]\item {\bf default value}: 0.0
+\item {\bf type}: number
+\item {\bf description}: 
+\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/min depth/oneOf/2}
+\begin{itemize}[leftmargin=4em]\item {\bf type}: array
+\item {\bf minItems}: 0
+\item {\bf maxItems}: 4294967295
+\item {\bf uniqueItems}: false
+\item {\bf description}: 
+\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/min depth/oneOf/2/items}
+\begin{itemize}[leftmargin=5em]\item {\bf type}: array
+\item {\bf additionalProperties}: false
+\item {\bf minItems}: 1
+\item {\bf maxItems}: 2
+\item {\bf description}: 
+\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/min depth/oneOf/2/items/items}
+\begin{itemize}[leftmargin=6em]\item {\bf anyOf}: [\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/min depth/oneOf/2/items/items}
+\begin{itemize}[leftmargin=6em]\item {\bf type}: number\item {\bf default value}: 0.0
+\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/min depth/oneOf/2/items}
+\begin{itemize}[leftmargin=5em]\item {\bf type}: , array\item {\bf minItems}: 1
+\item {\bf maxItems}: 4294967295
+\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/min depth/oneOf/2/items/items}
+\begin{itemize}[leftmargin=6em]\item {\bf type}: , array\item {\bf minItems}: 1
+\item {\bf maxItems}: 2
+\end{itemize}\subsubsection{(7) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/min depth/oneOf/2/items/items/items}
+\begin{itemize}[leftmargin=7em]\item {\bf type}: , number\end{itemize}]\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/min depth}
+\begin{itemize}[leftmargin=2em]\item {\bf default value}: 
+\item {\bf type}: string
+\item {\bf description}: 
+\end{itemize}]\item {\bf max depth}: \section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1}
+\begin{itemize}[leftmargin=1em]\item {\bf description}: The depth in meters to which the composition of this feature is present.
+\end{itemize}
+\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/oneOf/1}
+\begin{itemize}[leftmargin=2em]\item {\bf default value}: 1.7976931348623157e308
+\item {\bf type}: number
+\item {\bf description}: 
+\end{itemize}\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/oneOf/2}
+\begin{itemize}[leftmargin=2em]\item {\bf type}: array
+\item {\bf minItems}: 0
+\item {\bf maxItems}: 4294967295
+\item {\bf uniqueItems}: false
+\item {\bf description}: 
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/oneOf/2/items}
+\begin{itemize}[leftmargin=3em]\item {\bf type}: array
+\item {\bf additionalProperties}: false
+\item {\bf minItems}: 1
+\item {\bf maxItems}: 2
+\item {\bf description}: 
+\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/oneOf/2/items/items}
+\begin{itemize}[leftmargin=4em]\item {\bf anyOf}: [\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/oneOf/2/items/items}
+\begin{itemize}[leftmargin=4em]\item {\bf type}: number\item {\bf default value}: 1.7976931348623157e308
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/oneOf/2/items}
+\begin{itemize}[leftmargin=3em]\item {\bf type}: , array\item {\bf minItems}: 1
+\item {\bf maxItems}: 4294967295
+\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/oneOf/2/items/items}
+\begin{itemize}[leftmargin=4em]\item {\bf type}: , array\item {\bf minItems}: 1
+\item {\bf maxItems}: 2
+\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/oneOf/2/items/items/items}
+\begin{itemize}[leftmargin=5em]\item {\bf type}: , number\end{itemize}]\section{(0) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1}
+\begin{itemize}[leftmargin=0em]\item {\bf default value}: 
+\item {\bf type}: string
+\item {\bf description}: 
+\end{itemize}]]\section{(0) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf}
 \begin{itemize}[leftmargin=0em]\item {\bf type}: object
 \item {\bf description}: Plume object. Requires properties `model` and `coordinates`.
 \item {\bf additionalProperties}: false
@@ -6809,251 +6969,350 @@
 \begin{itemize}[leftmargin=4em]\item {\bf default value}: 
 \item {\bf type}: string
 \item {\bf description}: The name of the grains model.
-\item {\bf enum}: [random uniform distribution deflected]\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/min depth}
-\begin{itemize}[leftmargin=4em]\item {\bf default value}: 0.0
+\item {\bf enum}: [random uniform distribution]\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/min depth}
+\begin{itemize}[leftmargin=4em]\item {\bf description}: The depth in meters from which the composition of this feature is present.
+\end{itemize}
+\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/min depth/oneOf/1}
+\begin{itemize}[leftmargin=5em]\item {\bf default value}: 0.0
 \item {\bf type}: number
-\item {\bf description}: The depth in meters from which the grains of this feature are present.
-\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/max depth}
+\item {\bf description}: 
+\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/min depth/oneOf/2}
+\begin{itemize}[leftmargin=5em]\item {\bf type}: array
+\item {\bf minItems}: 0
+\item {\bf maxItems}: 4294967295
+\item {\bf uniqueItems}: false
+\item {\bf description}: 
+\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/min depth/oneOf/2/items}
+\begin{itemize}[leftmargin=6em]\item {\bf type}: array
+\item {\bf additionalProperties}: false
+\item {\bf minItems}: 1
+\item {\bf maxItems}: 2
+\item {\bf description}: 
+\end{itemize}\subsubsection{(7) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/min depth/oneOf/2/items/items}
+\begin{itemize}[leftmargin=7em]\item {\bf anyOf}: [\end{itemize}\subsubsection{(7) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/min depth/oneOf/2/items/items}
+\begin{itemize}[leftmargin=7em]\item {\bf type}: number\item {\bf default value}: 0.0
+\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/min depth/oneOf/2/items}
+\begin{itemize}[leftmargin=6em]\item {\bf type}: , array\item {\bf minItems}: 1
+\item {\bf maxItems}: 4294967295
+\end{itemize}\subsubsection{(7) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/min depth/oneOf/2/items/items}
+\begin{itemize}[leftmargin=7em]\item {\bf type}: , array\item {\bf minItems}: 1
+\item {\bf maxItems}: 2
+\end{itemize}\subsubsection{(8) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/min depth/oneOf/2/items/items/items}
+\begin{itemize}[leftmargin=8em]\item {\bf type}: , number\end{itemize}]]\item {\bf max depth}: \subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/min depth}
+\begin{itemize}[leftmargin=3em]\item {\bf description}: The depth in meters to which the composition of this feature is present.
+\end{itemize}
+\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/min depth/oneOf/1}
 \begin{itemize}[leftmargin=4em]\item {\bf default value}: 1.7976931348623157e308
 \item {\bf type}: number
-\item {\bf description}: The depth in meters to which the grains of this feature are present.
-\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/compositions}
+\item {\bf description}: 
+\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/min depth/oneOf/2}
 \begin{itemize}[leftmargin=4em]\item {\bf type}: array
 \item {\bf minItems}: 0
 \item {\bf maxItems}: 4294967295
 \item {\bf uniqueItems}: false
+\item {\bf description}: 
+\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/min depth/oneOf/2/items}
+\begin{itemize}[leftmargin=5em]\item {\bf type}: array
+\item {\bf additionalProperties}: false
+\item {\bf minItems}: 1
+\item {\bf maxItems}: 2
+\item {\bf description}: 
+\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/min depth/oneOf/2/items/items}
+\begin{itemize}[leftmargin=6em]\item {\bf anyOf}: [\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/min depth/oneOf/2/items/items}
+\begin{itemize}[leftmargin=6em]\item {\bf type}: number\item {\bf default value}: 1.7976931348623157e308
+\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/min depth/oneOf/2/items}
+\begin{itemize}[leftmargin=5em]\item {\bf type}: , array\item {\bf minItems}: 1
+\item {\bf maxItems}: 4294967295
+\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/min depth/oneOf/2/items/items}
+\begin{itemize}[leftmargin=6em]\item {\bf type}: , array\item {\bf minItems}: 1
+\item {\bf maxItems}: 2
+\end{itemize}\subsubsection{(7) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/min depth/oneOf/2/items/items/items}
+\begin{itemize}[leftmargin=7em]\item {\bf type}: , number\end{itemize}]]\item {\bf compositions}: \section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/3}
+\begin{itemize}[leftmargin=2em]\item {\bf type}: array
+\item {\bf minItems}: 0
+\item {\bf maxItems}: 4294967295
+\item {\bf uniqueItems}: false
 \item {\bf description}: A list with the integer labels of the composition which are present there.
-\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/compositions/items}
-\begin{itemize}[leftmargin=5em]\item {\bf default value}: 0
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/3/items}
+\begin{itemize}[leftmargin=3em]\item {\bf default value}: 0
 \item {\bf type}: integer
 \item {\bf description}: 
-\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/orientation operation}
-\begin{itemize}[leftmargin=4em]\item {\bf default value}: replace
+\end{itemize}\item {\bf orientation operation}: \section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/4}
+\begin{itemize}[leftmargin=2em]\item {\bf default value}: replace
 \item {\bf type}: string
 \item {\bf description}: Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-\item {\bf enum}: [replace, multiply]\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/grain sizes}
-\begin{itemize}[leftmargin=4em]\item {\bf type}: array
+\item {\bf enum}: [replace]\end{itemize}\item {\bf grain sizes}: \section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/5}
+\begin{itemize}[leftmargin=2em]\item {\bf type}: array
 \item {\bf minItems}: 0
 \item {\bf maxItems}: 4294967295
 \item {\bf uniqueItems}: false
 \item {\bf description}: A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
-\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/grain sizes/items}
-\begin{itemize}[leftmargin=5em]\item {\bf default value}: 1.0
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/5/items}
+\begin{itemize}[leftmargin=3em]\item {\bf default value}: 1.0
 \item {\bf type}: number
 \item {\bf description}: 
-\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/normalize grain sizes}
-\begin{itemize}[leftmargin=4em]\item {\bf type}: array
+\end{itemize}\item {\bf normalize grain sizes}: \section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/6}
+\begin{itemize}[leftmargin=2em]\item {\bf type}: array
 \item {\bf minItems}: 0
 \item {\bf maxItems}: 4294967295
 \item {\bf uniqueItems}: false
 \item {\bf description}: A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
-\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/normalize grain sizes/items}
-\begin{itemize}[leftmargin=5em]\item {\bf default value}: true
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/6/items}
+\begin{itemize}[leftmargin=3em]\item {\bf default value}: true
 \item {\bf type}: boolean
 \item {\bf description}: 
-\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/deflections}
-\begin{itemize}[leftmargin=4em]\item {\bf type}: array
-\item {\bf minItems}: 0
-\item {\bf maxItems}: 4294967295
-\item {\bf uniqueItems}: false
-\item {\bf description}: A list of the deflections of all of the grains in each composition between 0 and 1.
-\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/deflections/items}
-\begin{itemize}[leftmargin=5em]\item {\bf default value}: 1.0
-\item {\bf type}: number
-\item {\bf description}: 
-\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/basis rotation matrices}
-\begin{itemize}[leftmargin=4em]\item {\bf type}: array
-\item {\bf minItems}: 0
-\item {\bf maxItems}: 4294967295
-\item {\bf uniqueItems}: false
-\item {\bf description}: A list with the rotation matrices of the grains which are present there for each compositions.
-\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/basis rotation matrices/items}
-\begin{itemize}[leftmargin=5em]\item {\bf type}: array
-\item {\bf minItems}: 3
-\item {\bf maxItems}: 3
-\item {\bf uniqueItems}: false
-\item {\bf description}: 
-\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/basis rotation matrices/items/items}
-\begin{itemize}[leftmargin=6em]\item {\bf type}: array
-\item {\bf minItems}: 3
-\item {\bf maxItems}: 3
-\item {\bf uniqueItems}: false
-\item {\bf description}: 
-\end{itemize}\subsubsection{(7) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/basis rotation matrices/items/items/items}
-\begin{itemize}[leftmargin=7em]\item {\bf default value}: 0.0
-\item {\bf type}: number
-\item {\bf description}: 
-\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/basis Euler angles z-x-z}
-\begin{itemize}[leftmargin=4em]\item {\bf type}: array
-\item {\bf minItems}: 0
-\item {\bf maxItems}: 4294967295
-\item {\bf uniqueItems}: false
-\item {\bf description}: A list with the z-x-z Euler angles of the grains which are present there for each compositions.
-\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/basis Euler angles z-x-z/items}
-\begin{itemize}[leftmargin=5em]\item {\bf type}: array
-\item {\bf minItems}: 3
-\item {\bf maxItems}: 3
-\item {\bf uniqueItems}: false
-\item {\bf description}: 
-\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/1/basis Euler angles z-x-z/items/items}
-\begin{itemize}[leftmargin=6em]\item {\bf default value}: 0.0
-\item {\bf type}: number
-\item {\bf description}: 
-\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/2}
-\begin{itemize}[leftmargin=3em]\item {\bf type}: object
-\item {\bf description}: Uniform grains model. All grains start exactly the same.
+\end{itemize}\section{(0) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf}
+\begin{itemize}[leftmargin=0em]\item {\bf type}: object
+\item {\bf description}: Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
 \item {\bf additionalProperties}: false
 \item {\bf required}: [model, compositions]\end{itemize}
-\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/2/model}
-\begin{itemize}[leftmargin=4em]\item {\bf default value}: 
+\section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/model}
+\begin{itemize}[leftmargin=1em]\item {\bf default value}: 
 \item {\bf type}: string
 \item {\bf description}: The name of the grains model.
-\item {\bf enum}: [uniform]\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/2/min depth}
-\begin{itemize}[leftmargin=4em]\item {\bf default value}: 0.0
+\item {\bf enum}: [random uniform distribution deflected]\end{itemize}\section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/min depth}
+\begin{itemize}[leftmargin=1em]\item {\bf default value}: 0.0
 \item {\bf type}: number
 \item {\bf description}: The depth in meters from which the grains of this feature are present.
-\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/2/max depth}
-\begin{itemize}[leftmargin=4em]\item {\bf default value}: 1.7976931348623157e308
+\end{itemize}\section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/max depth}
+\begin{itemize}[leftmargin=1em]\item {\bf default value}: 1.7976931348623157e308
 \item {\bf type}: number
 \item {\bf description}: The depth in meters to which the grains of this feature are present.
-\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/2/compositions}
-\begin{itemize}[leftmargin=4em]\item {\bf type}: array
+\end{itemize}\section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/compositions}
+\begin{itemize}[leftmargin=1em]\item {\bf type}: array
 \item {\bf minItems}: 0
 \item {\bf maxItems}: 4294967295
 \item {\bf uniqueItems}: false
 \item {\bf description}: A list with the integer labels of the composition which are present there.
-\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/2/compositions/items}
-\begin{itemize}[leftmargin=5em]\item {\bf default value}: 0
+\end{itemize}\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/compositions/items}
+\begin{itemize}[leftmargin=2em]\item {\bf default value}: 0
 \item {\bf type}: integer
 \item {\bf description}: 
-\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/2/rotation matrices}
-\begin{itemize}[leftmargin=4em]\item {\bf type}: array
+\end{itemize}\section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/orientation operation}
+\begin{itemize}[leftmargin=1em]\item {\bf default value}: replace
+\item {\bf type}: string
+\item {\bf description}: Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+\item {\bf enum}: [replace, multiply]\end{itemize}\section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/grain sizes}
+\begin{itemize}[leftmargin=1em]\item {\bf type}: array
+\item {\bf minItems}: 0
+\item {\bf maxItems}: 4294967295
+\item {\bf uniqueItems}: false
+\item {\bf description}: A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
+\end{itemize}\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/grain sizes/items}
+\begin{itemize}[leftmargin=2em]\item {\bf default value}: 1.0
+\item {\bf type}: number
+\item {\bf description}: 
+\end{itemize}\section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/normalize grain sizes}
+\begin{itemize}[leftmargin=1em]\item {\bf type}: array
+\item {\bf minItems}: 0
+\item {\bf maxItems}: 4294967295
+\item {\bf uniqueItems}: false
+\item {\bf description}: A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
+\end{itemize}\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/normalize grain sizes/items}
+\begin{itemize}[leftmargin=2em]\item {\bf default value}: true
+\item {\bf type}: boolean
+\item {\bf description}: 
+\end{itemize}\section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/deflections}
+\begin{itemize}[leftmargin=1em]\item {\bf type}: array
+\item {\bf minItems}: 0
+\item {\bf maxItems}: 4294967295
+\item {\bf uniqueItems}: false
+\item {\bf description}: A list of the deflections of all of the grains in each composition between 0 and 1.
+\end{itemize}\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/deflections/items}
+\begin{itemize}[leftmargin=2em]\item {\bf default value}: 1.0
+\item {\bf type}: number
+\item {\bf description}: 
+\end{itemize}\section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/basis rotation matrices}
+\begin{itemize}[leftmargin=1em]\item {\bf type}: array
 \item {\bf minItems}: 0
 \item {\bf maxItems}: 4294967295
 \item {\bf uniqueItems}: false
 \item {\bf description}: A list with the rotation matrices of the grains which are present there for each compositions.
-\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/2/rotation matrices/items}
-\begin{itemize}[leftmargin=5em]\item {\bf type}: array
+\end{itemize}\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/basis rotation matrices/items}
+\begin{itemize}[leftmargin=2em]\item {\bf type}: array
 \item {\bf minItems}: 3
 \item {\bf maxItems}: 3
 \item {\bf uniqueItems}: false
 \item {\bf description}: 
-\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/2/rotation matrices/items/items}
-\begin{itemize}[leftmargin=6em]\item {\bf type}: array
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/basis rotation matrices/items/items}
+\begin{itemize}[leftmargin=3em]\item {\bf type}: array
 \item {\bf minItems}: 3
 \item {\bf maxItems}: 3
 \item {\bf uniqueItems}: false
 \item {\bf description}: 
-\end{itemize}\subsubsection{(7) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/2/rotation matrices/items/items/items}
-\begin{itemize}[leftmargin=7em]\item {\bf default value}: 0.0
+\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/basis rotation matrices/items/items/items}
+\begin{itemize}[leftmargin=4em]\item {\bf default value}: 0.0
 \item {\bf type}: number
 \item {\bf description}: 
-\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/2/Euler angles z-x-z}
-\begin{itemize}[leftmargin=4em]\item {\bf type}: array
+\end{itemize}\section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/basis Euler angles z-x-z}
+\begin{itemize}[leftmargin=1em]\item {\bf type}: array
 \item {\bf minItems}: 0
 \item {\bf maxItems}: 4294967295
 \item {\bf uniqueItems}: false
 \item {\bf description}: A list with the z-x-z Euler angles of the grains which are present there for each compositions.
-\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/2/Euler angles z-x-z/items}
-\begin{itemize}[leftmargin=5em]\item {\bf type}: array
+\end{itemize}\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/basis Euler angles z-x-z/items}
+\begin{itemize}[leftmargin=2em]\item {\bf type}: array
 \item {\bf minItems}: 3
 \item {\bf maxItems}: 3
 \item {\bf uniqueItems}: false
 \item {\bf description}: 
-\end{itemize}\subsubsection{(6) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/2/Euler angles z-x-z/items/items}
-\begin{itemize}[leftmargin=6em]\item {\bf default value}: 0.0
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/basis Euler angles z-x-z/items/items}
+\begin{itemize}[leftmargin=3em]\item {\bf default value}: 0.0
 \item {\bf type}: number
 \item {\bf description}: 
-\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/2/orientation operation}
-\begin{itemize}[leftmargin=4em]\item {\bf default value}: replace
+\end{itemize}\section{(0) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items}
+\begin{itemize}[leftmargin=0em]\item {\bf type}: object
+\item {\bf description}: Uniform grains model. All grains start exactly the same.
+\item {\bf additionalProperties}: false
+\item {\bf required}: [model, compositions]\end{itemize}
+\section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/model}
+\begin{itemize}[leftmargin=1em]\item {\bf default value}: 
+\item {\bf type}: string
+\item {\bf description}: The name of the grains model.
+\item {\bf enum}: [uniform]\end{itemize}\section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/min depth}
+\begin{itemize}[leftmargin=1em]\item {\bf default value}: 0.0
+\item {\bf type}: number
+\item {\bf description}: The depth in meters from which the grains of this feature are present.
+\end{itemize}\section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/max depth}
+\begin{itemize}[leftmargin=1em]\item {\bf default value}: 1.7976931348623157e308
+\item {\bf type}: number
+\item {\bf description}: The depth in meters to which the grains of this feature are present.
+\end{itemize}\section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/compositions}
+\begin{itemize}[leftmargin=1em]\item {\bf type}: array
+\item {\bf minItems}: 0
+\item {\bf maxItems}: 4294967295
+\item {\bf uniqueItems}: false
+\item {\bf description}: A list with the integer labels of the composition which are present there.
+\end{itemize}\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/compositions/items}
+\begin{itemize}[leftmargin=2em]\item {\bf default value}: 0
+\item {\bf type}: integer
+\item {\bf description}: 
+\end{itemize}\section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/rotation matrices}
+\begin{itemize}[leftmargin=1em]\item {\bf type}: array
+\item {\bf minItems}: 0
+\item {\bf maxItems}: 4294967295
+\item {\bf uniqueItems}: false
+\item {\bf description}: A list with the rotation matrices of the grains which are present there for each compositions.
+\end{itemize}\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/rotation matrices/items}
+\begin{itemize}[leftmargin=2em]\item {\bf type}: array
+\item {\bf minItems}: 3
+\item {\bf maxItems}: 3
+\item {\bf uniqueItems}: false
+\item {\bf description}: 
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/rotation matrices/items/items}
+\begin{itemize}[leftmargin=3em]\item {\bf type}: array
+\item {\bf minItems}: 3
+\item {\bf maxItems}: 3
+\item {\bf uniqueItems}: false
+\item {\bf description}: 
+\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/rotation matrices/items/items/items}
+\begin{itemize}[leftmargin=4em]\item {\bf default value}: 0.0
+\item {\bf type}: number
+\item {\bf description}: 
+\end{itemize}\section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/Euler angles z-x-z}
+\begin{itemize}[leftmargin=1em]\item {\bf type}: array
+\item {\bf minItems}: 0
+\item {\bf maxItems}: 4294967295
+\item {\bf uniqueItems}: false
+\item {\bf description}: A list with the z-x-z Euler angles of the grains which are present there for each compositions.
+\end{itemize}\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/Euler angles z-x-z/items}
+\begin{itemize}[leftmargin=2em]\item {\bf type}: array
+\item {\bf minItems}: 3
+\item {\bf maxItems}: 3
+\item {\bf uniqueItems}: false
+\item {\bf description}: 
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/Euler angles z-x-z/items/items}
+\begin{itemize}[leftmargin=3em]\item {\bf default value}: 0.0
+\item {\bf type}: number
+\item {\bf description}: 
+\end{itemize}\section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/orientation operation}
+\begin{itemize}[leftmargin=1em]\item {\bf default value}: replace
 \item {\bf type}: string
 \item {\bf description}: Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-\item {\bf enum}: [replace, multiply]\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/2/grain sizes}
-\begin{itemize}[leftmargin=4em]\item {\bf type}: array
+\item {\bf enum}: [replace, multiply]\end{itemize}\section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/grain sizes}
+\begin{itemize}[leftmargin=1em]\item {\bf type}: array
 \item {\bf minItems}: 0
 \item {\bf maxItems}: 4294967295
 \item {\bf uniqueItems}: false
 \item {\bf description}: A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
-\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/oneOf/2/grain sizes/items}
-\begin{itemize}[leftmargin=5em]\item {\bf default value}: -1.0
+\end{itemize}\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/grains models/items/grain sizes/items}
+\begin{itemize}[leftmargin=2em]\item {\bf default value}: -1.0
 \item {\bf type}: number
 \item {\bf description}: 
-\end{itemize}\section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/velocity models}
-\begin{itemize}[leftmargin=1em]\item {\bf description}: A list of velocity models.
+\end{itemize}]\item {\bf velocity models}: \section{(0) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf}
+\begin{itemize}[leftmargin=0em]\item {\bf description}: A list of velocity models.
 \item {\bf default value}: 
 \item {\bf type}: array
-\end{itemize}\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/velocity models/items}
+\end{itemize}\section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items}
 
-\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/velocity models/items/oneOf/1}
-\begin{itemize}[leftmargin=3em]\item {\bf type}: object
+\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1}
+\begin{itemize}[leftmargin=2em]\item {\bf type}: object
 \item {\bf description}: Uniform velocity model. Set the velocity to a constant value.
 \item {\bf additionalProperties}: false
 \item {\bf required}: [model, velocity]\end{itemize}
-\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/velocity models/items/oneOf/1/model}
-\begin{itemize}[leftmargin=4em]\item {\bf default value}: 
+\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/model}
+\begin{itemize}[leftmargin=3em]\item {\bf default value}: 
 \item {\bf type}: string
 \item {\bf description}: The name of the velocity model.
-\item {\bf enum}: [uniform raw]\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/velocity models/items/oneOf/1/operation}
-\begin{itemize}[leftmargin=4em]\item {\bf default value}: replace
+\item {\bf enum}: [uniform raw]\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/operation}
+\begin{itemize}[leftmargin=3em]\item {\bf default value}: replace
 \item {\bf type}: string
 \item {\bf description}: Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-\item {\bf enum}: [replace, add, subtract]\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/velocity models/items/oneOf/1/min depth}
-\begin{itemize}[leftmargin=4em]\item {\bf default value}: 0.0
+\item {\bf enum}: [replace, add, subtract]\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/min depth}
+\begin{itemize}[leftmargin=3em]\item {\bf default value}: 0.0
 \item {\bf type}: number
 \item {\bf description}: The depth in meters from which the velocity of this feature is present.
-\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/velocity models/items/oneOf/1/max depth}
-\begin{itemize}[leftmargin=4em]\item {\bf default value}: 1.7976931348623157e308
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/max depth}
+\begin{itemize}[leftmargin=3em]\item {\bf default value}: 1.7976931348623157e308
 \item {\bf type}: number
 \item {\bf description}: The depth in meters to which the velocity of this feature is present.
-\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/velocity models/items/oneOf/1/velocity}
-\begin{itemize}[leftmargin=4em]\item {\bf type}: array
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/velocity}
+\begin{itemize}[leftmargin=3em]\item {\bf type}: array
 \item {\bf minItems}: 3
 \item {\bf maxItems}: 3
 \item {\bf uniqueItems}: false
 \item {\bf description}: The velocity in meter per year
-\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/velocity models/items/oneOf/1/velocity/items}
-\begin{itemize}[leftmargin=5em]\item {\bf default value}: 0.0
+\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/velocity/items}
+\begin{itemize}[leftmargin=4em]\item {\bf default value}: 0.0
 \item {\bf type}: number
 \item {\bf description}: 
-\end{itemize}\section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/density models}
-\begin{itemize}[leftmargin=1em]\item {\bf description}: A list of density models.
+\end{itemize}\item {\bf density models}: \section{(0) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf}
+\begin{itemize}[leftmargin=0em]\item {\bf description}: A list of density models.
 \item {\bf default value}: 
 \item {\bf type}: array
-\end{itemize}\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/density models/items}
+\end{itemize}\section{(1) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items}
 
-\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/density models/items/oneOf/1}
-\begin{itemize}[leftmargin=3em]\item {\bf type}: object
-\item {\bf description}: Uniform density model. Set the density to a constant value.
+\section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1}
+\begin{itemize}[leftmargin=2em]\item {\bf type}: object
+\item {\bf description}: density object
 \item {\bf additionalProperties}: false
-\item {\bf required}: [model, densities]\end{itemize}
-\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/density models/items/oneOf/1/model}
-\begin{itemize}[leftmargin=4em]\item {\bf default value}: 
+\item {\bf required}: [model]\end{itemize}
+\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/model}
+\begin{itemize}[leftmargin=3em]\item {\bf default value}: 
 \item {\bf type}: string
 \item {\bf description}: The name of the density model.
-\item {\bf enum}: [uniform]\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/density models/items/oneOf/1/operation}
-\begin{itemize}[leftmargin=4em]\item {\bf default value}: replace
+\item {\bf enum}: [uniform]\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/operation}
+\begin{itemize}[leftmargin=3em]\item {\bf default value}: replace
 \item {\bf type}: string
 \item {\bf description}: Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-\item {\bf enum}: [replace, add, subtract, replace, replace defined only, add, subtract]\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/density models/items/oneOf/1/densities}
-\begin{itemize}[leftmargin=4em]\item {\bf type}: array
-\item {\bf minItems}: 0
-\item {\bf maxItems}: 4294967295
-\item {\bf uniqueItems}: false
-\item {\bf description}: list of compositional densities
-\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/density models/items/oneOf/1/densities/items}
-\begin{itemize}[leftmargin=5em]\item {\bf default value}: 3300.0
-\item {\bf type}: number
-\item {\bf description}: 
-\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/density models/items/oneOf/1/compositions}
-\begin{itemize}[leftmargin=4em]\item {\bf type}: array
+\item {\bf enum}: [replace, add, subtract, replace, replace defined only, add, subtract]\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/compositions}
+\begin{itemize}[leftmargin=3em]\item {\bf type}: array
 \item {\bf minItems}: 0
 \item {\bf maxItems}: 4294967295
 \item {\bf uniqueItems}: false
 \item {\bf description}: A list with the labels of the composition which are present there.
-\end{itemize}\subsection{(5) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/density models/items/oneOf/1/compositions/items}
-\begin{itemize}[leftmargin=5em]\item {\bf default value}: 0
+\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/compositions/items}
+\begin{itemize}[leftmargin=4em]\item {\bf default value}: 0
 \item {\bf type}: integer
 \item {\bf description}: 
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/min depth}
+\begin{itemize}[leftmargin=3em]\item {\bf default value}: 0.0
+\item {\bf type}: number
+\item {\bf description}: The depth in meters from which the temperature of this feature is present.
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/items/oneOf/1/max depth}
+\begin{itemize}[leftmargin=3em]\item {\bf default value}: 1.7976931348623157e308
+\item {\bf type}: number
+\item {\bf description}: The depth in meters to which the temperature of this feature is present.
 \end{itemize}\section{(0) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/oneOf}
 \begin{itemize}[leftmargin=0em]\item {\bf type}: object
 \item {\bf description}: Subducting slab object. Requires properties `model` and `coordinates`.
@@ -7845,24 +8104,14 @@
 
 \section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1}
 \begin{itemize}[leftmargin=2em]\item {\bf type}: object
-\item {\bf description}: Uniform density model. Set the density to a constant value.
+\item {\bf description}: composition object
 \item {\bf additionalProperties}: false
-\item {\bf required}: [model, densities]\end{itemize}
+\item {\bf required}: [model]\end{itemize}
 \subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/model}
 \begin{itemize}[leftmargin=3em]\item {\bf default value}: 
 \item {\bf type}: string
 \item {\bf description}: The name of the composition model.
-\item {\bf enum}: [uniform]\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/densities}
-\begin{itemize}[leftmargin=3em]\item {\bf type}: array
-\item {\bf minItems}: 0
-\item {\bf maxItems}: 4294967295
-\item {\bf uniqueItems}: false
-\item {\bf description}: list of compositional densities
-\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/densities/items}
-\begin{itemize}[leftmargin=4em]\item {\bf default value}: 3300.0
-\item {\bf type}: number
-\item {\bf description}: 
-\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/compositions}
+\item {\bf enum}: [uniform]\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/compositions}
 \begin{itemize}[leftmargin=3em]\item {\bf type}: array
 \item {\bf minItems}: 0
 \item {\bf maxItems}: 4294967295
@@ -7872,6 +8121,14 @@
 \begin{itemize}[leftmargin=4em]\item {\bf default value}: 0
 \item {\bf type}: integer
 \item {\bf description}: 
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/min distance slab top}
+\begin{itemize}[leftmargin=3em]\item {\bf default value}: 0.0
+\item {\bf type}: number
+\item {\bf description}: todo The depth in meters from which the composition of this feature is present.
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/max distance slab top}
+\begin{itemize}[leftmargin=3em]\item {\bf default value}: 1.7976931348623157e308
+\item {\bf type}: number
+\item {\bf description}: todo The depth in meters to which the composition of this feature is present.
 \end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/items/oneOf/min depth/oneOf/min depth/oneOf/min depth/oneOf/items/oneOf/1/operation}
 \begin{itemize}[leftmargin=3em]\item {\bf default value}: replace
 \item {\bf type}: string
@@ -8587,24 +8844,14 @@
 
 \section{(2) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/items/oneOf/1}
 \begin{itemize}[leftmargin=2em]\item {\bf type}: object
-\item {\bf description}: Uniform density model. Set the density to a constant value.
+\item {\bf description}: composition object
 \item {\bf additionalProperties}: false
-\item {\bf required}: [model, densities]\end{itemize}
+\item {\bf required}: [model]\end{itemize}
 \subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/items/oneOf/1/model}
 \begin{itemize}[leftmargin=3em]\item {\bf default value}: 
 \item {\bf type}: string
 \item {\bf description}: The name of the composition model.
-\item {\bf enum}: [uniform]\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/items/oneOf/1/densities}
-\begin{itemize}[leftmargin=3em]\item {\bf type}: array
-\item {\bf minItems}: 0
-\item {\bf maxItems}: 4294967295
-\item {\bf uniqueItems}: false
-\item {\bf description}: list of compositional densities
-\end{itemize}\subsection{(4) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/items/oneOf/1/densities/items}
-\begin{itemize}[leftmargin=4em]\item {\bf default value}: 3300.0
-\item {\bf type}: number
-\item {\bf description}: 
-\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/items/oneOf/1/compositions}
+\item {\bf enum}: [uniform]\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/items/oneOf/1/compositions}
 \begin{itemize}[leftmargin=3em]\item {\bf type}: array
 \item {\bf minItems}: 0
 \item {\bf maxItems}: 4294967295
@@ -8614,6 +8861,14 @@
 \begin{itemize}[leftmargin=4em]\item {\bf default value}: 0
 \item {\bf type}: integer
 \item {\bf description}: 
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/items/oneOf/1/min distance slab top}
+\begin{itemize}[leftmargin=3em]\item {\bf default value}: 0.0
+\item {\bf type}: number
+\item {\bf description}: todo The depth in meters from which the composition of this feature is present.
+\end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/items/oneOf/1/max distance slab top}
+\begin{itemize}[leftmargin=3em]\item {\bf default value}: 1.7976931348623157e308
+\item {\bf type}: number
+\item {\bf description}: todo The depth in meters to which the composition of this feature is present.
 \end{itemize}\subsection{(3) /oneOf/oneOf/oneOf/oneOf/oneOf/oneOf/min depth/oneOf/items/oneOf/items/oneOf/1/operation}
 \begin{itemize}[leftmargin=3em]\item {\bf default value}: replace
 \item {\bf type}: string
@@ -9386,24 +9641,14 @@
 
 \section{(2) /items/oneOf/1}
 \begin{itemize}[leftmargin=2em]\item {\bf type}: object
-\item {\bf description}: Uniform density model. Set the density to a constant value.
+\item {\bf description}: composition object
 \item {\bf additionalProperties}: false
-\item {\bf required}: [model, densities]\end{itemize}
+\item {\bf required}: [model]\end{itemize}
 \subsection{(3) /items/oneOf/1/model}
 \begin{itemize}[leftmargin=3em]\item {\bf default value}: 
 \item {\bf type}: string
 \item {\bf description}: The name of the composition model.
-\item {\bf enum}: [uniform]\end{itemize}\subsection{(3) /items/oneOf/1/densities}
-\begin{itemize}[leftmargin=3em]\item {\bf type}: array
-\item {\bf minItems}: 0
-\item {\bf maxItems}: 4294967295
-\item {\bf uniqueItems}: false
-\item {\bf description}: list of compositional densities
-\end{itemize}\subsection{(4) /items/oneOf/1/densities/items}
-\begin{itemize}[leftmargin=4em]\item {\bf default value}: 3300.0
-\item {\bf type}: number
-\item {\bf description}: 
-\end{itemize}\subsection{(3) /items/oneOf/1/compositions}
+\item {\bf enum}: [uniform]\end{itemize}\subsection{(3) /items/oneOf/1/compositions}
 \begin{itemize}[leftmargin=3em]\item {\bf type}: array
 \item {\bf minItems}: 0
 \item {\bf maxItems}: 4294967295
@@ -9413,6 +9658,14 @@
 \begin{itemize}[leftmargin=4em]\item {\bf default value}: 0
 \item {\bf type}: integer
 \item {\bf description}: 
+\end{itemize}\subsection{(3) /items/oneOf/1/min distance slab top}
+\begin{itemize}[leftmargin=3em]\item {\bf default value}: 0.0
+\item {\bf type}: number
+\item {\bf description}: todo The depth in meters from which the composition of this feature is present.
+\end{itemize}\subsection{(3) /items/oneOf/1/max distance slab top}
+\begin{itemize}[leftmargin=3em]\item {\bf default value}: 1.7976931348623157e308
+\item {\bf type}: number
+\item {\bf description}: todo The depth in meters to which the composition of this feature is present.
 \end{itemize}\subsection{(3) /items/oneOf/1/operation}
 \begin{itemize}[leftmargin=3em]\item {\bf default value}: replace
 \item {\bf type}: string
@@ -10128,24 +10381,14 @@
 
 \section{(2) /items/oneOf/1}
 \begin{itemize}[leftmargin=2em]\item {\bf type}: object
-\item {\bf description}: Uniform density model. Set the density to a constant value.
+\item {\bf description}: composition object
 \item {\bf additionalProperties}: false
-\item {\bf required}: [model, densities]\end{itemize}
+\item {\bf required}: [model]\end{itemize}
 \subsection{(3) /items/oneOf/1/model}
 \begin{itemize}[leftmargin=3em]\item {\bf default value}: 
 \item {\bf type}: string
 \item {\bf description}: The name of the composition model.
-\item {\bf enum}: [uniform]\end{itemize}\subsection{(3) /items/oneOf/1/densities}
-\begin{itemize}[leftmargin=3em]\item {\bf type}: array
-\item {\bf minItems}: 0
-\item {\bf maxItems}: 4294967295
-\item {\bf uniqueItems}: false
-\item {\bf description}: list of compositional densities
-\end{itemize}\subsection{(4) /items/oneOf/1/densities/items}
-\begin{itemize}[leftmargin=4em]\item {\bf default value}: 3300.0
-\item {\bf type}: number
-\item {\bf description}: 
-\end{itemize}\subsection{(3) /items/oneOf/1/compositions}
+\item {\bf enum}: [uniform]\end{itemize}\subsection{(3) /items/oneOf/1/compositions}
 \begin{itemize}[leftmargin=3em]\item {\bf type}: array
 \item {\bf minItems}: 0
 \item {\bf maxItems}: 4294967295
@@ -10155,6 +10398,14 @@
 \begin{itemize}[leftmargin=4em]\item {\bf default value}: 0
 \item {\bf type}: integer
 \item {\bf description}: 
+\end{itemize}\subsection{(3) /items/oneOf/1/min distance slab top}
+\begin{itemize}[leftmargin=3em]\item {\bf default value}: 0.0
+\item {\bf type}: number
+\item {\bf description}: todo The depth in meters from which the composition of this feature is present.
+\end{itemize}\subsection{(3) /items/oneOf/1/max distance slab top}
+\begin{itemize}[leftmargin=3em]\item {\bf default value}: 1.7976931348623157e308
+\item {\bf type}: number
+\item {\bf description}: todo The depth in meters to which the composition of this feature is present.
 \end{itemize}\subsection{(3) /items/oneOf/1/operation}
 \begin{itemize}[leftmargin=3em]\item {\bf default value}: replace
 \item {\bf type}: string
@@ -10171,4 +10422,19 @@
 \begin{itemize}[leftmargin=0em]\item {\bf default value}: 3300.0
 \item {\bf type}: number
 \item {\bf description}: Density for the background material without any compositions.
+\end{itemize}\item {\bf compensation depth}: \section{(0) /}
+\begin{itemize}[leftmargin=0em]\item {\bf default value}: 250000.0
+\item {\bf type}: number
+\item {\bf description}: Compensation depth for isostatic topography.
+\end{itemize}\item {\bf number of integration points}: \section{(0) /}
+\begin{itemize}[leftmargin=0em]\item {\bf default value}: 100
+\item {\bf type}: integer
+\item {\bf description}: Number of integration points for calculating the compensation pressure.
+\end{itemize}\item {\bf Reference profile point}: \section{(0) /}
+\begin{itemize}[leftmargin=0em]\item {\bf type}: array
+\item {\bf minItems}: 2
+\item {\bf maxItems}: 2
+\item {\bf description}: This is an array of two points along where the cross section is taken
+\end{itemize}\section{(1) /items}
+\begin{itemize}[leftmargin=1em]\item {\bf type}: number
 \end{itemize}

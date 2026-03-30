@@ -17757,25 +17757,181 @@
 - **default value**:
 - **type**:string
 - **description**:The name of the grains model.
-- **enum**:[random uniform distribution deflected]
+- **enum**:[random uniform distribution]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth
 :open:
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth
 
+- **description**:The depth in meters from which the composition of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth/oneOf
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth/oneOf/1
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth_oneOf_1
+
 - **default value**:0.0
 - **type**:number
-- **description**:The depth in meters from which the grains of this feature are present.
+- **description**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth/oneOf/2
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth/oneOf/2/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth/oneOf/2/items/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/1
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:0.0
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth
 :open:
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth
 
+- **description**:The depth in meters to which the composition of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth/oneOf
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth/oneOf/1
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth_oneOf_1
+
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **description**:The depth in meters to which the grains of this feature are present.
+- **description**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth/oneOf/2
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth/oneOf/2/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth/oneOf/2/items/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/1
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:1.7976931348623157e308
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/compositions
@@ -17805,7 +17961,7 @@
 - **default value**:replace
 - **type**:string
 - **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace, multiply]
+- **enum**:[replace]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/grain sizes
@@ -17848,99 +18004,6 @@
 
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/deflections
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_deflections
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list of the deflections of all of the grains in each composition between 0 and 1.
-:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/deflections/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_deflections_items
-
-- **default value**:1.0
-- **type**:number
-- **description**:
-:::::::::::::::
-
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/basis rotation matrices
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_basis-rotation-matrices
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the rotation matrices of the grains which are present there for each compositions.
-:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/basis rotation matrices/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_basis-rotation-matrices_items
-
-- **type**:array
-- **minItems**:3
-- **maxItems**:3
-- **uniqueItems**:false
-- **description**:
-::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/basis rotation matrices/items/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_basis-rotation-matrices_items_items
-
-- **type**:array
-- **minItems**:3
-- **maxItems**:3
-- **uniqueItems**:false
-- **description**:
-:::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/basis rotation matrices/items/items/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_basis-rotation-matrices_items_items_items
-
-- **default value**:0.0
-- **type**:number
-- **description**:
-:::::::::::::
-
-::::::::::::::
-
-:::::::::::::::
-
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/basis Euler angles z-x-z
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_basis-Euler-angles-z-x-z
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
-:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/basis Euler angles z-x-z/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_basis-Euler-angles-z-x-z_items
-
-- **type**:array
-- **minItems**:3
-- **maxItems**:3
-- **uniqueItems**:false
-- **description**:
-::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/basis Euler angles z-x-z/items/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_basis-Euler-angles-z-x-z_items_items
-
-- **default value**:0.0
-- **type**:number
-- **description**:
-::::::::::::::
-
-:::::::::::::::
-
-::::::::::::::::
-
 
 
 :::::::::::::::::
@@ -17950,7 +18013,7 @@
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_2
 
 - **type**:object
-- **description**:Uniform grains model. All grains start exactly the same.
+- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -17961,7 +18024,7 @@
 - **default value**:
 - **type**:string
 - **description**:The name of the grains model.
-- **enum**:[uniform]
+- **enum**:[random uniform distribution deflected]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/min depth
@@ -18002,79 +18065,6 @@
 
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/rotation matrices
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_rotation-matrices
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the rotation matrices of the grains which are present there for each compositions.
-:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/rotation matrices/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_rotation-matrices_items
-
-- **type**:array
-- **minItems**:3
-- **maxItems**:3
-- **uniqueItems**:false
-- **description**:
-::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/rotation matrices/items/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_rotation-matrices_items_items
-
-- **type**:array
-- **minItems**:3
-- **maxItems**:3
-- **uniqueItems**:false
-- **description**:
-:::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/rotation matrices/items/items/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_rotation-matrices_items_items_items
-
-- **default value**:0.0
-- **type**:number
-- **description**:
-:::::::::::::
-
-::::::::::::::
-
-:::::::::::::::
-
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/Euler angles z-x-z
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_Euler-angles-z-x-z
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
-:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/Euler angles z-x-z/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_Euler-angles-z-x-z_items
-
-- **type**:array
-- **minItems**:3
-- **maxItems**:3
-- **uniqueItems**:false
-- **description**:
-::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/Euler angles z-x-z/items/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_Euler-angles-z-x-z_items_items
-
-- **default value**:0.0
-- **type**:number
-- **description**:
-::::::::::::::
-
-:::::::::::::::
-
-::::::::::::::::
-
 ::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/orientation operation
 :open:
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_2_orientation-operation
@@ -18093,10 +18083,287 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
 :::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/grain sizes/items
 :open:
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_2_grain-sizes_items
+
+- **default value**:1.0
+- **type**:number
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/normalize grain sizes
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_normalize-grain-sizes
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/normalize grain sizes/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_normalize-grain-sizes_items
+
+- **default value**:true
+- **type**:boolean
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/deflections
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_deflections
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of the deflections of all of the grains in each composition between 0 and 1.
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/deflections/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_deflections_items
+
+- **default value**:1.0
+- **type**:number
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/basis rotation matrices
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_basis-rotation-matrices
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the rotation matrices of the grains which are present there for each compositions.
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/basis rotation matrices/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_basis-rotation-matrices_items
+
+- **type**:array
+- **minItems**:3
+- **maxItems**:3
+- **uniqueItems**:false
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/basis rotation matrices/items/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_basis-rotation-matrices_items_items
+
+- **type**:array
+- **minItems**:3
+- **maxItems**:3
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/basis rotation matrices/items/items/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_basis-rotation-matrices_items_items_items
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+:::::::::::::
+
+::::::::::::::
+
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/basis Euler angles z-x-z
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_basis-Euler-angles-z-x-z
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/basis Euler angles z-x-z/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_basis-Euler-angles-z-x-z_items
+
+- **type**:array
+- **minItems**:3
+- **maxItems**:3
+- **uniqueItems**:false
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/basis Euler angles z-x-z/items/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_basis-Euler-angles-z-x-z_items_items
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+::::::::::::::
+
+:::::::::::::::
+
+::::::::::::::::
+
+
+
+:::::::::::::::::
+
+:::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3
+
+- **type**:object
+- **description**:Uniform grains model. All grains start exactly the same.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/model
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the grains model.
+- **enum**:[uniform]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/min depth
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_min-depth
+
+- **default value**:0.0
+- **type**:number
+- **description**:The depth in meters from which the grains of this feature are present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/max depth
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_max-depth
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The depth in meters to which the grains of this feature are present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/compositions
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the integer labels of the composition which are present there.
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/compositions/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/rotation matrices
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_rotation-matrices
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the rotation matrices of the grains which are present there for each compositions.
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/rotation matrices/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_rotation-matrices_items
+
+- **type**:array
+- **minItems**:3
+- **maxItems**:3
+- **uniqueItems**:false
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/rotation matrices/items/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_rotation-matrices_items_items
+
+- **type**:array
+- **minItems**:3
+- **maxItems**:3
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/rotation matrices/items/items/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_rotation-matrices_items_items_items
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+:::::::::::::
+
+::::::::::::::
+
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/Euler angles z-x-z
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_Euler-angles-z-x-z
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/Euler angles z-x-z/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_Euler-angles-z-x-z_items
+
+- **type**:array
+- **minItems**:3
+- **maxItems**:3
+- **uniqueItems**:false
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/Euler angles z-x-z/items/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_Euler-angles-z-x-z_items_items
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+::::::::::::::
+
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/orientation operation
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_orientation-operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **enum**:[replace, multiply]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/grain sizes
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_grain-sizes
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/grain sizes/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_grain-sizes_items
 
 - **default value**:-1.0
 - **type**:number
