@@ -55,7 +55,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:The material properties of the composition. This stores the user-defined index (required), linked to composition properties (optional) including name and reference density.
+- **description**:The material properties of the composition. This stores user-defined indices (required), linked to composition properties (optional) including name and reference density.
 :::::::::::::::::::::::{dropdown} /composition properties/items
 :name: closed_composition-properties_items
 
@@ -3775,9 +3775,9 @@
 :name: closed_features_items_oneOf_1_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:density object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_1_density-models_items_oneOf_1_model
@@ -3795,24 +3795,6 @@
 - **type**:string
 - **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositional densities
-:::::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::::::
-
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/compositions
@@ -4955,9 +4937,9 @@
 :name: closed_features_items_oneOf_2_segments_items_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:density object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_2_segments_items_density-models_items_oneOf_1_model
@@ -4966,24 +4948,6 @@
 - **type**:string
 - **description**:The name of the density model.
 - **enum**:[uniform]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_2_segments_items_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositional densities
-:::::::::::::{dropdown} /features/items/oneOf/2/segments/items/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_2_segments_items_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::::
-
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/density models/items/oneOf/1/compositions
@@ -5976,9 +5940,9 @@
 :name: closed_features_items_oneOf_2_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:density object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_2_density-models_items_oneOf_1_model
@@ -5987,24 +5951,6 @@
 - **type**:string
 - **description**:The name of the density model.
 - **enum**:[uniform]
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/2/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_2_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositional densities
-:::::::::::::::{dropdown} /features/items/oneOf/2/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_2_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::::::
-
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/density models/items/oneOf/1/compositions
@@ -7101,9 +7047,9 @@
 :name: closed_features_items_oneOf_2_sections_items_segments_items_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:density object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_2_sections_items_segments_items_density-models_items_oneOf_1_model
@@ -7112,24 +7058,6 @@
 - **type**:string
 - **description**:The name of the density model.
 - **enum**:[uniform]
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_2_sections_items_segments_items_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositional densities
-:::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_2_sections_items_segments_items_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::
-
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/density models/items/oneOf/1/compositions
@@ -8122,9 +8050,9 @@
 :name: closed_features_items_oneOf_2_sections_items_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:density object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_2_sections_items_density-models_items_oneOf_1_model
@@ -8133,24 +8061,6 @@
 - **type**:string
 - **description**:The name of the density model.
 - **enum**:[uniform]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_2_sections_items_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositional densities
-:::::::::::::{dropdown} /features/items/oneOf/2/sections/items/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_2_sections_items_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::::
-
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/density models/items/oneOf/1/compositions
@@ -10585,9 +10495,9 @@
 :name: closed_features_items_oneOf_3_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:density object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_3_density-models_items_oneOf_1_model
@@ -10605,24 +10515,6 @@
 - **type**:string
 - **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositional densities
-:::::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::::::
-
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/compositions
@@ -14787,9 +14679,9 @@
 :name: closed_features_items_oneOf_4_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:density object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_4_density-models_items_oneOf_1_model
@@ -14807,24 +14699,6 @@
 - **type**:string
 - **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositionalk densities
-:::::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::::::
-
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/compositions
@@ -15712,9 +15586,9 @@
 :name: closed_features_items_oneOf_5_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:density object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_5_density-models_items_oneOf_1_model
@@ -15732,24 +15606,6 @@
 - **type**:string
 - **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_5_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositional densities
-:::::::::::::::{dropdown} /features/items/oneOf/5/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_5_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::::::
-
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/density models/items/oneOf/1/compositions
@@ -17397,9 +17253,9 @@
 :name: closed_features_items_oneOf_6_segments_items_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:composition object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_6_segments_items_density-models_items_oneOf_1_model
@@ -17408,24 +17264,6 @@
 - **type**:string
 - **description**:The name of the composition model.
 - **enum**:[uniform]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_6_segments_items_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositional densities
-:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_6_segments_items_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::::
-
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/density models/items/oneOf/1/compositions
@@ -18923,9 +18761,9 @@
 :name: closed_features_items_oneOf_6_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:composition object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::::::{dropdown} /features/items/oneOf/6/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_6_density-models_items_oneOf_1_model
@@ -18934,24 +18772,6 @@
 - **type**:string
 - **description**:The name of the composition model.
 - **enum**:[uniform]
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/6/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_6_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositional densities
-:::::::::::::::{dropdown} /features/items/oneOf/6/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_6_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::::::
-
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/6/density models/items/oneOf/1/compositions
@@ -20553,9 +20373,9 @@
 :name: closed_features_items_oneOf_6_sections_items_segments_items_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:composition object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_6_sections_items_segments_items_density-models_items_oneOf_1_model
@@ -20564,24 +20384,6 @@
 - **type**:string
 - **description**:The name of the composition model.
 - **enum**:[uniform]
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_6_sections_items_segments_items_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositional densities
-:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_6_sections_items_segments_items_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::
-
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/density models/items/oneOf/1/compositions
@@ -22079,9 +21881,9 @@
 :name: closed_features_items_oneOf_6_sections_items_density-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform density model. Set the density to a constant value.
+- **description**:composition object
 - **additionalProperties**:false
-- **required**:[model, densities]
+- **required**:[model]
 
 ::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/density models/items/oneOf/1/model
 :name: closed_features_items_oneOf_6_sections_items_density-models_items_oneOf_1_model
@@ -22090,24 +21892,6 @@
 - **type**:string
 - **description**:The name of the composition model.
 - **enum**:[uniform]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/density models/items/oneOf/1/densities
-:name: closed_features_items_oneOf_6_sections_items_density-models_items_oneOf_1_densities
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:list of compositional densities
-:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/density models/items/oneOf/1/densities/items
-:name: closed_features_items_oneOf_6_sections_items_density-models_items_oneOf_1_densities_items
-
-- **default value**:3300.0
-- **type**:number
-- **description**:
-:::::::::::::
-
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/density models/items/oneOf/1/compositions

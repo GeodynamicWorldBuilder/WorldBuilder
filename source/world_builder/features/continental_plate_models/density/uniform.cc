@@ -54,8 +54,6 @@ namespace WorldBuilder
         Uniform::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
           // Document plugin and require entries if needed.
-          // Add `densities` to the required parameters.
-          // Declare entries of this plugin
           prm.declare_entry("compositions", Types::Array(Types::UnsignedInt(),0),
                             "A list with the labels of the composition which are present there.");
 
@@ -93,14 +91,14 @@ namespace WorldBuilder
                 {
                   if (world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0] > 0.0)
                   {
-                    const double density = this->world->composition_properties[i].reference_density;
+                    const double density = this->world->composition_properties[compositions[i]].reference_density;
                     compositional_density += world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0] * density;
                     sum_compositions += world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0];
                   }
                 }
 
               // Add in the background_density component.
-              compositional_density += this->world->background_density* (1 - sum_compositions);
+              compositional_density += this->world->background_density * (1 - sum_compositions);
               return apply_operation(operation,density_,compositional_density);
             }
 

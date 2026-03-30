@@ -40,7 +40,6 @@ namespace WorldBuilder
       {
         Uniform::Uniform(WorldBuilder::World *world_)
           :
-          densities(0,NaN::DSNAN),
           operation(Operations::REPLACE)
         {
           this->world = world_;
@@ -54,13 +53,6 @@ namespace WorldBuilder
         Uniform::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
           // Document plugin and require entries if needed.
-          // Add `densities` to the required parameters.
-          prm.declare_entry("", Types::Object({"densities"}),
-                            "Uniform density model. Set the density to a constant value.");
-
-          prm.declare_entry("densities", Types::Array(Types::Double(3300)),
-                            "list of compositional densities");
-
           prm.declare_entry("compositions", Types::Array(Types::UnsignedInt(),0),
                             "A list with the labels of the composition which are present there.");
 
@@ -76,7 +68,6 @@ namespace WorldBuilder
         {
 
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
-          densities = prm.get_vector<double>("densities");
           compositions = prm.get_vector<unsigned int>("compositions");
         }
 
@@ -86,26 +77,31 @@ namespace WorldBuilder
                              const double depth,
                              const double  /*gravity*/,
                              double density_,
-                             const double /*feature_min_depth*/,
-                             const double /*feature_max_depth*/) const
+                             const double feature_min_depth,
+                             const double feature_max_depth) const
         {
           // If the composition is greater than 0, average it into the density.
           // By calling the world property for composition, fractions will be included.
-          double compositional_density = 0.0;
-          double sum_compositions = 0.0;
-          for (unsigned int i = 0; i < compositions.size(); ++i)
+          if (depth >= feature_min_depth && depth <= feature_max_depth)
             {
-              if (world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0] > 0.0)
-              {
-                compositional_density += world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0] * densities[i];
-                sum_compositions += world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0];
-              }
+              double compositional_density = 0.0;
+              double sum_compositions = 0.0;
+              for (unsigned int i = 0; i < compositions.size(); ++i)
+                {
+                  if (world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0] > 0.0)
+                  {
+                    const double density = this->world->composition_properties[compositions[i]].reference_density;
+                    compositional_density += world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0] * density;
+                    sum_compositions += world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0];
+                  }
+                }
+
+              // Add in the background_density component.
+              compositional_density += this->world->background_density * (1 - sum_compositions);
+              return apply_operation(operation,density_,compositional_density);
             }
 
-          // Add in the background_density component.
-          compositional_density += this->world->background_density* (1 - sum_compositions);
-
-          return apply_operation(operation,density_,compositional_density);
+          return density_;
         }
 
         WB_REGISTER_FEATURE_MANTLE_LAYER_DENSITY_MODEL(Uniform, uniform)
