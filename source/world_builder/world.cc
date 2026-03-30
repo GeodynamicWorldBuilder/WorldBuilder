@@ -579,6 +579,9 @@ namespace WorldBuilder
             case 7: // density
             {
               entry_in_output.emplace_back(output.size());
+
+              // TODO: If a mantle adiabatic temperature is used then the background
+              // density should account for it.
               output.emplace_back(background_density);
               properties_local.emplace_back(properties[i_property]);
               break;

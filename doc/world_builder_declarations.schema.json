@@ -2515,11 +2515,10 @@
                                     "oneOf": [
                                         {
                                             "type": "object",
-                                            "description": "Uniform density model. Set the density to a constant value.",
+                                            "description": "density object",
                                             "additionalProperties": false,
                                             "required": [
-                                                "model",
-                                                "densities"
+                                                "model"
                                             ],
                                             "properties": {
                                                 "model": {
@@ -2544,18 +2543,6 @@
                                                         "subtract"
                                                     ]
                                                 },
-                                                "densities": {
-                                                    "type": "array",
-                                                    "minItems": 0,
-                                                    "maxItems": 4294967295,
-                                                    "uniqueItems": false,
-                                                    "description": "list of compositional densities",
-                                                    "items": {
-                                                        "default value": 3300.0,
-                                                        "type": "number",
-                                                        "description": ""
-                                                    }
-                                                },
                                                 "compositions": {
                                                     "type": "array",
                                                     "minItems": 0,
@@ -2567,6 +2554,106 @@
                                                         "type": "integer",
                                                         "description": ""
                                                     }
+                                                },
+                                                "min depth": {
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 0.0,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 0.0
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
+                                                        }
+                                                    ]
+                                                },
+                                                "max depth": {
+                                                    "description": "The depth in meters to which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 1.7976931348623157e308,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 1.7976931348623157e308
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
+                                                        }
+                                                    ]
                                                 }
                                             }
                                         }
@@ -3374,11 +3461,10 @@
                                                 "oneOf": [
                                                     {
                                                         "type": "object",
-                                                        "description": "Uniform density model. Set the density to a constant value.",
+                                                        "description": "density object",
                                                         "additionalProperties": false,
                                                         "required": [
-                                                            "model",
-                                                            "densities"
+                                                            "model"
                                                         ],
                                                         "properties": {
                                                             "model": {
@@ -3388,18 +3474,6 @@
                                                                 "enum": [
                                                                     "uniform"
                                                                 ]
-                                                            },
-                                                            "densities": {
-                                                                "type": "array",
-                                                                "minItems": 0,
-                                                                "maxItems": 4294967295,
-                                                                "uniqueItems": false,
-                                                                "description": "list of compositional densities",
-                                                                "items": {
-                                                                    "default value": 3300.0,
-                                                                    "type": "number",
-                                                                    "description": ""
-                                                                }
                                                             },
                                                             "compositions": {
                                                                 "type": "array",
@@ -3412,6 +3486,16 @@
                                                                     "type": "integer",
                                                                     "description": ""
                                                                 }
+                                                            },
+                                                            "min distance fault center": {
+                                                                "default value": 0.0,
+                                                                "type": "number",
+                                                                "description": "The distance in meters from which the composition of this feature is present."
+                                                            },
+                                                            "max distance fault center": {
+                                                                "default value": 1.7976931348623157e308,
+                                                                "type": "number",
+                                                                "description": "The distance in meters to which the composition of this feature is present."
                                                             },
                                                             "operation": {
                                                                 "default value": "replace",
@@ -4122,11 +4206,10 @@
                                     "oneOf": [
                                         {
                                             "type": "object",
-                                            "description": "Uniform density model. Set the density to a constant value.",
+                                            "description": "density object",
                                             "additionalProperties": false,
                                             "required": [
-                                                "model",
-                                                "densities"
+                                                "model"
                                             ],
                                             "properties": {
                                                 "model": {
@@ -4136,18 +4219,6 @@
                                                     "enum": [
                                                         "uniform"
                                                     ]
-                                                },
-                                                "densities": {
-                                                    "type": "array",
-                                                    "minItems": 0,
-                                                    "maxItems": 4294967295,
-                                                    "uniqueItems": false,
-                                                    "description": "list of compositional densities",
-                                                    "items": {
-                                                        "default value": 3300.0,
-                                                        "type": "number",
-                                                        "description": ""
-                                                    }
                                                 },
                                                 "compositions": {
                                                     "type": "array",
@@ -4160,6 +4231,16 @@
                                                         "type": "integer",
                                                         "description": ""
                                                     }
+                                                },
+                                                "min distance fault center": {
+                                                    "default value": 0.0,
+                                                    "type": "number",
+                                                    "description": "The distance in meters from which the composition of this feature is present."
+                                                },
+                                                "max distance fault center": {
+                                                    "default value": 1.7976931348623157e308,
+                                                    "type": "number",
+                                                    "description": "The distance in meters to which the composition of this feature is present."
                                                 },
                                                 "operation": {
                                                     "default value": "replace",
@@ -4940,11 +5021,10 @@
                                                             "oneOf": [
                                                                 {
                                                                     "type": "object",
-                                                                    "description": "Uniform density model. Set the density to a constant value.",
+                                                                    "description": "density object",
                                                                     "additionalProperties": false,
                                                                     "required": [
-                                                                        "model",
-                                                                        "densities"
+                                                                        "model"
                                                                     ],
                                                                     "properties": {
                                                                         "model": {
@@ -4954,18 +5034,6 @@
                                                                             "enum": [
                                                                                 "uniform"
                                                                             ]
-                                                                        },
-                                                                        "densities": {
-                                                                            "type": "array",
-                                                                            "minItems": 0,
-                                                                            "maxItems": 4294967295,
-                                                                            "uniqueItems": false,
-                                                                            "description": "list of compositional densities",
-                                                                            "items": {
-                                                                                "default value": 3300.0,
-                                                                                "type": "number",
-                                                                                "description": ""
-                                                                            }
                                                                         },
                                                                         "compositions": {
                                                                             "type": "array",
@@ -4978,6 +5046,16 @@
                                                                                 "type": "integer",
                                                                                 "description": ""
                                                                             }
+                                                                        },
+                                                                        "min distance fault center": {
+                                                                            "default value": 0.0,
+                                                                            "type": "number",
+                                                                            "description": "The distance in meters from which the composition of this feature is present."
+                                                                        },
+                                                                        "max distance fault center": {
+                                                                            "default value": 1.7976931348623157e308,
+                                                                            "type": "number",
+                                                                            "description": "The distance in meters to which the composition of this feature is present."
                                                                         },
                                                                         "operation": {
                                                                             "default value": "replace",
@@ -5688,11 +5766,10 @@
                                                 "oneOf": [
                                                     {
                                                         "type": "object",
-                                                        "description": "Uniform density model. Set the density to a constant value.",
+                                                        "description": "density object",
                                                         "additionalProperties": false,
                                                         "required": [
-                                                            "model",
-                                                            "densities"
+                                                            "model"
                                                         ],
                                                         "properties": {
                                                             "model": {
@@ -5702,18 +5779,6 @@
                                                                 "enum": [
                                                                     "uniform"
                                                                 ]
-                                                            },
-                                                            "densities": {
-                                                                "type": "array",
-                                                                "minItems": 0,
-                                                                "maxItems": 4294967295,
-                                                                "uniqueItems": false,
-                                                                "description": "list of compositional densities",
-                                                                "items": {
-                                                                    "default value": 3300.0,
-                                                                    "type": "number",
-                                                                    "description": ""
-                                                                }
                                                             },
                                                             "compositions": {
                                                                 "type": "array",
@@ -5726,6 +5791,16 @@
                                                                     "type": "integer",
                                                                     "description": ""
                                                                 }
+                                                            },
+                                                            "min distance fault center": {
+                                                                "default value": 0.0,
+                                                                "type": "number",
+                                                                "description": "The distance in meters from which the composition of this feature is present."
+                                                            },
+                                                            "max distance fault center": {
+                                                                "default value": 1.7976931348623157e308,
+                                                                "type": "number",
+                                                                "description": "The distance in meters to which the composition of this feature is present."
                                                             },
                                                             "operation": {
                                                                 "default value": "replace",
@@ -7290,11 +7365,10 @@
                                     "oneOf": [
                                         {
                                             "type": "object",
-                                            "description": "Uniform density model. Set the density to a constant value.",
+                                            "description": "density object",
                                             "additionalProperties": false,
                                             "required": [
-                                                "model",
-                                                "densities"
+                                                "model"
                                             ],
                                             "properties": {
                                                 "model": {
@@ -7319,18 +7393,6 @@
                                                         "subtract"
                                                     ]
                                                 },
-                                                "densities": {
-                                                    "type": "array",
-                                                    "minItems": 0,
-                                                    "maxItems": 4294967295,
-                                                    "uniqueItems": false,
-                                                    "description": "list of compositional densities",
-                                                    "items": {
-                                                        "default value": 3300.0,
-                                                        "type": "number",
-                                                        "description": ""
-                                                    }
-                                                },
                                                 "compositions": {
                                                     "type": "array",
                                                     "minItems": 0,
@@ -7342,6 +7404,106 @@
                                                         "type": "integer",
                                                         "description": ""
                                                     }
+                                                },
+                                                "min depth": {
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 0.0,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 0.0
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
+                                                        }
+                                                    ]
+                                                },
+                                                "max depth": {
+                                                    "description": "The depth in meters to which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 1.7976931348623157e308,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 1.7976931348623157e308
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
+                                                        }
+                                                    ]
                                                 }
                                             }
                                         }
@@ -10011,11 +10173,10 @@
                                     "oneOf": [
                                         {
                                             "type": "object",
-                                            "description": "Uniform density model. Set the density to a constant value.",
+                                            "description": "density object",
                                             "additionalProperties": false,
                                             "required": [
-                                                "model",
-                                                "densities"
+                                                "model"
                                             ],
                                             "properties": {
                                                 "model": {
@@ -10040,18 +10201,6 @@
                                                         "subtract"
                                                     ]
                                                 },
-                                                "densities": {
-                                                    "type": "array",
-                                                    "minItems": 0,
-                                                    "maxItems": 4294967295,
-                                                    "uniqueItems": false,
-                                                    "description": "list of compositionalk densities",
-                                                    "items": {
-                                                        "default value": 3300.0,
-                                                        "type": "number",
-                                                        "description": ""
-                                                    }
-                                                },
                                                 "compositions": {
                                                     "type": "array",
                                                     "minItems": 0,
@@ -10063,6 +10212,106 @@
                                                         "type": "integer",
                                                         "description": ""
                                                     }
+                                                },
+                                                "min depth": {
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 0.0,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 0.0
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
+                                                        }
+                                                    ]
+                                                },
+                                                "max depth": {
+                                                    "description": "The depth in meters to which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 1.7976931348623157e308,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 1.7976931348623157e308
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
+                                                        }
+                                                    ]
                                                 }
                                             }
                                         }
@@ -10682,11 +10931,10 @@
                                     "oneOf": [
                                         {
                                             "type": "object",
-                                            "description": "Uniform density model. Set the density to a constant value.",
+                                            "description": "density object",
                                             "additionalProperties": false,
                                             "required": [
-                                                "model",
-                                                "densities"
+                                                "model"
                                             ],
                                             "properties": {
                                                 "model": {
@@ -10711,18 +10959,6 @@
                                                         "subtract"
                                                     ]
                                                 },
-                                                "densities": {
-                                                    "type": "array",
-                                                    "minItems": 0,
-                                                    "maxItems": 4294967295,
-                                                    "uniqueItems": false,
-                                                    "description": "list of compositional densities",
-                                                    "items": {
-                                                        "default value": 3300.0,
-                                                        "type": "number",
-                                                        "description": ""
-                                                    }
-                                                },
                                                 "compositions": {
                                                     "type": "array",
                                                     "minItems": 0,
@@ -10734,6 +10970,16 @@
                                                         "type": "integer",
                                                         "description": ""
                                                     }
+                                                },
+                                                "min depth": {
+                                                    "default value": 0.0,
+                                                    "type": "number",
+                                                    "description": "The depth in meters from which the temperature of this feature is present."
+                                                },
+                                                "max depth": {
+                                                    "default value": 1.7976931348623157e308,
+                                                    "type": "number",
+                                                    "description": "The depth in meters to which the temperature of this feature is present."
                                                 }
                                             }
                                         }
@@ -11889,11 +12135,10 @@
                                                 "oneOf": [
                                                     {
                                                         "type": "object",
-                                                        "description": "Uniform density model. Set the density to a constant value.",
+                                                        "description": "composition object",
                                                         "additionalProperties": false,
                                                         "required": [
-                                                            "model",
-                                                            "densities"
+                                                            "model"
                                                         ],
                                                         "properties": {
                                                             "model": {
@@ -11903,18 +12148,6 @@
                                                                 "enum": [
                                                                     "uniform"
                                                                 ]
-                                                            },
-                                                            "densities": {
-                                                                "type": "array",
-                                                                "minItems": 0,
-                                                                "maxItems": 4294967295,
-                                                                "uniqueItems": false,
-                                                                "description": "list of compositional densities",
-                                                                "items": {
-                                                                    "default value": 3300.0,
-                                                                    "type": "number",
-                                                                    "description": ""
-                                                                }
                                                             },
                                                             "compositions": {
                                                                 "type": "array",
@@ -11927,6 +12160,16 @@
                                                                     "type": "integer",
                                                                     "description": ""
                                                                 }
+                                                            },
+                                                            "min distance slab top": {
+                                                                "default value": 0.0,
+                                                                "type": "number",
+                                                                "description": "todo The depth in meters from which the composition of this feature is present."
+                                                            },
+                                                            "max distance slab top": {
+                                                                "default value": 1.7976931348623157e308,
+                                                                "type": "number",
+                                                                "description": "todo The depth in meters to which the composition of this feature is present."
                                                             },
                                                             "operation": {
                                                                 "default value": "replace",
@@ -12985,11 +13228,10 @@
                                     "oneOf": [
                                         {
                                             "type": "object",
-                                            "description": "Uniform density model. Set the density to a constant value.",
+                                            "description": "composition object",
                                             "additionalProperties": false,
                                             "required": [
-                                                "model",
-                                                "densities"
+                                                "model"
                                             ],
                                             "properties": {
                                                 "model": {
@@ -12999,18 +13241,6 @@
                                                     "enum": [
                                                         "uniform"
                                                     ]
-                                                },
-                                                "densities": {
-                                                    "type": "array",
-                                                    "minItems": 0,
-                                                    "maxItems": 4294967295,
-                                                    "uniqueItems": false,
-                                                    "description": "list of compositional densities",
-                                                    "items": {
-                                                        "default value": 3300.0,
-                                                        "type": "number",
-                                                        "description": ""
-                                                    }
                                                 },
                                                 "compositions": {
                                                     "type": "array",
@@ -13023,6 +13253,16 @@
                                                         "type": "integer",
                                                         "description": ""
                                                     }
+                                                },
+                                                "min distance slab top": {
+                                                    "default value": 0.0,
+                                                    "type": "number",
+                                                    "description": "todo The depth in meters from which the composition of this feature is present."
+                                                },
+                                                "max distance slab top": {
+                                                    "default value": 1.7976931348623157e308,
+                                                    "type": "number",
+                                                    "description": "todo The depth in meters to which the composition of this feature is present."
                                                 },
                                                 "operation": {
                                                     "default value": "replace",
@@ -14151,11 +14391,10 @@
                                                             "oneOf": [
                                                                 {
                                                                     "type": "object",
-                                                                    "description": "Uniform density model. Set the density to a constant value.",
+                                                                    "description": "composition object",
                                                                     "additionalProperties": false,
                                                                     "required": [
-                                                                        "model",
-                                                                        "densities"
+                                                                        "model"
                                                                     ],
                                                                     "properties": {
                                                                         "model": {
@@ -14165,18 +14404,6 @@
                                                                             "enum": [
                                                                                 "uniform"
                                                                             ]
-                                                                        },
-                                                                        "densities": {
-                                                                            "type": "array",
-                                                                            "minItems": 0,
-                                                                            "maxItems": 4294967295,
-                                                                            "uniqueItems": false,
-                                                                            "description": "list of compositional densities",
-                                                                            "items": {
-                                                                                "default value": 3300.0,
-                                                                                "type": "number",
-                                                                                "description": ""
-                                                                            }
                                                                         },
                                                                         "compositions": {
                                                                             "type": "array",
@@ -14189,6 +14416,16 @@
                                                                                 "type": "integer",
                                                                                 "description": ""
                                                                             }
+                                                                        },
+                                                                        "min distance slab top": {
+                                                                            "default value": 0.0,
+                                                                            "type": "number",
+                                                                            "description": "todo The depth in meters from which the composition of this feature is present."
+                                                                        },
+                                                                        "max distance slab top": {
+                                                                            "default value": 1.7976931348623157e308,
+                                                                            "type": "number",
+                                                                            "description": "todo The depth in meters to which the composition of this feature is present."
                                                                         },
                                                                         "operation": {
                                                                             "default value": "replace",
@@ -15247,11 +15484,10 @@
                                                 "oneOf": [
                                                     {
                                                         "type": "object",
-                                                        "description": "Uniform density model. Set the density to a constant value.",
+                                                        "description": "composition object",
                                                         "additionalProperties": false,
                                                         "required": [
-                                                            "model",
-                                                            "densities"
+                                                            "model"
                                                         ],
                                                         "properties": {
                                                             "model": {
@@ -15261,18 +15497,6 @@
                                                                 "enum": [
                                                                     "uniform"
                                                                 ]
-                                                            },
-                                                            "densities": {
-                                                                "type": "array",
-                                                                "minItems": 0,
-                                                                "maxItems": 4294967295,
-                                                                "uniqueItems": false,
-                                                                "description": "list of compositional densities",
-                                                                "items": {
-                                                                    "default value": 3300.0,
-                                                                    "type": "number",
-                                                                    "description": ""
-                                                                }
                                                             },
                                                             "compositions": {
                                                                 "type": "array",
@@ -15285,6 +15509,16 @@
                                                                     "type": "integer",
                                                                     "description": ""
                                                                 }
+                                                            },
+                                                            "min distance slab top": {
+                                                                "default value": 0.0,
+                                                                "type": "number",
+                                                                "description": "todo The depth in meters from which the composition of this feature is present."
+                                                            },
+                                                            "max distance slab top": {
+                                                                "default value": 1.7976931348623157e308,
+                                                                "type": "number",
+                                                                "description": "todo The depth in meters to which the composition of this feature is present."
                                                             },
                                                             "operation": {
                                                                 "default value": "replace",
