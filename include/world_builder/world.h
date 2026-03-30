@@ -255,6 +255,12 @@ namespace WorldBuilder
       std::mt19937 &get_random_number_engine();
 
       /**
+      * Return all composition properties from its index.
+      * If the index is unknown, returns fallback properties with a generated name.
+      */
+      Parameters::composition_properties get_composition_properties(const unsigned int composition_index) const;
+
+      /**
        * This is the parameter class, which stores all the values loaded in
        * from the parameter file or which are set directly.
        */
@@ -320,6 +326,11 @@ namespace WorldBuilder
        * A list of all the feature tags.
        */
       std::vector<std::string> feature_tags;
+
+      /**
+       * A map from composition index to its properties for quick lookups.
+       */
+      std::map<unsigned int, Parameters::composition_properties> composition_properties;
 
     private:
       /**
