@@ -197,6 +197,30 @@ namespace WorldBuilder
       std::vector<composition_properties>
       get_composition_properties(const std::string &name) const;
 
+      struct indicator_property
+      {
+        unsigned int index;
+        std::string name;
+      };
+
+      /**
+      * Parse indicator properties.
+      * The index is required, while name is optional.
+      * If the entry is absent, the vector is empty.
+      * \param name The name of the entry to be declared
+      */
+      std::vector<indicator_property>
+      get_indicator_property(const std::string &name) const;
+
+      /**
+       * A specialized version of get which can return vectors/arrays
+       * of the indicator properties
+       * \param name The name of the entry to retrieved
+       */
+      template<class T>
+      std::vector<T> get_vector(const std::string &name,
+                                const std::map<unsigned int, indicator_property> &indicator_properties);
+
       /**
        * Declares the existence an entry in the parameters class.
        * Default values are supplied by the type.

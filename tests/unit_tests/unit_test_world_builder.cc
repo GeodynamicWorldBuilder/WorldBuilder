@@ -8122,3 +8122,20 @@ TEST_CASE("WorldBuilder composition property maps")
   CHECK(world.composition_properties[1].name == "harzburgite");
   CHECK(world.composition_properties[3].reference_density == Approx(3350.0));
 }
+
+TEST_CASE("WorldBuilder indicator property maps")
+{
+  std::vector<std::pair<std::string,double>> approval_tests;
+
+  const std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/indicator_properties_map.wb";
+  WorldBuilder::World world(file_name);
+
+  world.parse_entries(world.parameters);
+
+  CHECK(world.indicator_properties[0].index == 0);
+  CHECK(world.indicator_properties[0].name == "temperature");
+
+  CHECK(world.indicator_properties[1].name == "velocity");
+
+  CHECK(world.indicator_properties[2].name == "composition");
+}

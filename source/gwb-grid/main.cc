@@ -317,6 +317,7 @@ int main(int argc, char **argv)
 
   size_t dim = 3;
   size_t compositions = 0;
+  size_t indicators = 0;
 
   // common
   std::string grid_type = "chunk";
@@ -535,6 +536,9 @@ int main(int argc, char **argv)
 
           if (line_i[0] == "compositions" && line_i[1] == "=")
             compositions = string_to_unsigned_int(line_i[2]);
+
+          if (line_i[0] == "indicators" && line_i[1] == "=")
+            indicators = string_to_unsigned_int(line_i[2]);
 
           if (line_i[0] == "x_min" && line_i[1] == "=")
             x_min = string_to_double(line_i[2]);
@@ -1846,6 +1850,8 @@ int main(int argc, char **argv)
         {
           dataSetInfo.emplace_back( "Composition "+std::to_string(c), vtu11::DataSetType::PointData, 1 );
         }
+      for (size_t i0 = 0; i0 < indicators; ++i0)
+        dataSetInfo.emplace_back("Indicator "+std::to_string(i0), vtu11::DataSetType::PointData, 1 );
 
       std::cout << "[5/6] Preparing to write the paraview file: stage 5 of 5, computing the properties                              \r";
       std::cout.flush();
@@ -1864,9 +1870,11 @@ int main(int argc, char **argv)
       for (unsigned int c = 0; c < compositions; ++c)
         properties.push_back({{2,c,0}}); // composition c
 
+      for (unsigned int i0 = 0; i0 < indicators; ++i0)
+        properties.push_back({{8,i0,0}}); // indicator
 
       // compute temperature
-      std::vector<vtu11::DataSetData> data_set(6+output_densities+compositions);
+      std::vector<vtu11::DataSetData> data_set(6+output_densities+compositions+indicators);
       data_set[0] = grid_depth_wrt_surface;
       data_set[1] = grid_depth_wrt_reference;
 
@@ -1880,6 +1888,9 @@ int main(int argc, char **argv)
 
       for (size_t c = 0; c < compositions; ++c)
         data_set[6+c+output_densities].resize(n_p);
+
+      for (size_t i0 = 0; i0 < indicators; ++i0)
+        data_set[6+output_densities+compositions+i0].resize(n_p);
 
       if (dim == 2)
         {
@@ -1900,6 +1911,10 @@ int main(int argc, char **argv)
             for (size_t c = 0; c < compositions; ++c)
               {
                 data_set[6+c+output_densities][i] = output[6+c+output_densities];
+              }
+            for (size_t i0 = 0; i0 < indicators; ++i0)
+              {
+                data_set[6+output_densities+compositions+i0][i] = output[6+output_densities+compositions+i0];
               }
           });
         }
@@ -1922,6 +1937,10 @@ int main(int argc, char **argv)
             for (size_t c = 0; c < compositions; ++c)
               {
                 data_set[6+c+output_densities][i] = output[6+c+output_densities];
+              }
+            for (size_t i0 = 0; i0 < indicators; ++i0)
+              {
+                data_set[6+output_densities+compositions+i0][i] = output[6+output_densities+compositions+i0];
               }
           });
         }

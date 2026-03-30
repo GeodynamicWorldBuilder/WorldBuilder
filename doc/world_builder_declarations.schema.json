@@ -236,7 +236,8 @@
                             "name": "${1:My Oceanic Plate}",
                             "coordinates": [],
                             "temperature models": [],
-                            "composition models": []
+                            "composition models": [],
+                            "indicator models": []
                         }
                     },
                     {

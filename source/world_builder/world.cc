@@ -31,6 +31,7 @@
 #include "world_builder/types/object.h"
 #include "world_builder/types/plugin_system.h"
 #include "world_builder/types/composition_property.h"
+#include "world_builder/types/indicator_property.h"
 #include "world_builder/types/point.h"
 #include "world_builder/types/int.h"
 
@@ -149,6 +150,8 @@ namespace WorldBuilder
 
       prm.declare_entry("composition properties", Types::Array(Types::CompositionProperty()),
                         "The material properties of the composition. This stores user-defined indices (required), linked to composition properties (optional) including name and reference density.");
+      prm.declare_entry("indicator properties", Types::Array(Types::IndicatorProperty()),
+                        "The properties of the indicator. This stores user-defined indices (required), linked to indicator properties (optional) including name");
       prm.declare_entry("potential mantle temperature", Types::Double(1600),
                         "The potential temperature of the mantle at the surface in Kelvin.");
       prm.declare_entry("surface temperature", Types::Double(293.15),
@@ -331,6 +334,19 @@ namespace WorldBuilder
       }
 
     /**
+    * Mapping of indicator properties as a struct
+    * Indicator indices (required) mapped to their properties (optional).
+    * Parsing is handled in parameters.cc
+    * Struct with default values is defined in types/indicator_property
+    */
+    const auto parsed_indicator_property = prm.get_indicator_property("indicator properties");
+
+    for (const auto &indicator_entry : parsed_indicator_property)
+      {
+        indicator_properties.emplace(indicator_entry.index, indicator_entry);
+      }
+
+    /**
     * Now load the features. Some features use for example temperature values,
     * so it is important that this is parsed the last.
     */
@@ -385,6 +401,11 @@ namespace WorldBuilder
               break;
             }
             case 7: // density
+            {
+              n_output_entries += 1;
+              break;
+            }
+            case 8: // indicator
             {
               n_output_entries += 1;
               break;
@@ -486,10 +507,15 @@ namespace WorldBuilder
               break;
             }
             default:
-              WBAssertThrow(false,
-                            "Internal error: Unimplemented property provided. " <<
-                            "Only temperature (1), composition (2), grains (3), tag (4), velocity (5) or topography (6) are allowed. "
-                            "Provided property number was: " << property[0]);
+            case 8: // indicator
+            {
+              counter += 1;
+              break;
+            }
+            WBAssertThrow(false,
+                          "Internal error: Unimplemented property provided. " <<
+                          "Only temperature (1), composition (2), grains (3), tag (4), velocity (5) or topography (6) are allowed. "
+                          "Provided property number was: " << property[0]);
           }
 
       }
@@ -586,6 +612,13 @@ namespace WorldBuilder
               properties_local.emplace_back(properties[i_property]);
               break;
             }
+            case 8: // indicator
+            {
+              entry_in_output.emplace_back(output.size());
+              output.emplace_back(0);
+              properties_local.emplace_back(properties[i_property]);
+              break;
+            }
             default:
               WBAssertThrow(false,
                             "Internal error: Unimplemented property provided. " <<
@@ -645,6 +678,22 @@ namespace WorldBuilder
                      const unsigned int composition_number) const
   {
     return properties(point, depth, {{{2,composition_number,0}}})[0];
+  }
+
+  double
+  World::indicator(const std::array<double,2> &point,
+                   const double depth,
+                   const unsigned int indicator_number) const
+  {
+    return properties(point, depth, {{{8,indicator_number,0}}})[0];
+  }
+
+  double
+  World::indicator(const std::array<double,3> &point,
+                   const double depth,
+                   const unsigned int indicator_number) const
+  {
+    return properties(point, depth, {{{8,indicator_number,0}}})[0];
   }
 
   WorldBuilder::grains
