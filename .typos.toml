@@ -38,6 +38,7 @@ extend-exclude = [
     "/doc/world_builder_declarations_open.md", # should be corrected in the original source
     "contrib/catch/*",
     "contrib/world_builder/*",
+    "contrib/gplates/*",
     "*.bib", # bib entries contain many arbitrary abbreviations
     "tests/prmbackslash*", # this test purposefully breaks words on different lines
     ] 
