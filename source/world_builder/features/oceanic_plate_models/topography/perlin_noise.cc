@@ -87,7 +87,7 @@ namespace WorldBuilder
           prm.declare_entry("octaves", Types::UnsignedInt(1), "Number of octaves for the Perlin noise.");
           prm.declare_entry("persistence", Types::Double(0.5), "Amplitude multiplier between octaves.");
           prm.declare_entry("lacunarity", Types::Double(2.0), "Frequency multiplier between octaves.");
-          prm.declare_entry("operation", Types::String("add", std::vector<std::string>{"replace","replace defined only","add","subtract"}),
+          prm.declare_entry("operation", Types::String("add", std::vector<std::string> {"replace","replace defined only","add","subtract"}),
                             "How to combine the topography with existing values.");
         }
 
@@ -202,13 +202,13 @@ namespace WorldBuilder
           const int BB = perm(B + 1) + Z;
 
           return lerp(w, lerp(v, lerp(u, grad(perm(AA), x, y, z),
-                    grad(perm(BA), x - 1, y, z)),
-                  lerp(u, grad(perm(AB), x, y - 1, z),
-                 grad(perm(BB), x - 1, y - 1, z))),
-                lerp(v, lerp(u, grad(perm(AA + 1), x, y, z - 1),
-                 grad(perm(BA + 1), x - 1, y, z - 1)),
-               lerp(u, grad(perm(AB + 1), x, y - 1, z - 1),
-              grad(perm(BB + 1), x - 1, y - 1, z - 1))));
+                                      grad(perm(BA), x - 1, y, z)),
+                              lerp(u, grad(perm(AB), x, y - 1, z),
+                                   grad(perm(BB), x - 1, y - 1, z))),
+                      lerp(v, lerp(u, grad(perm(AA + 1), x, y, z - 1),
+                                   grad(perm(BA + 1), x - 1, y, z - 1)),
+                           lerp(u, grad(perm(AB + 1), x, y - 1, z - 1),
+                                grad(perm(BB + 1), x - 1, y - 1, z - 1))));
         }
 
         double
