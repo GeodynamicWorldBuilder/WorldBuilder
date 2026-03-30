@@ -320,6 +320,26 @@ namespace WorldBuilder
       /**
        * Todo
        */
+      double compensation_depth;
+
+      /**
+       * Todo
+       */
+      unsigned int number_integration_points;
+
+      /**
+       * Todo
+       */
+      double compensation_pressure;
+
+      /**
+       * Todo
+       */
+      Point<2> reference_profile_point;
+
+      /**
+       * Todo
+       */
       std::string interpolation;
 
       /**
