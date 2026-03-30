@@ -84,7 +84,7 @@ namespace WorldBuilder
 
             /**
              * Returns a grains based on the given position, composition (e.g.
-             * olivine and/or enstatite)depth in the model, gravity and current grains.
+             * olivine and/or enstatite) depth in the model, gravity and current grains.
              */
             WorldBuilder::grains
             get_grains(const Point<3> &position,
