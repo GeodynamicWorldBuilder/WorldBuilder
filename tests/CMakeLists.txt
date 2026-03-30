@@ -14,6 +14,14 @@ ELSE()
           "Please specify TEST_DIFF by hand.")
 ENDIF()
 
+if(USE_MPI)
+    set(MPI_C_COMPILER_LOCAL ${MPI_CXX_COMPILER}) #When using MPI apparently you have to use the mpicxx, because the gwb has been compiled against the c++ mpi libraries.
+    set(MPI_CXX_COMPILER_LOCAL ${MPI_CXX_COMPILER})
+else()
+    set(MPI_C_COMPILER_LOCAL ${CMAKE_C_COMPILER})
+    set(MPI_CXX_COMPILER_LOCAL ${CMAKE_CXX_COMPILER})
+endif()
+
 # Unit test testing
 #find all the unit test files
 SET(WB_INCLUDE_UNIT_TEST ON
@@ -276,14 +284,14 @@ IF(WB_ENABLE_APPS AND WB_RUN_APP_TESTS)
 
     if(WB_RUN_TESTS_WITH_GDB)
       add_test(NAME dat_${test_name}_gdb
-              WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+              WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/${test_name}/
               COMMAND gdb --return-child-result --ex "set confirm off" --ex r  --ex bt --ex exit  --args ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.dat --limit-debug-consistency-checks)
     endif()
 
     if(WB_RUN_TESTS_WITH_VALGRIND)
       add_test(NAME dat_${test_name}_valgrind
-              WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
-              COMMAND valgrind -v --leak-check=full --error-exitcode=1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX}  ${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.dat --limit-debug-consistency-checks)
+              WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/${test_name}/
+              COMMAND valgrind -v --leak-check=full --error-exitcode=1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.dat --limit-debug-consistency-checks)
     endif()
   endforeach(test_source)
 ENDIF()
@@ -311,13 +319,13 @@ if (WB_ENABLE_APPS)
 
     if(WB_RUN_TESTS_WITH_GDB)
       add_test(NAME grid_${test_name}_gdb
-              WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+              WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/
               COMMAND gdb --return-child-result --ex "set confirm off" --ex r  --ex bt --ex exit  --args ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.grid)
     endif()
 
     if(WB_RUN_TESTS_WITH_VALGRIND)
       add_test(NAME grid_${test_name}_valgrind
-              WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+              WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/
               COMMAND valgrind -v --leak-check=full --error-exitcode=1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}  ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.grid)
     endif()
   endforeach(test_source)
@@ -373,21 +381,21 @@ endif()
   file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C)
   if(NOT MSVC AND NOT APPLE)
     add_test(NAME compile_simple_C_test
-             COMMAND ${CMAKE_C_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/C/test.c -L../../lib/ -Wl,--whole-archive -l${WB_TARGET} -Wl,--no-whole-archive -I../../inlcude/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o test${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lstdc++ -lm  ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
+             COMMAND ${MPI_C_COMPILER_LOCAL} ${CMAKE_CURRENT_SOURCE_DIR}/C/test.c -L../../lib/ -Wl,--whole-archive -l${WB_TARGET} -Wl,--no-whole-archive -I../../inlcude/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o test${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lstdc++ -lm  ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
 	     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
   elseif(APPLE)
     add_test(NAME compile_simple_C_test
-	    COMMAND ${CMAKE_C_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/C/test.c -L${CMAKE_BINARY_DIR}/lib/ -Wl,-force_load,${CMAKE_BINARY_DIR}/lib/lib${WB_TARGET}.a -I../../inlcude/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o test${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lc++ -lm -I/usr/include/ -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/ -L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
+	    COMMAND ${MPI_C_COMPILER_LOCAL} ${CMAKE_CURRENT_SOURCE_DIR}/C/test.c -L${CMAKE_BINARY_DIR}/lib/ -Wl,-force_load,${CMAKE_BINARY_DIR}/lib/lib${WB_TARGET}.a -I../../inlcude/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o test${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lc++ -lm -I/usr/include/ -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/ -L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)  
   else()
     #MSVS
     if(CMAKE_BUILD_TYPE STREQUAL Debug)
       add_test(NAME compile_simple_C_test 
-        COMMAND ${CMAKE_C_COMPILER} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/C/test.c /W3 /EHsc /RTC1 /MDd /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\${WB_TARGET}.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:test${CMAKE_EXECUTABLE_SUFFIX} ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
+        COMMAND ${MPI_C_COMPILER_LOCAL} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/C/test.c /W3 /EHsc /RTC1 /MDd /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\${WB_TARGET}.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:test${CMAKE_EXECUTABLE_SUFFIX} ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
     else()
       add_test(NAME compile_simple_C_test 
-      COMMAND ${CMAKE_C_COMPILER} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/C/test.c /W3 /EHsc /RTC1 /MD /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\${WB_TARGET}.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:test${CMAKE_EXECUTABLE_SUFFIX}  ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
+      COMMAND ${MPI_C_COMPILER_LOCAL} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/C/test.c /W3 /EHsc /RTC1 /MD /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\${WB_TARGET}.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:test${CMAKE_EXECUTABLE_SUFFIX}  ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
     endif()
   endif()
@@ -407,21 +415,21 @@ endif()
 
   if(NOT MSVC AND NOT APPLE)
     add_test(NAME compile_simple_C_example 
-	     COMMAND ${CMAKE_C_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/C/example.c -L../../lib/ -Wl,--whole-archive -l${WB_TARGET} -Wl,--no-whole-archive -I${CMAKE_SOURCE_DIR}/include/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lstdc++ -lm  -L${MPI_C_LIBRARIES} -L${MPI_CXX_LIBRARIES}
+	     COMMAND ${MPI_C_COMPILER_LOCAL} ${CMAKE_CURRENT_SOURCE_DIR}/C/example.c -L../../lib/ -Wl,--whole-archive -l${WB_TARGET} -Wl,--no-whole-archive -I${CMAKE_SOURCE_DIR}/include/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lstdc++ -lm  -L${MPI_C_LIBRARIES} -L${MPI_CXX_LIBRARIES}
 	     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
   elseif(APPLE)
     add_test(NAME compile_simple_C_example 
-	     COMMAND ${CMAKE_C_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/C/example.c -L${CMAKE_BINARY_DIR}/lib/ -Wl,-force_load,${CMAKE_BINARY_DIR}/lib/lib${WB_TARGET}.a -I${CMAKE_SOURCE_DIR}/include/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lc++ -lm -I/usr/include/ -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/ -L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
+	     COMMAND ${MPI_C_COMPILER_LOCAL} ${CMAKE_CURRENT_SOURCE_DIR}/C/example.c -L${CMAKE_BINARY_DIR}/lib/ -Wl,-force_load,${CMAKE_BINARY_DIR}/lib/lib${WB_TARGET}.a -I${CMAKE_SOURCE_DIR}/include/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lc++ -lm -I/usr/include/ -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/ -L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
   else()
     #MSVS
     if(CMAKE_BUILD_TYPE STREQUAL Debug)
       add_test(NAME compile_simple_C_example 
-      COMMAND ${CMAKE_C_COMPILER} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/C/example.c /W3 /EHsc /RTC1 /MDd /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\${WB_TARGET}.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:example${CMAKE_EXECUTABLE_SUFFIX} -L${MPI_C_LIBRARIES} -L${MPI_CXX_LIBRARIES}
+      COMMAND ${MPI_C_COMPILER_LOCAL} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/C/example.c /W3 /EHsc /RTC1 /MDd /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\${WB_TARGET}.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:example${CMAKE_EXECUTABLE_SUFFIX} -L${MPI_C_LIBRARIES} -L${MPI_CXX_LIBRARIES}
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
     else()
       add_test(NAME compile_simple_C_example 
-      COMMAND ${CMAKE_C_COMPILER} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/C/example.c /W3 /EHsc /RTC1 /MD /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\${WB_TARGET}.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:example${CMAKE_EXECUTABLE_SUFFIX} ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
+      COMMAND ${MPI_C_COMPILER_LOCAL} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/C/example.c /W3 /EHsc /RTC1 /MD /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\${WB_TARGET}.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:example${CMAKE_EXECUTABLE_SUFFIX} ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
     endif()
   endif()
@@ -444,7 +452,7 @@ file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/CPP)
 list(GET 1 ${MPI_INCLUDE_PATH}, MPI_single_include_path)
 if(NOT MSVC AND NOT APPLE)
   add_test(NAME compile_simple_CPP_test
-  COMMAND ${CMAKE_CXX_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/CPP/test.cpp -L../../lib/ -Wl,--whole-archive -l${WB_TARGET} -Wl,--no-whole-archive -I../../inlcude/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o test${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lstdc++ -std=c++14 -lm -L${MPI_CXX_LIBRARIES} -I${MPI_single_include_path}
+  COMMAND ${MPI_CXX_COMPILER_LOCAL} ${CMAKE_CURRENT_SOURCE_DIR}/CPP/test.cpp -L../../lib/ -Wl,--whole-archive -l${WB_TARGET} -Wl,--no-whole-archive -I../../inlcude/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o test${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lstdc++ -std=c++14 -lm -L${MPI_CXX_LIBRARIES} -I${MPI_single_include_path} 
      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/CPP/)
 elseif(APPLE)
   add_test(NAME compile_simple_CPP_test
@@ -454,11 +462,11 @@ else()
   #MSVS
   if(CMAKE_BUILD_TYPE STREQUAL Debug)
     add_test(NAME compile_simple_CPP_test 
-      COMMAND ${CMAKE_CXX_COMPILER} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/CPP/test.cpp /W3 /EHsc /RTC1 /MDd /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\${WB_TARGET}.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:test${CMAKE_EXECUTABLE_SUFFIX} ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
+      COMMAND ${MPI_CXX_COMPILER_LOCAL} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/CPP/test.cpp /W3 /EHsc /RTC1 /MDd /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\${WB_TARGET}.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:test${CMAKE_EXECUTABLE_SUFFIX} ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/CPP/)
   else()
     add_test(NAME compile_simple_CPP_test 
-    COMMAND ${CMAKE_CXX_COMPILER} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/CPP/test.cpp /W3 /EHsc /RTC1 /MD /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\${WB_TARGET}.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:test${CMAKE_EXECUTABLE_SUFFIX} ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
+    COMMAND ${MPI_CXX_COMPILER_LOCAL} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/CPP/test.cpp /W3 /EHsc /RTC1 /MD /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\${WB_TARGET}.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:test${CMAKE_EXECUTABLE_SUFFIX} ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/CPP/)
   endif()
 endif()
@@ -479,7 +487,7 @@ set_tests_properties(run_simple_CPP_test PROPERTIES DEPENDS compile_simple_CPP_t
 
 if(NOT MSVC AND NOT APPLE)
   add_test(NAME compile_simple_CPP_example 
-     COMMAND ${CMAKE_CXX_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/CPP/example.cpp -L../../lib/ -Wl,--whole-archive -l${WB_TARGET} -Wl,--no-whole-archive -I${CMAKE_SOURCE_DIR}/include/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lstdc++ -std=c++14 -lm  -L${MPI_CXX_LIBRARIES} -I${MPI_single_include_path}
+     COMMAND ${MPI_CXX_COMPILER_LOCAL} ${CMAKE_CURRENT_SOURCE_DIR}/CPP/example.cpp -L../../lib/ -Wl,--whole-archive -l${WB_TARGET} -Wl,--no-whole-archive -I${CMAKE_SOURCE_DIR}/include/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lstdc++ -std=c++14 -lm  -L${MPI_CXX_LIBRARIES} -I${MPI_single_include_path}
      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/CPP/)
 elseif(APPLE)
   add_test(NAME compile_simple_CPP_example 
@@ -489,11 +497,11 @@ else()
   #MSVS
   if(CMAKE_BUILD_TYPE STREQUAL Debug)
     add_test(NAME compile_simple_CPP_example 
-    COMMAND ${CMAKE_CXX_COMPILER} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/CPP/example.cpp /W3 /EHsc /RTC1 /MDd /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\${WB_TARGET}.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:example${CMAKE_EXECUTABLE_SUFFIX} ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
+    COMMAND ${MPI_CXX_COMPILER_LOCAL} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/CPP/example.cpp /W3 /EHsc /RTC1 /MDd /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\${WB_TARGET}.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:example${CMAKE_EXECUTABLE_SUFFIX} ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/CPP/)
   else()
     add_test(NAME compile_simple_CPP_example 
-    COMMAND ${CMAKE_CXX_COMPILER} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/CPP/example.cpp /W3 /EHsc /RTC1 /MD /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\${WB_TARGET}.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:example${CMAKE_EXECUTABLE_SUFFIX} ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
+    COMMAND ${MPI_CXX_COMPILER_LOCAL} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/CPP/example.cpp /W3 /EHsc /RTC1 /MD /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\${WB_TARGET}.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/${WB_TARGET}.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:example${CMAKE_EXECUTABLE_SUFFIX} ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/CPP/)
   endif()
 endif()
