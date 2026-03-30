@@ -65,7 +65,7 @@ namespace WorldBuilder
                             "The distance in meters from which the composition of this feature is present.");
           prm.declare_entry("max distance fault center", Types::Double(std::numeric_limits<double>::max()),
                             "The distance in meters to which the composition of this feature is present.");
-          prm.declare_entry("compositions", Types::Array(Types::UnsignedInt(),0),
+          prm.declare_entry("compositions", Types::Array(Types::OneOf(Types::UnsignedInt(), Types::String("")),0),
                             "A list with the labels of the composition which are present there.");
           prm.declare_entry("fractions", Types::Array(Types::Double(1.0),1),
                             "TA list of compositional fractions corresponding to the compositions list.");
@@ -81,7 +81,7 @@ namespace WorldBuilder
         {
           min_depth = prm.get<double>("min distance fault center");
           max_depth = prm.get<double>("max distance fault center");
-          compositions = prm.get_vector<unsigned int>("compositions");
+          compositions = prm.get_vector<unsigned int>("compositions", this->world->composition_properties);
           fractions = prm.get_vector<double>("fractions");
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
 

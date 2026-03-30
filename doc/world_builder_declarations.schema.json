@@ -853,11 +853,15 @@
                                                     ]
                                                 },
                                                 "operation": {
-                                                    "default value": "replace",
+                                                    "default value": "add",
                                                     "type": "string",
-                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
                                                     "enum": [
                                                         "replace",
+                                                        "add",
+                                                        "subtract",
+                                                        "replace",
+                                                        "replace defined only",
                                                         "add",
                                                         "subtract"
                                                     ]
@@ -991,11 +995,6 @@
                                                     "default value": 2.0,
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
-                                                },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
                                                 }
                                             }
                                         },
@@ -1611,11 +1610,6 @@
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
                                                 },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                },
                                                 "operation": {
                                                     "default value": "add",
                                                     "type": "string",
@@ -1753,9 +1747,19 @@
                                                     "uniqueItems": false,
                                                     "description": "A list with the labels of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "min value": {
@@ -3264,11 +3268,15 @@
                                                                 ]
                                                             },
                                                             "operation": {
-                                                                "default value": "replace",
+                                                                "default value": "add",
                                                                 "type": "string",
-                                                                "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                                "description": "Whether to replace, add, or subtract values.",
                                                                 "enum": [
                                                                     "replace",
+                                                                    "add",
+                                                                    "subtract",
+                                                                    "replace",
+                                                                    "replace defined only",
                                                                     "add",
                                                                     "subtract"
                                                                 ]
@@ -3312,11 +3320,6 @@
                                                                 "default value": 2.0,
                                                                 "type": "number",
                                                                 "description": "Frequency multiplier between octaves."
-                                                            },
-                                                            "seed": {
-                                                                "default value": 0,
-                                                                "type": "integer",
-                                                                "description": "Seed for the random number generator. If 0, a random seed is used."
                                                             }
                                                         }
                                                     },
@@ -3456,11 +3459,6 @@
                                                                 "type": "number",
                                                                 "description": "Frequency multiplier between octaves."
                                                             },
-                                                            "seed": {
-                                                                "default value": 0,
-                                                                "type": "integer",
-                                                                "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                            },
                                                             "operation": {
                                                                 "default value": "add",
                                                                 "type": "string",
@@ -3532,9 +3530,19 @@
                                                                 "uniqueItems": false,
                                                                 "description": "A list with the labels of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "operation": {
@@ -3584,9 +3592,19 @@
                                                                 "uniqueItems": false,
                                                                 "description": "A list with the labels of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "fractions": {
@@ -4185,11 +4203,15 @@
                                                     ]
                                                 },
                                                 "operation": {
-                                                    "default value": "replace",
+                                                    "default value": "add",
                                                     "type": "string",
-                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "description": "Whether to replace, add, or subtract values.",
                                                     "enum": [
                                                         "replace",
+                                                        "add",
+                                                        "subtract",
+                                                        "replace",
+                                                        "replace defined only",
                                                         "add",
                                                         "subtract"
                                                     ]
@@ -4233,11 +4255,6 @@
                                                     "default value": 2.0,
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
-                                                },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
                                                 }
                                             }
                                         },
@@ -4377,11 +4394,6 @@
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
                                                 },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                },
                                                 "operation": {
                                                     "default value": "add",
                                                     "type": "string",
@@ -4453,9 +4465,19 @@
                                                     "uniqueItems": false,
                                                     "description": "A list with the labels of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "operation": {
@@ -4505,9 +4527,19 @@
                                                     "uniqueItems": false,
                                                     "description": "A list with the labels of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "fractions": {
@@ -5176,11 +5208,15 @@
                                                                             ]
                                                                         },
                                                                         "operation": {
-                                                                            "default value": "replace",
+                                                                            "default value": "add",
                                                                             "type": "string",
-                                                                            "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                                            "description": "Whether to replace, add, or subtract values.",
                                                                             "enum": [
                                                                                 "replace",
+                                                                                "add",
+                                                                                "subtract",
+                                                                                "replace",
+                                                                                "replace defined only",
                                                                                 "add",
                                                                                 "subtract"
                                                                             ]
@@ -5224,11 +5260,6 @@
                                                                             "default value": 2.0,
                                                                             "type": "number",
                                                                             "description": "Frequency multiplier between octaves."
-                                                                        },
-                                                                        "seed": {
-                                                                            "default value": 0,
-                                                                            "type": "integer",
-                                                                            "description": "Seed for the random number generator. If 0, a random seed is used."
                                                                         }
                                                                     }
                                                                 },
@@ -5368,11 +5399,6 @@
                                                                             "type": "number",
                                                                             "description": "Frequency multiplier between octaves."
                                                                         },
-                                                                        "seed": {
-                                                                            "default value": 0,
-                                                                            "type": "integer",
-                                                                            "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                                        },
                                                                         "operation": {
                                                                             "default value": "add",
                                                                             "type": "string",
@@ -5444,9 +5470,19 @@
                                                                             "uniqueItems": false,
                                                                             "description": "A list with the labels of the composition which are present there.",
                                                                             "items": {
-                                                                                "default value": 0,
-                                                                                "type": "integer",
-                                                                                "description": ""
+                                                                                "description": "",
+                                                                                "oneOf": [
+                                                                                    {
+                                                                                        "default value": 0,
+                                                                                        "type": "integer",
+                                                                                        "description": ""
+                                                                                    },
+                                                                                    {
+                                                                                        "default value": "",
+                                                                                        "type": "string",
+                                                                                        "description": ""
+                                                                                    }
+                                                                                ]
                                                                             }
                                                                         },
                                                                         "operation": {
@@ -5496,9 +5532,19 @@
                                                                             "uniqueItems": false,
                                                                             "description": "A list with the labels of the composition which are present there.",
                                                                             "items": {
-                                                                                "default value": 0,
-                                                                                "type": "integer",
-                                                                                "description": ""
+                                                                                "description": "",
+                                                                                "oneOf": [
+                                                                                    {
+                                                                                        "default value": 0,
+                                                                                        "type": "integer",
+                                                                                        "description": ""
+                                                                                    },
+                                                                                    {
+                                                                                        "default value": "",
+                                                                                        "type": "string",
+                                                                                        "description": ""
+                                                                                    }
+                                                                                ]
                                                                             }
                                                                         },
                                                                         "fractions": {
@@ -6097,11 +6143,15 @@
                                                                 ]
                                                             },
                                                             "operation": {
-                                                                "default value": "replace",
+                                                                "default value": "add",
                                                                 "type": "string",
-                                                                "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                                "description": "Whether to replace, add, or subtract values.",
                                                                 "enum": [
                                                                     "replace",
+                                                                    "add",
+                                                                    "subtract",
+                                                                    "replace",
+                                                                    "replace defined only",
                                                                     "add",
                                                                     "subtract"
                                                                 ]
@@ -6145,11 +6195,6 @@
                                                                 "default value": 2.0,
                                                                 "type": "number",
                                                                 "description": "Frequency multiplier between octaves."
-                                                            },
-                                                            "seed": {
-                                                                "default value": 0,
-                                                                "type": "integer",
-                                                                "description": "Seed for the random number generator. If 0, a random seed is used."
                                                             }
                                                         }
                                                     },
@@ -6289,11 +6334,6 @@
                                                                 "type": "number",
                                                                 "description": "Frequency multiplier between octaves."
                                                             },
-                                                            "seed": {
-                                                                "default value": 0,
-                                                                "type": "integer",
-                                                                "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                            },
                                                             "operation": {
                                                                 "default value": "add",
                                                                 "type": "string",
@@ -6365,9 +6405,19 @@
                                                                 "uniqueItems": false,
                                                                 "description": "A list with the labels of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "operation": {
@@ -6417,9 +6467,19 @@
                                                                 "uniqueItems": false,
                                                                 "description": "A list with the labels of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "fractions": {
@@ -7322,11 +7382,15 @@
                                                     ]
                                                 },
                                                 "operation": {
-                                                    "default value": "replace",
+                                                    "default value": "add",
                                                     "type": "string",
-                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
                                                     "enum": [
                                                         "replace",
+                                                        "add",
+                                                        "subtract",
+                                                        "replace",
+                                                        "replace defined only",
                                                         "add",
                                                         "subtract"
                                                     ]
@@ -7450,11 +7514,6 @@
                                                     "default value": 2.0,
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
-                                                },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
                                                 }
                                             }
                                         },
@@ -7754,11 +7813,6 @@
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
                                                 },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                },
                                                 "operation": {
                                                     "default value": "add",
                                                     "type": "string",
@@ -7886,9 +7940,19 @@
                                                     "uniqueItems": false,
                                                     "description": "A list with the labels of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "fractions": {
@@ -9571,11 +9635,15 @@
                                                     ]
                                                 },
                                                 "operation": {
-                                                    "default value": "replace",
+                                                    "default value": "add",
                                                     "type": "string",
-                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
                                                     "enum": [
                                                         "replace",
+                                                        "add",
+                                                        "subtract",
+                                                        "replace",
+                                                        "replace defined only",
                                                         "add",
                                                         "subtract"
                                                     ]
@@ -9709,11 +9777,6 @@
                                                     "default value": 2.0,
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
-                                                },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
                                                 }
                                             }
                                         },
@@ -10384,11 +10447,6 @@
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
                                                 },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                },
                                                 "operation": {
                                                     "default value": "add",
                                                     "type": "string",
@@ -10526,9 +10584,19 @@
                                                     "uniqueItems": false,
                                                     "description": "A list with the labels of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "density": {
@@ -10688,9 +10756,19 @@
                                                     "uniqueItems": false,
                                                     "description": "A list with the labels of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "fractions": {
@@ -12277,11 +12355,15 @@
                                                     ]
                                                 },
                                                 "operation": {
-                                                    "default value": "replace",
+                                                    "default value": "add",
                                                     "type": "string",
-                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
                                                     "enum": [
                                                         "replace",
+                                                        "add",
+                                                        "subtract",
+                                                        "replace",
+                                                        "replace defined only",
                                                         "add",
                                                         "subtract"
                                                     ]
@@ -12325,11 +12407,6 @@
                                                     "default value": 2.0,
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
-                                                },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
                                                 }
                                             }
                                         },
@@ -12469,11 +12546,6 @@
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
                                                 },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                },
                                                 "operation": {
                                                     "default value": "add",
                                                     "type": "string",
@@ -12521,9 +12593,19 @@
                                                     "uniqueItems": false,
                                                     "description": "A list with the labels of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "fractions": {
@@ -12560,6 +12642,159 @@
                                 "type": "array",
                                 "items": {
                                     "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "description": "Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "compositions"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the grains model.",
+                                                    "enum": [
+                                                        "random uniform distribution"
+                                                    ]
+                                                },
+                                                "min depth": {
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 0.0,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 0.0
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "max depth": {
+                                                    "description": "The depth in meters to which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 1.7976931348623157e308,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 1.7976931348623157e308
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "compositions": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "A list with the integer labels of the composition which are present there.",
+                                                    "items": {
+                                                        "default value": 0,
+                                                        "type": "integer",
+                                                        "description": ""
+                                                    }
+                                                },
+                                                "orientation operation": {
+                                                    "default value": "replace",
+                                                    "type": "string",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.",
+                                                    "enum": [
+                                                        "replace"
+                                                    ]
+                                                },
+                                                "grain sizes": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.",
+                                                    "items": {
+                                                        "default value": 1.0,
+                                                        "type": "number",
+                                                        "description": ""
+                                                    }
+                                                },
+                                                "normalize grain sizes": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.",
+                                                    "items": {
+                                                        "default value": true,
+                                                        "type": "boolean",
+                                                        "description": ""
+                                                    }
+                                                }
+                                            }
+                                        },
                                         {
                                             "type": "object",
                                             "description": "Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.",
@@ -13145,7 +13380,7 @@
                                                     },
                                                     {
                                                         "type": "object",
-                                                        "description": "Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of \"top truncation\" parameter subducting plate. Notes:1) the parameter \"thickness\" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.",
+                                                        "description": "Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of \"top truncation\" parameter subducting plate. Notes:1) the parameter \"thickness\" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to use depth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.",
                                                         "additionalProperties": false,
                                                         "required": [
                                                             "model",
@@ -13179,7 +13414,7 @@
                                                             "max distance slab top": {
                                                                 "default value": 1.7976931348623157e308,
                                                                 "type": "number",
-                                                                "description": "The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km."
+                                                                "description": "The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, this parameters should be about 250 km."
                                                             },
                                                             "density": {
                                                                 "default value": 3300.0,
@@ -13364,11 +13599,15 @@
                                                                 ]
                                                             },
                                                             "operation": {
-                                                                "default value": "replace",
+                                                                "default value": "add",
                                                                 "type": "string",
-                                                                "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                                "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
                                                                 "enum": [
                                                                     "replace",
+                                                                    "add",
+                                                                    "subtract",
+                                                                    "replace",
+                                                                    "replace defined only",
                                                                     "add",
                                                                     "subtract"
                                                                 ]
@@ -13412,11 +13651,6 @@
                                                                 "default value": 2.0,
                                                                 "type": "number",
                                                                 "description": "Frequency multiplier between octaves."
-                                                            },
-                                                            "seed": {
-                                                                "default value": 0,
-                                                                "type": "integer",
-                                                                "description": "Seed for the random number generator. If 0, a random seed is used."
                                                             }
                                                         }
                                                     },
@@ -13630,11 +13864,6 @@
                                                                 "type": "number",
                                                                 "description": "Frequency multiplier between octaves."
                                                             },
-                                                            "seed": {
-                                                                "default value": 0,
-                                                                "type": "integer",
-                                                                "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                            },
                                                             "operation": {
                                                                 "default value": "add",
                                                                 "type": "string",
@@ -13706,9 +13935,19 @@
                                                                 "uniqueItems": false,
                                                                 "description": "A list with the labels of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "operation": {
@@ -13763,9 +14002,19 @@
                                                                 "uniqueItems": false,
                                                                 "description": "A list with the labels of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "lithology": {
@@ -13830,9 +14079,19 @@
                                                                 "uniqueItems": false,
                                                                 "description": "A list with the labels of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "fractions": {
@@ -14414,7 +14673,7 @@
                                         },
                                         {
                                             "type": "object",
-                                            "description": "Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of \"top truncation\" parameter subducting plate. Notes:1) the parameter \"thickness\" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.",
+                                            "description": "Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of \"top truncation\" parameter subducting plate. Notes:1) the parameter \"thickness\" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to use depth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.",
                                             "additionalProperties": false,
                                             "required": [
                                                 "model",
@@ -14448,7 +14707,7 @@
                                                 "max distance slab top": {
                                                     "default value": 1.7976931348623157e308,
                                                     "type": "number",
-                                                    "description": "The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km."
+                                                    "description": "The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, this parameters should be about 250 km."
                                                 },
                                                 "density": {
                                                     "default value": 3300.0,
@@ -14633,11 +14892,15 @@
                                                     ]
                                                 },
                                                 "operation": {
-                                                    "default value": "replace",
+                                                    "default value": "add",
                                                     "type": "string",
-                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
                                                     "enum": [
                                                         "replace",
+                                                        "add",
+                                                        "subtract",
+                                                        "replace",
+                                                        "replace defined only",
                                                         "add",
                                                         "subtract"
                                                     ]
@@ -14681,11 +14944,6 @@
                                                     "default value": 2.0,
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
-                                                },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
                                                 }
                                             }
                                         },
@@ -14899,11 +15157,6 @@
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
                                                 },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                },
                                                 "operation": {
                                                     "default value": "add",
                                                     "type": "string",
@@ -14975,9 +15228,19 @@
                                                     "uniqueItems": false,
                                                     "description": "A list with the labels of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "operation": {
@@ -15032,9 +15295,19 @@
                                                     "uniqueItems": false,
                                                     "description": "A list with the labels of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "lithology": {
@@ -15099,9 +15372,19 @@
                                                     "uniqueItems": false,
                                                     "description": "A list with the labels of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "fractions": {
@@ -15753,7 +16036,7 @@
                                                                 },
                                                                 {
                                                                     "type": "object",
-                                                                    "description": "Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of \"top truncation\" parameter subducting plate. Notes:1) the parameter \"thickness\" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.",
+                                                                    "description": "Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of \"top truncation\" parameter subducting plate. Notes:1) the parameter \"thickness\" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to use depth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.",
                                                                     "additionalProperties": false,
                                                                     "required": [
                                                                         "model",
@@ -15787,7 +16070,7 @@
                                                                         "max distance slab top": {
                                                                             "default value": 1.7976931348623157e308,
                                                                             "type": "number",
-                                                                            "description": "The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km."
+                                                                            "description": "The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, this parameters should be about 250 km."
                                                                         },
                                                                         "density": {
                                                                             "default value": 3300.0,
@@ -15972,11 +16255,15 @@
                                                                             ]
                                                                         },
                                                                         "operation": {
-                                                                            "default value": "replace",
+                                                                            "default value": "add",
                                                                             "type": "string",
-                                                                            "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                                            "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
                                                                             "enum": [
                                                                                 "replace",
+                                                                                "add",
+                                                                                "subtract",
+                                                                                "replace",
+                                                                                "replace defined only",
                                                                                 "add",
                                                                                 "subtract"
                                                                             ]
@@ -16020,11 +16307,6 @@
                                                                             "default value": 2.0,
                                                                             "type": "number",
                                                                             "description": "Frequency multiplier between octaves."
-                                                                        },
-                                                                        "seed": {
-                                                                            "default value": 0,
-                                                                            "type": "integer",
-                                                                            "description": "Seed for the random number generator. If 0, a random seed is used."
                                                                         }
                                                                     }
                                                                 },
@@ -16238,11 +16520,6 @@
                                                                             "type": "number",
                                                                             "description": "Frequency multiplier between octaves."
                                                                         },
-                                                                        "seed": {
-                                                                            "default value": 0,
-                                                                            "type": "integer",
-                                                                            "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                                        },
                                                                         "operation": {
                                                                             "default value": "add",
                                                                             "type": "string",
@@ -16314,9 +16591,19 @@
                                                                             "uniqueItems": false,
                                                                             "description": "A list with the labels of the composition which are present there.",
                                                                             "items": {
-                                                                                "default value": 0,
-                                                                                "type": "integer",
-                                                                                "description": ""
+                                                                                "description": "",
+                                                                                "oneOf": [
+                                                                                    {
+                                                                                        "default value": 0,
+                                                                                        "type": "integer",
+                                                                                        "description": ""
+                                                                                    },
+                                                                                    {
+                                                                                        "default value": "",
+                                                                                        "type": "string",
+                                                                                        "description": ""
+                                                                                    }
+                                                                                ]
                                                                             }
                                                                         },
                                                                         "operation": {
@@ -16371,9 +16658,19 @@
                                                                             "uniqueItems": false,
                                                                             "description": "A list with the labels of the composition which are present there.",
                                                                             "items": {
-                                                                                "default value": 0,
-                                                                                "type": "integer",
-                                                                                "description": ""
+                                                                                "description": "",
+                                                                                "oneOf": [
+                                                                                    {
+                                                                                        "default value": 0,
+                                                                                        "type": "integer",
+                                                                                        "description": ""
+                                                                                    },
+                                                                                    {
+                                                                                        "default value": "",
+                                                                                        "type": "string",
+                                                                                        "description": ""
+                                                                                    }
+                                                                                ]
                                                                             }
                                                                         },
                                                                         "lithology": {
@@ -16438,9 +16735,19 @@
                                                                             "uniqueItems": false,
                                                                             "description": "A list with the labels of the composition which are present there.",
                                                                             "items": {
-                                                                                "default value": 0,
-                                                                                "type": "integer",
-                                                                                "description": ""
+                                                                                "description": "",
+                                                                                "oneOf": [
+                                                                                    {
+                                                                                        "default value": 0,
+                                                                                        "type": "integer",
+                                                                                        "description": ""
+                                                                                    },
+                                                                                    {
+                                                                                        "default value": "",
+                                                                                        "type": "string",
+                                                                                        "description": ""
+                                                                                    }
+                                                                                ]
                                                                             }
                                                                         },
                                                                         "fractions": {
@@ -17022,7 +17329,7 @@
                                                     },
                                                     {
                                                         "type": "object",
-                                                        "description": "Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of \"top truncation\" parameter subducting plate. Notes:1) the parameter \"thickness\" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.",
+                                                        "description": "Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of \"top truncation\" parameter subducting plate. Notes:1) the parameter \"thickness\" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to use depth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.",
                                                         "additionalProperties": false,
                                                         "required": [
                                                             "model",
@@ -17056,7 +17363,7 @@
                                                             "max distance slab top": {
                                                                 "default value": 1.7976931348623157e308,
                                                                 "type": "number",
-                                                                "description": "The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km."
+                                                                "description": "The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, this parameters should be about 250 km."
                                                             },
                                                             "density": {
                                                                 "default value": 3300.0,
@@ -17241,11 +17548,15 @@
                                                                 ]
                                                             },
                                                             "operation": {
-                                                                "default value": "replace",
+                                                                "default value": "add",
                                                                 "type": "string",
-                                                                "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                                "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
                                                                 "enum": [
                                                                     "replace",
+                                                                    "add",
+                                                                    "subtract",
+                                                                    "replace",
+                                                                    "replace defined only",
                                                                     "add",
                                                                     "subtract"
                                                                 ]
@@ -17289,11 +17600,6 @@
                                                                 "default value": 2.0,
                                                                 "type": "number",
                                                                 "description": "Frequency multiplier between octaves."
-                                                            },
-                                                            "seed": {
-                                                                "default value": 0,
-                                                                "type": "integer",
-                                                                "description": "Seed for the random number generator. If 0, a random seed is used."
                                                             }
                                                         }
                                                     },
@@ -17507,11 +17813,6 @@
                                                                 "type": "number",
                                                                 "description": "Frequency multiplier between octaves."
                                                             },
-                                                            "seed": {
-                                                                "default value": 0,
-                                                                "type": "integer",
-                                                                "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                            },
                                                             "operation": {
                                                                 "default value": "add",
                                                                 "type": "string",
@@ -17583,9 +17884,19 @@
                                                                 "uniqueItems": false,
                                                                 "description": "A list with the labels of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "operation": {
@@ -17640,9 +17951,19 @@
                                                                 "uniqueItems": false,
                                                                 "description": "A list with the labels of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "lithology": {
@@ -17707,9 +18028,19 @@
                                                                 "uniqueItems": false,
                                                                 "description": "A list with the labels of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "fractions": {

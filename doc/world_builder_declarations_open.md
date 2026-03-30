@@ -1358,10 +1358,10 @@
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_4_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/4/min depth
@@ -1608,15 +1608,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/4/seed
-:open:
-:name: open_features_items_oneOf_1_temperature-models_items_oneOf_4_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::::::
 
 
@@ -2703,15 +2694,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_1_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::::::
-
 ::::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_1_operation
@@ -3256,9 +3238,30 @@
 :open:
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_3_compositions_items
 
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/3/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_1_composition-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/3/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_1_composition-models_items_oneOf_3_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/3/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_1_composition-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -3271,7 +3274,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:A list of compositional fractions corresponding to the compositions list.
 :::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/3/fractions/items
 :open:
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_3_fractions_items
@@ -5534,10 +5537,10 @@
 :open:
 :name: open_features_items_oneOf_2_segments_items_temperature-models_items_oneOf_3_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether to replace, add, or subtract values.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/temperature models/items/oneOf/3/min distance fault center
@@ -5610,15 +5613,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/temperature models/items/oneOf/3/seed
-:open:
-:name: open_features_items_oneOf_2_segments_items_temperature-models_items_oneOf_3_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::::
 
 
@@ -5838,15 +5832,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::::
-
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_1_operation
@@ -5951,9 +5936,30 @@
 :open:
 :name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_2_compositions_items
 
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/2/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/2/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/2/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -6022,9 +6028,30 @@
 :open:
 :name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_3_compositions_items
 
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/3/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/3/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/3/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -6940,10 +6967,10 @@
 :open:
 :name: open_features_items_oneOf_2_temperature-models_items_oneOf_3_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether to replace, add, or subtract values.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/temperature models/items/oneOf/3/min distance fault center
@@ -7016,15 +7043,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/2/temperature models/items/oneOf/3/seed
-:open:
-:name: open_features_items_oneOf_2_temperature-models_items_oneOf_3_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::::::
 
 
@@ -7244,15 +7262,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_2_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::::::
-
 ::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_2_composition-models_items_oneOf_1_operation
@@ -7357,9 +7366,30 @@
 :open:
 :name: open_features_items_oneOf_2_composition-models_items_oneOf_2_compositions_items
 
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/2/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_2_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/2/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_2_composition-models_items_oneOf_2_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/2/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_2_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -7428,9 +7458,30 @@
 :open:
 :name: open_features_items_oneOf_2_composition-models_items_oneOf_3_compositions_items
 
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/3/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_2_composition-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/3/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_2_composition-models_items_oneOf_3_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/3/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_2_composition-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -8465,10 +8516,10 @@
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_temperature-models_items_oneOf_3_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether to replace, add, or subtract values.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/temperature models/items/oneOf/3/min distance fault center
@@ -8541,15 +8592,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/temperature models/items/oneOf/3/seed
-:open:
-:name: open_features_items_oneOf_2_sections_items_segments_items_temperature-models_items_oneOf_3_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::
 
 
@@ -8769,15 +8811,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::
 
-::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::
-
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_1_operation
@@ -8882,9 +8915,30 @@
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_2_compositions_items
 
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/2/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/2/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::
+
+:::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/2/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::
+
+
 :::::::::::
 
 ::::::::::::
@@ -8953,9 +9007,30 @@
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_3_compositions_items
 
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/3/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/3/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::
+
+:::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/3/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::
+
+
 :::::::::::
 
 ::::::::::::
@@ -9871,10 +9946,10 @@
 :open:
 :name: open_features_items_oneOf_2_sections_items_temperature-models_items_oneOf_3_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether to replace, add, or subtract values.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/temperature models/items/oneOf/3/min distance fault center
@@ -9947,15 +10022,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/temperature models/items/oneOf/3/seed
-:open:
-:name: open_features_items_oneOf_2_sections_items_temperature-models_items_oneOf_3_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::::
 
 
@@ -10175,15 +10241,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::::
-
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_1_operation
@@ -10288,9 +10345,30 @@
 :open:
 :name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_2_compositions_items
 
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/2/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/2/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_2_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/2/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -10359,9 +10437,30 @@
 :open:
 :name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_3_compositions_items
 
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/3/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/3/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_3_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/3/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -11850,10 +11949,10 @@
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/min depth
@@ -12082,15 +12181,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/seed
-:open:
-:name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::::::
 
 
@@ -12622,15 +12712,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_3_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::::::
-
 ::::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_3_composition-models_items_oneOf_1_operation
@@ -12851,9 +12932,30 @@
 :open:
 :name: open_features_items_oneOf_3_composition-models_items_oneOf_2_compositions_items
 
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/2/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/2/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_2_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/2/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -15784,10 +15886,10 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/min depth
@@ -16034,15 +16136,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/seed
-:open:
-:name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::::::
 
 
@@ -17231,15 +17324,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_4_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::::::
-
 ::::::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_4_composition-models_items_oneOf_1_operation
@@ -17478,9 +17562,30 @@
 :open:
 :name: open_features_items_oneOf_4_composition-models_items_oneOf_2_compositions_items
 
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/2/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_4_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/2/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_4_composition-models_items_oneOf_2_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/2/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_4_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -17759,9 +17864,30 @@
 :open:
 :name: open_features_items_oneOf_4_composition-models_items_oneOf_3_compositions_items
 
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/3/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_4_composition-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/3/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_4_composition-models_items_oneOf_3_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/3/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_4_composition-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -20492,10 +20618,10 @@
 :open:
 :name: open_features_items_oneOf_5_temperature-models_items_oneOf_2_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/2/min depth
@@ -20568,15 +20694,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/2/seed
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_2_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::::::
 
 
@@ -20796,15 +20913,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_5_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::::::
-
 ::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_5_composition-models_items_oneOf_1_operation
@@ -20869,9 +20977,30 @@
 :open:
 :name: open_features_items_oneOf_5_composition-models_items_oneOf_2_compositions_items
 
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_5_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_5_composition-models_items_oneOf_2_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_5_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -20946,25 +21075,181 @@
 - **default value**:
 - **type**:string
 - **description**:The name of the grains model.
-- **enum**:[random uniform distribution deflected]
+- **enum**:[random uniform distribution]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth
 :open:
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth
 
+- **description**:The depth in meters from which the composition of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth/oneOf
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth/oneOf/1
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth_oneOf_1
+
 - **default value**:0.0
 - **type**:number
-- **description**:The depth in meters from which the grains of this feature are present.
+- **description**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth/oneOf/2
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth/oneOf/2/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth/oneOf/2/items/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/1
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:0.0
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth
 :open:
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth
 
+- **description**:The depth in meters to which the composition of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth/oneOf
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth/oneOf/1
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth_oneOf_1
+
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **description**:The depth in meters to which the grains of this feature are present.
+- **description**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth/oneOf/2
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth/oneOf/2/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth/oneOf/2/items/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/1
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:1.7976931348623157e308
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/compositions
@@ -20994,7 +21279,7 @@
 - **default value**:replace
 - **type**:string
 - **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace, multiply]
+- **enum**:[replace]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/grain sizes
@@ -21037,99 +21322,6 @@
 
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/deflections
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_deflections
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list of the deflections of all of the grains in each composition between 0 and 1.
-:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/deflections/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_deflections_items
-
-- **default value**:1.0
-- **type**:number
-- **description**:
-:::::::::::::::
-
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/basis rotation matrices
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_basis-rotation-matrices
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the rotation matrices of the grains which are present there for each compositions.
-:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/basis rotation matrices/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_basis-rotation-matrices_items
-
-- **type**:array
-- **minItems**:3
-- **maxItems**:3
-- **uniqueItems**:false
-- **description**:
-::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/basis rotation matrices/items/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_basis-rotation-matrices_items_items
-
-- **type**:array
-- **minItems**:3
-- **maxItems**:3
-- **uniqueItems**:false
-- **description**:
-:::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/basis rotation matrices/items/items/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_basis-rotation-matrices_items_items_items
-
-- **default value**:0.0
-- **type**:number
-- **description**:
-:::::::::::::
-
-::::::::::::::
-
-:::::::::::::::
-
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/basis Euler angles z-x-z
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_basis-Euler-angles-z-x-z
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
-:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/basis Euler angles z-x-z/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_basis-Euler-angles-z-x-z_items
-
-- **type**:array
-- **minItems**:3
-- **maxItems**:3
-- **uniqueItems**:false
-- **description**:
-::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/basis Euler angles z-x-z/items/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_basis-Euler-angles-z-x-z_items_items
-
-- **default value**:0.0
-- **type**:number
-- **description**:
-::::::::::::::
-
-:::::::::::::::
-
-::::::::::::::::
-
 
 
 :::::::::::::::::
@@ -21139,7 +21331,7 @@
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_2
 
 - **type**:object
-- **description**:Uniform grains model. All grains start exactly the same.
+- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -21150,7 +21342,7 @@
 - **default value**:
 - **type**:string
 - **description**:The name of the grains model.
-- **enum**:[uniform]
+- **enum**:[random uniform distribution deflected]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/min depth
@@ -21191,79 +21383,6 @@
 
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/rotation matrices
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_rotation-matrices
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the rotation matrices of the grains which are present there for each compositions.
-:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/rotation matrices/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_rotation-matrices_items
-
-- **type**:array
-- **minItems**:3
-- **maxItems**:3
-- **uniqueItems**:false
-- **description**:
-::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/rotation matrices/items/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_rotation-matrices_items_items
-
-- **type**:array
-- **minItems**:3
-- **maxItems**:3
-- **uniqueItems**:false
-- **description**:
-:::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/rotation matrices/items/items/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_rotation-matrices_items_items_items
-
-- **default value**:0.0
-- **type**:number
-- **description**:
-:::::::::::::
-
-::::::::::::::
-
-:::::::::::::::
-
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/Euler angles z-x-z
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_Euler-angles-z-x-z
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
-:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/Euler angles z-x-z/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_Euler-angles-z-x-z_items
-
-- **type**:array
-- **minItems**:3
-- **maxItems**:3
-- **uniqueItems**:false
-- **description**:
-::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/Euler angles z-x-z/items/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_Euler-angles-z-x-z_items_items
-
-- **default value**:0.0
-- **type**:number
-- **description**:
-::::::::::::::
-
-:::::::::::::::
-
-::::::::::::::::
-
 ::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/orientation operation
 :open:
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_2_orientation-operation
@@ -21282,10 +21401,287 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
 :::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/grain sizes/items
 :open:
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_2_grain-sizes_items
+
+- **default value**:1.0
+- **type**:number
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/normalize grain sizes
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_normalize-grain-sizes
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/normalize grain sizes/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_normalize-grain-sizes_items
+
+- **default value**:true
+- **type**:boolean
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/deflections
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_deflections
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of the deflections of all of the grains in each composition between 0 and 1.
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/deflections/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_deflections_items
+
+- **default value**:1.0
+- **type**:number
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/basis rotation matrices
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_basis-rotation-matrices
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the rotation matrices of the grains which are present there for each compositions.
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/basis rotation matrices/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_basis-rotation-matrices_items
+
+- **type**:array
+- **minItems**:3
+- **maxItems**:3
+- **uniqueItems**:false
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/basis rotation matrices/items/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_basis-rotation-matrices_items_items
+
+- **type**:array
+- **minItems**:3
+- **maxItems**:3
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/basis rotation matrices/items/items/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_basis-rotation-matrices_items_items_items
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+:::::::::::::
+
+::::::::::::::
+
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/basis Euler angles z-x-z
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_basis-Euler-angles-z-x-z
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/basis Euler angles z-x-z/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_basis-Euler-angles-z-x-z_items
+
+- **type**:array
+- **minItems**:3
+- **maxItems**:3
+- **uniqueItems**:false
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/basis Euler angles z-x-z/items/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_basis-Euler-angles-z-x-z_items_items
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+::::::::::::::
+
+:::::::::::::::
+
+::::::::::::::::
+
+
+
+:::::::::::::::::
+
+:::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3
+
+- **type**:object
+- **description**:Uniform grains model. All grains start exactly the same.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/model
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the grains model.
+- **enum**:[uniform]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/min depth
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_min-depth
+
+- **default value**:0.0
+- **type**:number
+- **description**:The depth in meters from which the grains of this feature are present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/max depth
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_max-depth
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The depth in meters to which the grains of this feature are present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/compositions
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the integer labels of the composition which are present there.
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/compositions/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/rotation matrices
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_rotation-matrices
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the rotation matrices of the grains which are present there for each compositions.
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/rotation matrices/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_rotation-matrices_items
+
+- **type**:array
+- **minItems**:3
+- **maxItems**:3
+- **uniqueItems**:false
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/rotation matrices/items/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_rotation-matrices_items_items
+
+- **type**:array
+- **minItems**:3
+- **maxItems**:3
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/rotation matrices/items/items/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_rotation-matrices_items_items_items
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+:::::::::::::
+
+::::::::::::::
+
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/Euler angles z-x-z
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_Euler-angles-z-x-z
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/Euler angles z-x-z/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_Euler-angles-z-x-z_items
+
+- **type**:array
+- **minItems**:3
+- **maxItems**:3
+- **uniqueItems**:false
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/Euler angles z-x-z/items/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_Euler-angles-z-x-z_items_items
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+::::::::::::::
+
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/orientation operation
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_orientation-operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **enum**:[replace, multiply]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/grain sizes
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_grain-sizes
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/grain sizes/items
+:open:
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_grain-sizes_items
 
 - **default value**:-1.0
 - **type**:number
@@ -21838,7 +22234,7 @@
 :name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3
 
 - **type**:object
-- **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
+- **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to use depth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
 - **additionalProperties**:false
 - **required**:[model, spreading velocity, subducting velocity]
 
@@ -21877,7 +22273,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km.
+- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, this parameters should be about 250 km.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/density
@@ -22202,10 +22598,10 @@
 :open:
 :name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_4_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/4/min distance slab top
@@ -22278,15 +22674,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/4/seed
-:open:
-:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_4_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::::
 
 
@@ -22620,15 +23007,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::::
-
 ::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_1_operation
@@ -22733,9 +23111,30 @@
 :open:
 :name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_2_compositions_items
 
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/2/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/2/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/2/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -22813,9 +23212,30 @@
 :open:
 :name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_3_compositions_items
 
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/3/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/3/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/3/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -22911,9 +23331,30 @@
 :open:
 :name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_4_compositions_items
 
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/4/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_4_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/4/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_4_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/4/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_4_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -23811,7 +24252,7 @@
 :name: open_features_items_oneOf_6_temperature-models_items_oneOf_3
 
 - **type**:object
-- **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
+- **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to use depth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
 - **additionalProperties**:false
 - **required**:[model, spreading velocity, subducting velocity]
 
@@ -23850,7 +24291,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km.
+- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, this parameters should be about 250 km.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/density
@@ -24175,10 +24616,10 @@
 :open:
 :name: open_features_items_oneOf_6_temperature-models_items_oneOf_4_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/4/min distance slab top
@@ -24251,15 +24692,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/4/seed
-:open:
-:name: open_features_items_oneOf_6_temperature-models_items_oneOf_4_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::::::
 
 
@@ -24593,15 +25025,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_6_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::::::
-
 ::::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_6_composition-models_items_oneOf_1_operation
@@ -24706,9 +25129,30 @@
 :open:
 :name: open_features_items_oneOf_6_composition-models_items_oneOf_2_compositions_items
 
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/2/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/2/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_2_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/2/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -24786,9 +25230,30 @@
 :open:
 :name: open_features_items_oneOf_6_composition-models_items_oneOf_3_compositions_items
 
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/3/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/3/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_3_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/3/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -24884,9 +25349,30 @@
 :open:
 :name: open_features_items_oneOf_6_composition-models_items_oneOf_4_compositions_items
 
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/4/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_4_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/4/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_4_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/4/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_4_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -25903,7 +26389,7 @@
 :name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3
 
 - **type**:object
-- **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
+- **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to use depth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
 - **additionalProperties**:false
 - **required**:[model, spreading velocity, subducting velocity]
 
@@ -25942,7 +26428,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km.
+- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, this parameters should be about 250 km.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/density
@@ -26267,10 +26753,10 @@
 :open:
 :name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_4_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/4/min distance slab top
@@ -26343,15 +26829,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/4/seed
-:open:
-:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_4_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::
 
 
@@ -26685,15 +27162,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::
 
-::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::
-
 ::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_1_operation
@@ -26798,9 +27266,30 @@
 :open:
 :name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_2_compositions_items
 
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/2/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/2/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/2/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::
+
+
 :::::::::::
 
 ::::::::::::
@@ -26878,9 +27367,30 @@
 :open:
 :name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_3_compositions_items
 
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/3/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/3/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/3/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::
+
+
 :::::::::::
 
 ::::::::::::
@@ -26976,9 +27486,30 @@
 :open:
 :name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_4_compositions_items
 
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/4/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_4_compositions_items_oneOf
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/4/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_4_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/4/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_4_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::
+
+
 :::::::::::
 
 ::::::::::::
@@ -27876,7 +28407,7 @@
 :name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3
 
 - **type**:object
-- **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
+- **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to use depth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
 - **additionalProperties**:false
 - **required**:[model, spreading velocity, subducting velocity]
 
@@ -27915,7 +28446,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km.
+- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, this parameters should be about 250 km.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/density
@@ -28240,10 +28771,10 @@
 :open:
 :name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_4_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/4/min distance slab top
@@ -28316,15 +28847,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/4/seed
-:open:
-:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_4_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::::
 
 
@@ -28658,15 +29180,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::::
-
 ::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_1_operation
@@ -28771,9 +29284,30 @@
 :open:
 :name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_2_compositions_items
 
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/2/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/2/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_2_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/2/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -28851,9 +29385,30 @@
 :open:
 :name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_3_compositions_items
 
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/3/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/3/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_3_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/3/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -28949,9 +29504,30 @@
 :open:
 :name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_4_compositions_items
 
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/4/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_4_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/4/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_4_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/4/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_4_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::

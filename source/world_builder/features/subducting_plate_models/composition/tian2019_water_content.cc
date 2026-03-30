@@ -75,7 +75,7 @@ namespace WorldBuilder
           prm.declare_entry("density", Types::Double(3000.0),
                             "The reference density used for determining the lithostatic pressure for calculating "
                             "the bound water content.");
-          prm.declare_entry("compositions", Types::Array(Types::UnsignedInt(),0),
+          prm.declare_entry("compositions", Types::Array(Types::OneOf(Types::UnsignedInt(), Types::String("")),0),
                             "A list with the labels of the composition which are present there.");
           prm.declare_entry("lithology",  Types::String("peridotite"),
                             "The lithology used to determine which polynomials to use for calculating the water content. Valid options are: "
@@ -100,7 +100,7 @@ namespace WorldBuilder
           min_depth = prm.get<double>("min distance slab top");
           max_depth = prm.get<double>("max distance slab top");
           density = prm.get<double>("density");
-          compositions = prm.get_vector<unsigned int>("compositions");
+          compositions = prm.get_vector<unsigned int>("compositions", this->world->composition_properties);
           max_water_content = prm.get<double>("initial water content");
           cutoff_pressure = prm.get<double>("cutoff pressure");
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
