@@ -22,14 +22,21 @@ The region is 4000 x 3000 x 660 km Cartesian box (x,y,z) representing continenta
 
 3. Continental Plates 
 
-    3a.Continental Europe: relatively thick lithosphere (200 km), uniform composition [2]
-    3b.Alps: mountain chain, thick lithosphere (250 km), uniform composition [3]
-    3c.Appennines: mountain chain, thick lithosphere (250 km), uniform composition [3]
-    3d.Pyrenees: mountain chain, thick lithosphere (250 km), uniform composition [3]
-    3e.Massif Central: ECRiS volcanic province; thinned continental lithosphere (100 km), uniform composition [4]
-    3f.Eifel: ECRiS volcanic province; thinned continental lithosphere (100 km), uniform composition [4]
-    3g.Bohemian Massif: ECRiS volcanic province; thinned continental lithosphere (100 km), uniform composition [4]
-    3h.Pannonian Basin: ECRiS volcanic province; thinned continental lithosphere (100 km), uniform composition [4]
+ 3a.Continental Europe: relatively thick lithosphere (200 km), uniform composition [2]
+
+ 3b.Alps: mountain chain, thick lithosphere (250 km), uniform composition [3]
+
+ 3c.Appennines: mountain chain, thick lithosphere (250 km), uniform composition [3]
+
+ 3d.Pyrenees: mountain chain, thick lithosphere (250 km), uniform composition [3]
+
+ 3e.Massif Central: ECRiS volcanic province; thinned continental lithosphere (100 km), uniform composition [4]
+
+ 3f.Eifel: ECRiS volcanic province; thinned continental lithosphere (100 km), uniform composition [4]
+
+ 3g.Bohemian Massif: ECRiS volcanic province; thinned continental lithosphere (100 km), uniform composition [4]
+
+ 3h.Pannonian Basin: ECRiS volcanic province; thinned continental lithosphere (100 km), uniform composition [4]
 
 4.Subducting Slab (Alpine): defined by 5 segments to represent the steep descent toward the MTZ and the horizontal flattening of the slab 
                             along the 660 km discontinuity. The final segment stretches north-ward to reach the four ECRiS regions. Uniform composition [4]. The coordinates of the linear feature are taken in the middle of the Alps polygon.
@@ -37,10 +44,13 @@ The region is 4000 x 3000 x 660 km Cartesian box (x,y,z) representing continenta
 5.Mantle Plumes: the [x,y] coordinates of the four plumes are defined by the centroids of the polygons created to represent the ECRiS 
                  regions. Uniform composition [5]. The maximum depth of each plume has been limited to < 600 km to represent the secondary plumes generated in the MTZ by slab dehydration.
 
-    5a.Massif Central Plume
-    5b.Eifel Plume
-    5c.Boehmian Massif Plume
-    5d.Pannonian Plume
+ 5a.Massif Central Plume
+
+ 5b.Eifel Plume
+
+ 5c.Boehmian Massif Plume
+
+ 5d.Pannonian Plume
 
 :::{figure}  big_mantle_wedge_Europe_surface_view.png
 :name:  big_mantle_wedge_Europe_surface_view
@@ -48,14 +58,20 @@ The region is 4000 x 3000 x 660 km Cartesian box (x,y,z) representing continenta
 :align: center
 :::
 
+Figure (1): different colours represent different features: oceanic plate (dark blue), continental plate (light blue), mountain ranges (pink), intra-continental volcanic provinces (red)
+
 :::{figure}  big_mantle_wedge_Europe_mantle_view.png
 :name:  big_mantle_wedge_Europe_mantle_view
 :alt: Alpine slab subducting beneath Central Europe 
 :align: center
 :::
 
+Figure (2): different colours represent different features: oceanic plate (dark blue), continental plate (light blue), mountain ranges (pink), intra-continental volcanic provinces and subducted slab (red)
+
 :::{figure}  big_mantle_wedge_Europe_plumes_view.png
 :name:  big_mantle_wedge_Europe_plumes_view
 :alt: Mantle plumes feeding the ECRiS intra-continental volcanic regions 
 :align: center
 :::
+
+Figure (3): different colours represent different features: oceanic plate (dark blue), continental plate (light blue), mountain ranges (light pink), intra-continental volcanic provinces and subducted slab (dark pink), ascending plumes (red)
