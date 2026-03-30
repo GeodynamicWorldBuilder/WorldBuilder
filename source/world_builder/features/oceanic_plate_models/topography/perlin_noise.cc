@@ -17,7 +17,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "world_builder/features/continental_plate_models/topography/perlin_noise.h"
+#include "world_builder/features/oceanic_plate_models/topography/perlin_noise.h"
 
 #include "world_builder/nan.h"
 #include "world_builder/types/double.h"
@@ -39,7 +39,7 @@ namespace WorldBuilder
   namespace Features
   {
     using namespace FeatureUtilities;
-    namespace ContinentalPlateModels
+    namespace OceanicPlateModels
     {
       namespace Topography
       {
@@ -66,17 +66,20 @@ namespace WorldBuilder
         void
         PerlinNoise::declare_entries(Parameters &prm, const std::string &)
         {
-          // Document plugin. Unlike some topography plugins (e.g. DepthSurface)
-          // this model does not require a single `topography` field; instead
-          // it exposes `min topography` / `max topography` and Perlin settings.
+          // Document plugin. This model exposes min/max topography and Perlin
+          // settings rather than a single `topography` field.
           prm.declare_entry("", Types::Object(),
-                            "Perlin noise topography model. Generates topography values in a range.");
+                            "Perlin noise topography model for oceanic plates.");
 
-          prm.declare_entry("min depth", Types::OneOf(Types::Double(0), Types::Array(Types::ValueAtPoints(0.,2)), Types::String("")),
-                            "The depth in meters from which the topography of this feature is present.");
+          prm.declare_entry("min depth", Types::OneOf(Types::Double(0),
+                                                      Types::Array(Types::ValueAtPoints(0.,2)),
+                                                      Types::String("")),
+                            "The depth in meters from which the model is present.");
 
-          prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()), Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max(),2)), Types::String("")),
-                            "The depth in meters to which the topography of this feature is present.");
+          prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),
+                                                      Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max(),2)),
+                                                      Types::String("")),
+                            "The depth in meters to which the model is present.");
 
           prm.declare_entry("min topography", Types::Double(-1000.0), "Minimum topography in meters.");
           prm.declare_entry("max topography", Types::Double(1000.0), "Maximum topography in meters.");
@@ -91,9 +94,6 @@ namespace WorldBuilder
         void
         PerlinNoise::parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates)
         {
-          // Parse parameter values and prepare internal state. The permutation
-          // table `p` is shuffled deterministically from the world's RNG so
-          // different runs produce different noise realizations when desired.
           min_depth_surface = Objects::Surface(prm.get("min depth",coordinates));
           min_depth = min_depth_surface.minimum;
           max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
@@ -135,10 +135,6 @@ namespace WorldBuilder
                                     const Objects::NaturalCoordinate &position_in_natural_coordinates,
                                     double topography) const
         {
-          // Compute topography contribution at `position` if the point lies
-          // within the model's depth range. The Perlin result is scaled into
-          // [min_topography, max_topography] and combined with the supplied
-          // `topography` according to `operation`.
           const double depth = position_in_natural_coordinates.get_depth_coordinate();
           if (depth <= max_depth && depth >= min_depth)
             {
@@ -239,7 +235,7 @@ namespace WorldBuilder
           return total / max_value_local;
         }
 
-        WB_REGISTER_FEATURE_CONTINENTAL_PLATE_TOPOGRAPHY_MODEL(PerlinNoise, perlin noise)
+        WB_REGISTER_FEATURE_OCEANIC_PLATE_TOPOGRAPHY_MODEL(PerlinNoise, perlin_noise)
       }
     }
   }
