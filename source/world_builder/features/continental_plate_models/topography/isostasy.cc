@@ -126,12 +126,6 @@ namespace WorldBuilder
             (world->compensation_pressure - pressure_local) /
             (world->background_density * gravity);
 
-          std::cout << "Isostasy: compensation_pressure = " << world->compensation_pressure
-                    << ", pressure_local = " << pressure_local
-                    << ", new_topography = " << new_topography
-                    << ", background_density = " << world->background_density 
-                    << ", gravity = " << gravity << std::endl;
-
           return apply_operation(operation, topography_, new_topography);
         }
 
