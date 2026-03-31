@@ -437,7 +437,7 @@ namespace WorldBuilder
                   // beyond start taper distance to taper the slab tip
 
                   const double depth_start_taper = depth_to_reference_surface - (distance_along_plane - start_taper_distance)
-                                                   * std::sin(average_angle * Consts::PI / 180.0);
+                                                   * std::sin(average_angle);
                   const double theta_start = (mantle_coupling_depth - depth_start_taper) / (subfact * upper_mantle_lengthscale);
                   const double Tmin_start_taper = Tcoup + Tmin660 * (std::erfc(theta_start)) - Tmin660;
                   //keep the offset location constant in the taper

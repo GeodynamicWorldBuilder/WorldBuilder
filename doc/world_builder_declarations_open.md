@@ -1358,10 +1358,10 @@
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_4_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/4/min depth
@@ -1608,15 +1608,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/4/seed
-:open:
-:name: open_features_items_oneOf_1_temperature-models_items_oneOf_4_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::::::
 
 
@@ -2703,15 +2694,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_1_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::::::
-
 ::::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_1_operation
@@ -3250,7 +3232,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:A list of compositional fractions corresponding to the compositions list.
 :::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/3/fractions/items
 :open:
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_3_fractions_items
@@ -5513,10 +5495,10 @@
 :open:
 :name: open_features_items_oneOf_2_segments_items_temperature-models_items_oneOf_3_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether to replace, add, or subtract values.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/temperature models/items/oneOf/3/min distance fault center
@@ -5589,15 +5571,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/temperature models/items/oneOf/3/seed
-:open:
-:name: open_features_items_oneOf_2_segments_items_temperature-models_items_oneOf_3_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::::
 
 
@@ -5817,15 +5790,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::::
-
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_1_operation
@@ -6016,7 +5980,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:A list of compositional fractions corresponding to the compositions list.
 :::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/3/fractions/items
 :open:
 :name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_3_fractions_items
@@ -6919,10 +6883,10 @@
 :open:
 :name: open_features_items_oneOf_2_temperature-models_items_oneOf_3_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether to replace, add, or subtract values.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/temperature models/items/oneOf/3/min distance fault center
@@ -6995,15 +6959,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/2/temperature models/items/oneOf/3/seed
-:open:
-:name: open_features_items_oneOf_2_temperature-models_items_oneOf_3_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::::::
 
 
@@ -7223,15 +7178,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_2_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::::::
-
 ::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_2_composition-models_items_oneOf_1_operation
@@ -7422,7 +7368,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:A list of compositional fractions corresponding to the compositions list.
 :::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/3/fractions/items
 :open:
 :name: open_features_items_oneOf_2_composition-models_items_oneOf_3_fractions_items
@@ -8444,10 +8390,10 @@
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_temperature-models_items_oneOf_3_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether to replace, add, or subtract values.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/temperature models/items/oneOf/3/min distance fault center
@@ -8520,15 +8466,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/temperature models/items/oneOf/3/seed
-:open:
-:name: open_features_items_oneOf_2_sections_items_segments_items_temperature-models_items_oneOf_3_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::
 
 
@@ -8748,15 +8685,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::
 
-::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::
-
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_1_operation
@@ -8947,7 +8875,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:A list of compositional fractions corresponding to the compositions list.
 :::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/3/fractions/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_3_fractions_items
@@ -9850,10 +9778,10 @@
 :open:
 :name: open_features_items_oneOf_2_sections_items_temperature-models_items_oneOf_3_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether to replace, add, or subtract values.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/temperature models/items/oneOf/3/min distance fault center
@@ -9926,15 +9854,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/temperature models/items/oneOf/3/seed
-:open:
-:name: open_features_items_oneOf_2_sections_items_temperature-models_items_oneOf_3_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::::
 
 
@@ -10154,15 +10073,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::::
-
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_1_operation
@@ -10353,7 +10263,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:A list of compositional fractions corresponding to the compositions list.
 :::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/3/fractions/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_3_fractions_items
@@ -11829,10 +11739,10 @@
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/min depth
@@ -12061,15 +11971,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/seed
-:open:
-:name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::::::
 
 
@@ -12601,15 +12502,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_3_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::::::
-
 ::::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_3_composition-models_items_oneOf_1_operation
@@ -12845,7 +12737,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:A list of compositional fractions corresponding to the compositions list.
 :::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/2/fractions/items
 :open:
 :name: open_features_items_oneOf_3_composition-models_items_oneOf_2_fractions_items
@@ -15763,10 +15655,10 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/min depth
@@ -16013,15 +15905,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/seed
-:open:
-:name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::::::
 
 
@@ -17210,15 +17093,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_4_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::::::
-
 ::::::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_4_composition-models_items_oneOf_1_operation
@@ -17753,7 +17627,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:A list of compositional fractions corresponding to the compositions list.
 :::::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/3/fractions/items
 :open:
 :name: open_features_items_oneOf_4_composition-models_items_oneOf_3_fractions_items
@@ -20471,10 +20345,10 @@
 :open:
 :name: open_features_items_oneOf_5_temperature-models_items_oneOf_2_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/2/min depth
@@ -20547,15 +20421,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/2/seed
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_2_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::::::
 
 
@@ -20775,15 +20640,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_5_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::::::
-
 ::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_5_composition-models_items_oneOf_1_operation
@@ -20863,7 +20719,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:A list of compositional fractions corresponding to the compositions list.
 :::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/fractions/items
 :open:
 :name: open_features_items_oneOf_5_composition-models_items_oneOf_2_fractions_items
@@ -22448,10 +22304,10 @@
 :open:
 :name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_4_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/4/min distance slab top
@@ -22524,15 +22380,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/4/seed
-:open:
-:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_4_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::::
 
 
@@ -22866,15 +22713,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::::
-
 ::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_1_operation
@@ -23172,7 +23010,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:A list of compositional fractions corresponding to the compositions list.
 :::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/4/fractions/items
 :open:
 :name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_4_fractions_items
@@ -24421,10 +24259,10 @@
 :open:
 :name: open_features_items_oneOf_6_temperature-models_items_oneOf_4_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/4/min distance slab top
@@ -24497,15 +24335,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/4/seed
-:open:
-:name: open_features_items_oneOf_6_temperature-models_items_oneOf_4_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::::::
 
 
@@ -24839,15 +24668,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_6_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::::::
-
 ::::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_6_composition-models_items_oneOf_1_operation
@@ -25145,7 +24965,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:A list of compositional fractions corresponding to the compositions list.
 :::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/4/fractions/items
 :open:
 :name: open_features_items_oneOf_6_composition-models_items_oneOf_4_fractions_items
@@ -26513,10 +26333,10 @@
 :open:
 :name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_4_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/4/min distance slab top
@@ -26589,15 +26409,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/4/seed
-:open:
-:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_4_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::
 
 
@@ -26931,15 +26742,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::
 
-::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::
-
 ::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_1_operation
@@ -27237,7 +27039,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:A list of compositional fractions corresponding to the compositions list.
 :::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/4/fractions/items
 :open:
 :name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_4_fractions_items
@@ -28486,10 +28288,10 @@
 :open:
 :name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_4_operation
 
-- **default value**:replace
+- **default value**:add
 - **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, add, subtract, replace, replace defined only, add, subtract]
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/4/min distance slab top
@@ -28562,15 +28364,6 @@
 - **default value**:2.0
 - **type**:number
 - **description**:Frequency multiplier between octaves.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/4/seed
-:open:
-:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_4_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
 ::::::::::::::
 
 
@@ -28904,15 +28697,6 @@
 - **description**:Frequency multiplier between octaves.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/1/seed
-:open:
-:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_1_seed
-
-- **default value**:0
-- **type**:integer
-- **description**:Seed for the random number generator. If 0, a random seed is used.
-::::::::::::::
-
 ::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/1/operation
 :open:
 :name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_1_operation
@@ -29210,7 +28994,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:A list of compositional fractions corresponding to the compositions list.
 :::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/4/fractions/items
 :open:
 :name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_4_fractions_items

@@ -853,11 +853,15 @@
                                                     ]
                                                 },
                                                 "operation": {
-                                                    "default value": "replace",
+                                                    "default value": "add",
                                                     "type": "string",
-                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
                                                     "enum": [
                                                         "replace",
+                                                        "add",
+                                                        "subtract",
+                                                        "replace",
+                                                        "replace defined only",
                                                         "add",
                                                         "subtract"
                                                     ]
@@ -991,11 +995,6 @@
                                                     "default value": 2.0,
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
-                                                },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
                                                 }
                                             }
                                         },
@@ -1611,11 +1610,6 @@
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
                                                 },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                },
                                                 "operation": {
                                                     "default value": "add",
                                                     "type": "string",
@@ -1929,7 +1923,7 @@
                                                     "minItems": 1,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "TA list of compositional fractions corresponding to the compositions list.",
+                                                    "description": "A list of compositional fractions corresponding to the compositions list.",
                                                     "items": {
                                                         "default value": 1.0,
                                                         "type": "number",
@@ -3254,11 +3248,15 @@
                                                                 ]
                                                             },
                                                             "operation": {
-                                                                "default value": "replace",
+                                                                "default value": "add",
                                                                 "type": "string",
-                                                                "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                                "description": "Whether to replace, add, or subtract values.",
                                                                 "enum": [
                                                                     "replace",
+                                                                    "add",
+                                                                    "subtract",
+                                                                    "replace",
+                                                                    "replace defined only",
                                                                     "add",
                                                                     "subtract"
                                                                 ]
@@ -3302,11 +3300,6 @@
                                                                 "default value": 2.0,
                                                                 "type": "number",
                                                                 "description": "Frequency multiplier between octaves."
-                                                            },
-                                                            "seed": {
-                                                                "default value": 0,
-                                                                "type": "integer",
-                                                                "description": "Seed for the random number generator. If 0, a random seed is used."
                                                             }
                                                         }
                                                     },
@@ -3446,11 +3439,6 @@
                                                                 "type": "number",
                                                                 "description": "Frequency multiplier between octaves."
                                                             },
-                                                            "seed": {
-                                                                "default value": 0,
-                                                                "type": "integer",
-                                                                "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                            },
                                                             "operation": {
                                                                 "default value": "add",
                                                                 "type": "string",
@@ -3584,7 +3572,7 @@
                                                                 "minItems": 1,
                                                                 "maxItems": 4294967295,
                                                                 "uniqueItems": false,
-                                                                "description": "TA list of compositional fractions corresponding to the compositions list.",
+                                                                "description": "A list of compositional fractions corresponding to the compositions list.",
                                                                 "items": {
                                                                     "default value": 1.0,
                                                                     "type": "number",
@@ -4175,11 +4163,15 @@
                                                     ]
                                                 },
                                                 "operation": {
-                                                    "default value": "replace",
+                                                    "default value": "add",
                                                     "type": "string",
-                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "description": "Whether to replace, add, or subtract values.",
                                                     "enum": [
                                                         "replace",
+                                                        "add",
+                                                        "subtract",
+                                                        "replace",
+                                                        "replace defined only",
                                                         "add",
                                                         "subtract"
                                                     ]
@@ -4223,11 +4215,6 @@
                                                     "default value": 2.0,
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
-                                                },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
                                                 }
                                             }
                                         },
@@ -4367,11 +4354,6 @@
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
                                                 },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                },
                                                 "operation": {
                                                     "default value": "add",
                                                     "type": "string",
@@ -4505,7 +4487,7 @@
                                                     "minItems": 1,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "TA list of compositional fractions corresponding to the compositions list.",
+                                                    "description": "A list of compositional fractions corresponding to the compositions list.",
                                                     "items": {
                                                         "default value": 1.0,
                                                         "type": "number",
@@ -5166,11 +5148,15 @@
                                                                             ]
                                                                         },
                                                                         "operation": {
-                                                                            "default value": "replace",
+                                                                            "default value": "add",
                                                                             "type": "string",
-                                                                            "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                                            "description": "Whether to replace, add, or subtract values.",
                                                                             "enum": [
                                                                                 "replace",
+                                                                                "add",
+                                                                                "subtract",
+                                                                                "replace",
+                                                                                "replace defined only",
                                                                                 "add",
                                                                                 "subtract"
                                                                             ]
@@ -5214,11 +5200,6 @@
                                                                             "default value": 2.0,
                                                                             "type": "number",
                                                                             "description": "Frequency multiplier between octaves."
-                                                                        },
-                                                                        "seed": {
-                                                                            "default value": 0,
-                                                                            "type": "integer",
-                                                                            "description": "Seed for the random number generator. If 0, a random seed is used."
                                                                         }
                                                                     }
                                                                 },
@@ -5358,11 +5339,6 @@
                                                                             "type": "number",
                                                                             "description": "Frequency multiplier between octaves."
                                                                         },
-                                                                        "seed": {
-                                                                            "default value": 0,
-                                                                            "type": "integer",
-                                                                            "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                                        },
                                                                         "operation": {
                                                                             "default value": "add",
                                                                             "type": "string",
@@ -5496,7 +5472,7 @@
                                                                             "minItems": 1,
                                                                             "maxItems": 4294967295,
                                                                             "uniqueItems": false,
-                                                                            "description": "TA list of compositional fractions corresponding to the compositions list.",
+                                                                            "description": "A list of compositional fractions corresponding to the compositions list.",
                                                                             "items": {
                                                                                 "default value": 1.0,
                                                                                 "type": "number",
@@ -6087,11 +6063,15 @@
                                                                 ]
                                                             },
                                                             "operation": {
-                                                                "default value": "replace",
+                                                                "default value": "add",
                                                                 "type": "string",
-                                                                "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                                "description": "Whether to replace, add, or subtract values.",
                                                                 "enum": [
                                                                     "replace",
+                                                                    "add",
+                                                                    "subtract",
+                                                                    "replace",
+                                                                    "replace defined only",
                                                                     "add",
                                                                     "subtract"
                                                                 ]
@@ -6135,11 +6115,6 @@
                                                                 "default value": 2.0,
                                                                 "type": "number",
                                                                 "description": "Frequency multiplier between octaves."
-                                                            },
-                                                            "seed": {
-                                                                "default value": 0,
-                                                                "type": "integer",
-                                                                "description": "Seed for the random number generator. If 0, a random seed is used."
                                                             }
                                                         }
                                                     },
@@ -6279,11 +6254,6 @@
                                                                 "type": "number",
                                                                 "description": "Frequency multiplier between octaves."
                                                             },
-                                                            "seed": {
-                                                                "default value": 0,
-                                                                "type": "integer",
-                                                                "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                            },
                                                             "operation": {
                                                                 "default value": "add",
                                                                 "type": "string",
@@ -6417,7 +6387,7 @@
                                                                 "minItems": 1,
                                                                 "maxItems": 4294967295,
                                                                 "uniqueItems": false,
-                                                                "description": "TA list of compositional fractions corresponding to the compositions list.",
+                                                                "description": "A list of compositional fractions corresponding to the compositions list.",
                                                                 "items": {
                                                                     "default value": 1.0,
                                                                     "type": "number",
@@ -7312,11 +7282,15 @@
                                                     ]
                                                 },
                                                 "operation": {
-                                                    "default value": "replace",
+                                                    "default value": "add",
                                                     "type": "string",
-                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
                                                     "enum": [
                                                         "replace",
+                                                        "add",
+                                                        "subtract",
+                                                        "replace",
+                                                        "replace defined only",
                                                         "add",
                                                         "subtract"
                                                     ]
@@ -7440,11 +7414,6 @@
                                                     "default value": 2.0,
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
-                                                },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
                                                 }
                                             }
                                         },
@@ -7744,11 +7713,6 @@
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
                                                 },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                },
                                                 "operation": {
                                                     "default value": "add",
                                                     "type": "string",
@@ -7886,7 +7850,7 @@
                                                     "minItems": 1,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "TA list of compositional fractions corresponding to the compositions list.",
+                                                    "description": "A list of compositional fractions corresponding to the compositions list.",
                                                     "items": {
                                                         "default value": 1.0,
                                                         "type": "number",
@@ -9561,11 +9525,15 @@
                                                     ]
                                                 },
                                                 "operation": {
-                                                    "default value": "replace",
+                                                    "default value": "add",
                                                     "type": "string",
-                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
                                                     "enum": [
                                                         "replace",
+                                                        "add",
+                                                        "subtract",
+                                                        "replace",
+                                                        "replace defined only",
                                                         "add",
                                                         "subtract"
                                                     ]
@@ -9699,11 +9667,6 @@
                                                     "default value": 2.0,
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
-                                                },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
                                                 }
                                             }
                                         },
@@ -10374,11 +10337,6 @@
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
                                                 },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                },
                                                 "operation": {
                                                     "default value": "add",
                                                     "type": "string",
@@ -10688,7 +10646,7 @@
                                                     "minItems": 1,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "TA list of compositional fractions corresponding to the compositions list.",
+                                                    "description": "A list of compositional fractions corresponding to the compositions list.",
                                                     "items": {
                                                         "default value": 1.0,
                                                         "type": "number",
@@ -12267,11 +12225,15 @@
                                                     ]
                                                 },
                                                 "operation": {
-                                                    "default value": "replace",
+                                                    "default value": "add",
                                                     "type": "string",
-                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
                                                     "enum": [
                                                         "replace",
+                                                        "add",
+                                                        "subtract",
+                                                        "replace",
+                                                        "replace defined only",
                                                         "add",
                                                         "subtract"
                                                     ]
@@ -12315,11 +12277,6 @@
                                                     "default value": 2.0,
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
-                                                },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
                                                 }
                                             }
                                         },
@@ -12459,11 +12416,6 @@
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
                                                 },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                },
                                                 "operation": {
                                                     "default value": "add",
                                                     "type": "string",
@@ -12521,7 +12473,7 @@
                                                     "minItems": 1,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "TA list of compositional fractions corresponding to the compositions list.",
+                                                    "description": "A list of compositional fractions corresponding to the compositions list.",
                                                     "items": {
                                                         "default value": 1.0,
                                                         "type": "number",
@@ -13507,11 +13459,15 @@
                                                                 ]
                                                             },
                                                             "operation": {
-                                                                "default value": "replace",
+                                                                "default value": "add",
                                                                 "type": "string",
-                                                                "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                                "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
                                                                 "enum": [
                                                                     "replace",
+                                                                    "add",
+                                                                    "subtract",
+                                                                    "replace",
+                                                                    "replace defined only",
                                                                     "add",
                                                                     "subtract"
                                                                 ]
@@ -13555,11 +13511,6 @@
                                                                 "default value": 2.0,
                                                                 "type": "number",
                                                                 "description": "Frequency multiplier between octaves."
-                                                            },
-                                                            "seed": {
-                                                                "default value": 0,
-                                                                "type": "integer",
-                                                                "description": "Seed for the random number generator. If 0, a random seed is used."
                                                             }
                                                         }
                                                     },
@@ -13773,11 +13724,6 @@
                                                                 "type": "number",
                                                                 "description": "Frequency multiplier between octaves."
                                                             },
-                                                            "seed": {
-                                                                "default value": 0,
-                                                                "type": "integer",
-                                                                "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                            },
                                                             "operation": {
                                                                 "default value": "add",
                                                                 "type": "string",
@@ -13983,7 +13929,7 @@
                                                                 "minItems": 1,
                                                                 "maxItems": 4294967295,
                                                                 "uniqueItems": false,
-                                                                "description": "TA list of compositional fractions corresponding to the compositions list.",
+                                                                "description": "A list of compositional fractions corresponding to the compositions list.",
                                                                 "items": {
                                                                     "default value": 1.0,
                                                                     "type": "number",
@@ -14776,11 +14722,15 @@
                                                     ]
                                                 },
                                                 "operation": {
-                                                    "default value": "replace",
+                                                    "default value": "add",
                                                     "type": "string",
-                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
                                                     "enum": [
                                                         "replace",
+                                                        "add",
+                                                        "subtract",
+                                                        "replace",
+                                                        "replace defined only",
                                                         "add",
                                                         "subtract"
                                                     ]
@@ -14824,11 +14774,6 @@
                                                     "default value": 2.0,
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
-                                                },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
                                                 }
                                             }
                                         },
@@ -15042,11 +14987,6 @@
                                                     "type": "number",
                                                     "description": "Frequency multiplier between octaves."
                                                 },
-                                                "seed": {
-                                                    "default value": 0,
-                                                    "type": "integer",
-                                                    "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                },
                                                 "operation": {
                                                     "default value": "add",
                                                     "type": "string",
@@ -15252,7 +15192,7 @@
                                                     "minItems": 1,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "TA list of compositional fractions corresponding to the compositions list.",
+                                                    "description": "A list of compositional fractions corresponding to the compositions list.",
                                                     "items": {
                                                         "default value": 1.0,
                                                         "type": "number",
@@ -16115,11 +16055,15 @@
                                                                             ]
                                                                         },
                                                                         "operation": {
-                                                                            "default value": "replace",
+                                                                            "default value": "add",
                                                                             "type": "string",
-                                                                            "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                                            "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
                                                                             "enum": [
                                                                                 "replace",
+                                                                                "add",
+                                                                                "subtract",
+                                                                                "replace",
+                                                                                "replace defined only",
                                                                                 "add",
                                                                                 "subtract"
                                                                             ]
@@ -16163,11 +16107,6 @@
                                                                             "default value": 2.0,
                                                                             "type": "number",
                                                                             "description": "Frequency multiplier between octaves."
-                                                                        },
-                                                                        "seed": {
-                                                                            "default value": 0,
-                                                                            "type": "integer",
-                                                                            "description": "Seed for the random number generator. If 0, a random seed is used."
                                                                         }
                                                                     }
                                                                 },
@@ -16381,11 +16320,6 @@
                                                                             "type": "number",
                                                                             "description": "Frequency multiplier between octaves."
                                                                         },
-                                                                        "seed": {
-                                                                            "default value": 0,
-                                                                            "type": "integer",
-                                                                            "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                                        },
                                                                         "operation": {
                                                                             "default value": "add",
                                                                             "type": "string",
@@ -16591,7 +16525,7 @@
                                                                             "minItems": 1,
                                                                             "maxItems": 4294967295,
                                                                             "uniqueItems": false,
-                                                                            "description": "TA list of compositional fractions corresponding to the compositions list.",
+                                                                            "description": "A list of compositional fractions corresponding to the compositions list.",
                                                                             "items": {
                                                                                 "default value": 1.0,
                                                                                 "type": "number",
@@ -17384,11 +17318,15 @@
                                                                 ]
                                                             },
                                                             "operation": {
-                                                                "default value": "replace",
+                                                                "default value": "add",
                                                                 "type": "string",
-                                                                "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                                "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
                                                                 "enum": [
                                                                     "replace",
+                                                                    "add",
+                                                                    "subtract",
+                                                                    "replace",
+                                                                    "replace defined only",
                                                                     "add",
                                                                     "subtract"
                                                                 ]
@@ -17432,11 +17370,6 @@
                                                                 "default value": 2.0,
                                                                 "type": "number",
                                                                 "description": "Frequency multiplier between octaves."
-                                                            },
-                                                            "seed": {
-                                                                "default value": 0,
-                                                                "type": "integer",
-                                                                "description": "Seed for the random number generator. If 0, a random seed is used."
                                                             }
                                                         }
                                                     },
@@ -17650,11 +17583,6 @@
                                                                 "type": "number",
                                                                 "description": "Frequency multiplier between octaves."
                                                             },
-                                                            "seed": {
-                                                                "default value": 0,
-                                                                "type": "integer",
-                                                                "description": "Seed for the random number generator. If 0, a random seed is used."
-                                                            },
                                                             "operation": {
                                                                 "default value": "add",
                                                                 "type": "string",
@@ -17860,7 +17788,7 @@
                                                                 "minItems": 1,
                                                                 "maxItems": 4294967295,
                                                                 "uniqueItems": false,
-                                                                "description": "TA list of compositional fractions corresponding to the compositions list.",
+                                                                "description": "A list of compositional fractions corresponding to the compositions list.",
                                                                 "items": {
                                                                     "default value": 1.0,
                                                                     "type": "number",
