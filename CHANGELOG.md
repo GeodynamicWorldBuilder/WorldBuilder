@@ -11,7 +11,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### Added
-
+- Added a new cookbook to reproduce the Big Mantle Wedge setting beneath Europe 
+\[Enrico Marzotto; 2026-03-31; [#911](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/911)\]
 - Added Perlin noise models for composition and temperature across features, and gwb-dat coverage tests for Cartesian Perlin noise inputs. \[Tilman May; 2026-03-29; [#906](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/906)\]
 
 ### Changed
