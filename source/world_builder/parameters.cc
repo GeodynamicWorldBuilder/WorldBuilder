@@ -214,28 +214,28 @@ namespace WorldBuilder
     return Pointer((this->get_full_json_path() + "/" + name).c_str()).Get(parameters) != nullptr;
   }
 
-  std::vector<Parameters::composition_properties>
+  std::vector<Parameters::composition_property>
   Parameters::get_composition_properties(const std::string &name) const
   {
     // parse entries as indices linked to names and reference densities
     // struct data type allows easy extension for more properties in the future
-    std::vector<Parameters::composition_properties> composition_properties_output;
+    std::vector<Parameters::composition_property> cp_output;
 
-    const std::string strict_base = this->get_full_json_path();
-    const Value *composition_properties_entries = Pointer((strict_base + "/" + name).c_str()).Get(parameters);
+    const std::string base = this->get_full_json_path();
+    const Value *cp_entries = Pointer((base + "/" + name).c_str()).Get(parameters);
 
-    if (composition_properties_entries == nullptr)
-      return composition_properties_output;
+    if (cp_entries == nullptr)
+      return cp_output;
 
-    WBAssertThrow(composition_properties_entries->IsArray(),
+    WBAssertThrow(cp_entries->IsArray(),
                   "Invalid entry \"" << name << "\": expected an array of objects with required key \"index\" and optional keys \"name\" and \"reference density\".");
 
     std::map<unsigned int, bool> seen_indexes;
-    composition_properties_output.reserve(composition_properties_entries->Size());
+    cp_output.reserve(cp_entries->Size());
 
-    for (SizeType i = 0; i < composition_properties_entries->Size(); ++i)
+    for (SizeType i = 0; i < cp_entries->Size(); ++i)
       {
-        const Value &entry = (*composition_properties_entries)[i];
+        const Value &entry = (*cp_entries)[i];
 
         // index must be unique
         const unsigned int composition_index = entry["index"].GetUint();
@@ -249,13 +249,13 @@ namespace WorldBuilder
         // reference density defaults to value in CompositionProperty unless user defined
         const double reference_density = entry.HasMember("reference density") ? entry["reference density"].GetDouble() : Types::CompositionProperty::get_default_reference_density();
 
-        composition_properties_output.emplace_back(Parameters::composition_properties {composition_index,
-                                                                                       composition_name,
-                                                                                       reference_density
-                                                                                      });
+        cp_output.emplace_back(Parameters::composition_property {composition_index,
+                                                                 composition_name,
+                                                                 reference_density
+                                                                });
       }
 
-    return composition_properties_output;
+    return cp_output;
   }
 
 
