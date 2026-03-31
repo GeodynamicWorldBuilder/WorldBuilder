@@ -2009,8 +2009,8 @@ namespace WorldBuilder
             const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
             Value *entry = Pointer(base.c_str()).Get(parameters);
 
-            // user can define either an index (usigned int)
-            // or a compositon name (string)
+            // user can define either an index (unsigned int)
+            // or a composition name (string)
             // if latter, assign the corresponding index in the composition properties
             if (entry->IsUint())
               {

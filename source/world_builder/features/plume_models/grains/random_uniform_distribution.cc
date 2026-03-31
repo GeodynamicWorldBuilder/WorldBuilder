@@ -94,7 +94,7 @@ namespace WorldBuilder
         {
           min_depth = prm.get<double>("min depth");
           max_depth = prm.get<double>("max depth");
-          compositions = prm.get_vector<unsigned int>("compositions");
+          compositions = prm.get_vector<unsigned int>("compositions", this->world->composition_properties);
 
           operation = prm.get<std::string>("orientation operation");
           grain_sizes = prm.get_vector<double>("grain sizes");

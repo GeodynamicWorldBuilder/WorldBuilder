@@ -22,7 +22,7 @@
   ],
   "features":[
     {
-      "model":"continental plate",
+      "model":"oceanic plate",
       "name":"TestPlate",
       "max depth":300e3,
       "coordinates":[[0,0],[100e3,0],[100e3,50e3],[0,50e3]],

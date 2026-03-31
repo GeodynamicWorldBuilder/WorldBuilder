@@ -1559,11 +1559,21 @@
                                                     "minItems": 0,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "description": "A list of indices or names of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "min value": {
@@ -1745,11 +1755,21 @@
                                                     "minItems": 0,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "description": "A list of indices or names of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "min value": {
@@ -2908,11 +2928,21 @@
                                                     "minItems": 0,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "description": "A list of indices or names of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "min depth": {
@@ -3518,11 +3548,21 @@
                                                                 "minItems": 0,
                                                                 "maxItems": 4294967295,
                                                                 "uniqueItems": false,
-                                                                "description": "A list with the labels of the composition which are present there.",
+                                                                "description": "A list of indices or names of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "operation": {
@@ -3570,11 +3610,21 @@
                                                                 "minItems": 0,
                                                                 "maxItems": 4294967295,
                                                                 "uniqueItems": false,
-                                                                "description": "A list with the labels of the composition which are present there.",
+                                                                "description": "A list of indices or names of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "fractions": {
@@ -4010,11 +4060,21 @@
                                                                 "minItems": 0,
                                                                 "maxItems": 4294967295,
                                                                 "uniqueItems": false,
-                                                                "description": "A list with the labels of the composition which are present there.",
+                                                                "description": "A list of indices or names of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "min distance fault center": {
@@ -4433,11 +4493,21 @@
                                                     "minItems": 0,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "description": "A list of indices or names of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "operation": {
@@ -4485,11 +4555,21 @@
                                                     "minItems": 0,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "description": "A list of indices or names of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "fractions": {
@@ -4925,11 +5005,21 @@
                                                     "minItems": 0,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "description": "A list of indices or names of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "min distance fault center": {
@@ -5418,11 +5508,21 @@
                                                                             "minItems": 0,
                                                                             "maxItems": 4294967295,
                                                                             "uniqueItems": false,
-                                                                            "description": "A list with the labels of the composition which are present there.",
+                                                                            "description": "A list of indices or names of the composition which are present there.",
                                                                             "items": {
-                                                                                "default value": 0,
-                                                                                "type": "integer",
-                                                                                "description": ""
+                                                                                "description": "",
+                                                                                "oneOf": [
+                                                                                    {
+                                                                                        "default value": 0,
+                                                                                        "type": "integer",
+                                                                                        "description": ""
+                                                                                    },
+                                                                                    {
+                                                                                        "default value": "",
+                                                                                        "type": "string",
+                                                                                        "description": ""
+                                                                                    }
+                                                                                ]
                                                                             }
                                                                         },
                                                                         "operation": {
@@ -5470,11 +5570,21 @@
                                                                             "minItems": 0,
                                                                             "maxItems": 4294967295,
                                                                             "uniqueItems": false,
-                                                                            "description": "A list with the labels of the composition which are present there.",
+                                                                            "description": "A list of indices or names of the composition which are present there.",
                                                                             "items": {
-                                                                                "default value": 0,
-                                                                                "type": "integer",
-                                                                                "description": ""
+                                                                                "description": "",
+                                                                                "oneOf": [
+                                                                                    {
+                                                                                        "default value": 0,
+                                                                                        "type": "integer",
+                                                                                        "description": ""
+                                                                                    },
+                                                                                    {
+                                                                                        "default value": "",
+                                                                                        "type": "string",
+                                                                                        "description": ""
+                                                                                    }
+                                                                                ]
                                                                             }
                                                                         },
                                                                         "fractions": {
@@ -5910,11 +6020,21 @@
                                                                             "minItems": 0,
                                                                             "maxItems": 4294967295,
                                                                             "uniqueItems": false,
-                                                                            "description": "A list with the labels of the composition which are present there.",
+                                                                            "description": "A list of indices or names of the composition which are present there.",
                                                                             "items": {
-                                                                                "default value": 0,
-                                                                                "type": "integer",
-                                                                                "description": ""
+                                                                                "description": "",
+                                                                                "oneOf": [
+                                                                                    {
+                                                                                        "default value": 0,
+                                                                                        "type": "integer",
+                                                                                        "description": ""
+                                                                                    },
+                                                                                    {
+                                                                                        "default value": "",
+                                                                                        "type": "string",
+                                                                                        "description": ""
+                                                                                    }
+                                                                                ]
                                                                             }
                                                                         },
                                                                         "min distance fault center": {
@@ -6333,11 +6453,21 @@
                                                                 "minItems": 0,
                                                                 "maxItems": 4294967295,
                                                                 "uniqueItems": false,
-                                                                "description": "A list with the labels of the composition which are present there.",
+                                                                "description": "A list of indices or names of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "operation": {
@@ -6385,11 +6515,21 @@
                                                                 "minItems": 0,
                                                                 "maxItems": 4294967295,
                                                                 "uniqueItems": false,
-                                                                "description": "A list with the labels of the composition which are present there.",
+                                                                "description": "A list of indices or names of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "fractions": {
@@ -6825,11 +6965,21 @@
                                                                 "minItems": 0,
                                                                 "maxItems": 4294967295,
                                                                 "uniqueItems": false,
-                                                                "description": "A list with the labels of the composition which are present there.",
+                                                                "description": "A list of indices or names of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "min distance fault center": {
@@ -7848,11 +7998,21 @@
                                                     "minItems": 0,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "description": "A list of indices or names of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "fractions": {
@@ -8768,11 +8928,21 @@
                                                     "minItems": 0,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "description": "A list of indices or names of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "min depth": {
@@ -10482,11 +10652,21 @@
                                                     "minItems": 0,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "description": "A list of indices or names of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "density": {
@@ -10644,11 +10824,21 @@
                                                     "minItems": 0,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "description": "A list of indices or names of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "fractions": {
@@ -11926,11 +12116,21 @@
                                                     "minItems": 0,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "description": "A list of indices or names of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "min depth": {
@@ -12471,11 +12671,21 @@
                                                     "minItems": 0,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "description": "A list of indices or names of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "fractions": {
@@ -13007,11 +13217,21 @@
                                                     "minItems": 0,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "description": "A list of indices or names of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "min depth": {
@@ -13803,11 +14023,21 @@
                                                                 "minItems": 0,
                                                                 "maxItems": 4294967295,
                                                                 "uniqueItems": false,
-                                                                "description": "A list with the labels of the composition which are present there.",
+                                                                "description": "A list of indices or names of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "operation": {
@@ -13860,11 +14090,21 @@
                                                                 "minItems": 0,
                                                                 "maxItems": 4294967295,
                                                                 "uniqueItems": false,
-                                                                "description": "A list with the labels of the composition which are present there.",
+                                                                "description": "A list of indices or names of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "lithology": {
@@ -13927,11 +14167,21 @@
                                                                 "minItems": 0,
                                                                 "maxItems": 4294967295,
                                                                 "uniqueItems": false,
-                                                                "description": "A list with the labels of the composition which are present there.",
+                                                                "description": "A list of indices or names of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "fractions": {
@@ -14367,11 +14617,21 @@
                                                                 "minItems": 0,
                                                                 "maxItems": 4294967295,
                                                                 "uniqueItems": false,
-                                                                "description": "A list with the labels of the composition which are present there.",
+                                                                "description": "A list of indices or names of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "min distance slab top": {
@@ -15066,11 +15326,21 @@
                                                     "minItems": 0,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "description": "A list of indices or names of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "operation": {
@@ -15123,11 +15393,21 @@
                                                     "minItems": 0,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "description": "A list of indices or names of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "lithology": {
@@ -15190,11 +15470,21 @@
                                                     "minItems": 0,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "description": "A list of indices or names of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "fractions": {
@@ -15630,11 +15920,21 @@
                                                     "minItems": 0,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "description": "A list of indices or names of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "min distance slab top": {
@@ -16399,11 +16699,21 @@
                                                                             "minItems": 0,
                                                                             "maxItems": 4294967295,
                                                                             "uniqueItems": false,
-                                                                            "description": "A list with the labels of the composition which are present there.",
+                                                                            "description": "A list of indices or names of the composition which are present there.",
                                                                             "items": {
-                                                                                "default value": 0,
-                                                                                "type": "integer",
-                                                                                "description": ""
+                                                                                "description": "",
+                                                                                "oneOf": [
+                                                                                    {
+                                                                                        "default value": 0,
+                                                                                        "type": "integer",
+                                                                                        "description": ""
+                                                                                    },
+                                                                                    {
+                                                                                        "default value": "",
+                                                                                        "type": "string",
+                                                                                        "description": ""
+                                                                                    }
+                                                                                ]
                                                                             }
                                                                         },
                                                                         "operation": {
@@ -16456,11 +16766,21 @@
                                                                             "minItems": 0,
                                                                             "maxItems": 4294967295,
                                                                             "uniqueItems": false,
-                                                                            "description": "A list with the labels of the composition which are present there.",
+                                                                            "description": "A list of indices or names of the composition which are present there.",
                                                                             "items": {
-                                                                                "default value": 0,
-                                                                                "type": "integer",
-                                                                                "description": ""
+                                                                                "description": "",
+                                                                                "oneOf": [
+                                                                                    {
+                                                                                        "default value": 0,
+                                                                                        "type": "integer",
+                                                                                        "description": ""
+                                                                                    },
+                                                                                    {
+                                                                                        "default value": "",
+                                                                                        "type": "string",
+                                                                                        "description": ""
+                                                                                    }
+                                                                                ]
                                                                             }
                                                                         },
                                                                         "lithology": {
@@ -16523,11 +16843,21 @@
                                                                             "minItems": 0,
                                                                             "maxItems": 4294967295,
                                                                             "uniqueItems": false,
-                                                                            "description": "A list with the labels of the composition which are present there.",
+                                                                            "description": "A list of indices or names of the composition which are present there.",
                                                                             "items": {
-                                                                                "default value": 0,
-                                                                                "type": "integer",
-                                                                                "description": ""
+                                                                                "description": "",
+                                                                                "oneOf": [
+                                                                                    {
+                                                                                        "default value": 0,
+                                                                                        "type": "integer",
+                                                                                        "description": ""
+                                                                                    },
+                                                                                    {
+                                                                                        "default value": "",
+                                                                                        "type": "string",
+                                                                                        "description": ""
+                                                                                    }
+                                                                                ]
                                                                             }
                                                                         },
                                                                         "fractions": {
@@ -16963,11 +17293,21 @@
                                                                             "minItems": 0,
                                                                             "maxItems": 4294967295,
                                                                             "uniqueItems": false,
-                                                                            "description": "A list with the labels of the composition which are present there.",
+                                                                            "description": "A list of indices or names of the composition which are present there.",
                                                                             "items": {
-                                                                                "default value": 0,
-                                                                                "type": "integer",
-                                                                                "description": ""
+                                                                                "description": "",
+                                                                                "oneOf": [
+                                                                                    {
+                                                                                        "default value": 0,
+                                                                                        "type": "integer",
+                                                                                        "description": ""
+                                                                                    },
+                                                                                    {
+                                                                                        "default value": "",
+                                                                                        "type": "string",
+                                                                                        "description": ""
+                                                                                    }
+                                                                                ]
                                                                             }
                                                                         },
                                                                         "min distance slab top": {
@@ -17662,11 +18002,21 @@
                                                                 "minItems": 0,
                                                                 "maxItems": 4294967295,
                                                                 "uniqueItems": false,
-                                                                "description": "A list with the labels of the composition which are present there.",
+                                                                "description": "A list of indices or names of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "operation": {
@@ -17719,11 +18069,21 @@
                                                                 "minItems": 0,
                                                                 "maxItems": 4294967295,
                                                                 "uniqueItems": false,
-                                                                "description": "A list with the labels of the composition which are present there.",
+                                                                "description": "A list of indices or names of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "lithology": {
@@ -17786,11 +18146,21 @@
                                                                 "minItems": 0,
                                                                 "maxItems": 4294967295,
                                                                 "uniqueItems": false,
-                                                                "description": "A list with the labels of the composition which are present there.",
+                                                                "description": "A list of indices or names of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "fractions": {
@@ -18226,11 +18596,21 @@
                                                                 "minItems": 0,
                                                                 "maxItems": 4294967295,
                                                                 "uniqueItems": false,
-                                                                "description": "A list with the labels of the composition which are present there.",
+                                                                "description": "A list of indices or names of the composition which are present there.",
                                                                 "items": {
-                                                                    "default value": 0,
-                                                                    "type": "integer",
-                                                                    "description": ""
+                                                                    "description": "",
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "default value": 0,
+                                                                            "type": "integer",
+                                                                            "description": ""
+                                                                        },
+                                                                        {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": ""
+                                                                        }
+                                                                    ]
                                                                 }
                                                             },
                                                             "min distance slab top": {

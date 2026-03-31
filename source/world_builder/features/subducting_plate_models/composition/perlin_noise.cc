@@ -90,7 +90,7 @@ namespace WorldBuilder
           min_distance = prm.get<double>("min distance slab top");
           max_distance = prm.get<double>("max distance slab top");
 
-          compositions = prm.get_vector<unsigned int>("compositions");
+          compositions = prm.get_vector<unsigned int>("compositions", this->world->composition_properties);
           min_value = prm.get_vector<double>("min value");
           max_value = prm.get_vector<double>("max value");
           frequency = prm.get<double>("frequency");

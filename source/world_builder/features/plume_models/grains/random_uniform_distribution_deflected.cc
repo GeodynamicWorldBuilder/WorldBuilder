@@ -103,7 +103,7 @@ namespace WorldBuilder
         {
           min_depth = prm.get<double>("min depth");
           max_depth = prm.get<double>("max depth");
-          compositions = prm.get_vector<unsigned int>("compositions");
+          compositions = prm.get_vector<unsigned int>("compositions", this->world->composition_properties);
 
           const bool set_euler_angles = prm.check_entry("basis Euler angles z-x-z");
           const bool set_rotation_matrices = prm.check_entry("basis rotation matrices");

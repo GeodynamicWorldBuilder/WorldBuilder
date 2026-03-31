@@ -68,8 +68,8 @@ namespace WorldBuilder
                             "The composition fraction at the center of the fault.");
           prm.declare_entry("side fractions",  Types::Array(Types::Double(0.0),1),
                             "The composition fraction at the sides of this feature.");
-          prm.declare_entry("compositions", Types::Array(Types::UnsignedInt(),0),
-                            "A list with the labels of the composition which are present there.");
+          prm.declare_entry("compositions", Types::Array(Types::OneOf(Types::UnsignedInt(), Types::String("")),0),
+                            "A list of indices or names of the composition which are present there.");
           prm.declare_entry("operation", Types::String("replace", std::vector<std::string> {"replace", "replace defined only", "add", "subtract"}),
                             "Whether the value should replace any value previously defined at this location (replace) or "
                             "add the value to the previously define value. Replacing implies that all compositions not "
@@ -85,7 +85,7 @@ namespace WorldBuilder
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
           center_fraction = prm.get_vector<double>("center fractions");
           side_fraction = prm.get_vector<double>("side fractions");
-          compositions = prm.get_vector<unsigned int>("compositions");
+          compositions = prm.get_vector<unsigned int>("compositions", this->world->composition_properties);
         }
 
 

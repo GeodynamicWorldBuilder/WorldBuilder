@@ -8122,6 +8122,6 @@ TEST_CASE("WorldBuilder composition properties map")
   CHECK(world.composition_properties[3].reference_density == Approx(3350.0));
 
   CHECK(world.properties({{75e3,50e3,0}},50e3, {{{{2,3,0}}}})[0] == Approx(1.0)); // supposed to be pyroxenite (3)
-  CHECK(world.properties({{75e3,50e3,0}},50e3, {{{{2,2,0}}}})[0] == Approx(0.0)); // not supposed to be compostion index 2
+  CHECK(world.properties({{75e3,50e3,0}},50e3, {{{{2,2,0}}}})[0] == Approx(0.0)); // not supposed to be composition index 2
   CHECK(world.properties({{25e3,50e3,0}},50e3, {{{{2,1,0}}}})[0] == Approx(1.0)); // supposed to be harzburgite (1)
 }
