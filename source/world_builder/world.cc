@@ -193,8 +193,8 @@ namespace WorldBuilder
       prm.declare_entry("number of integration points", Types::Int(100),
                         "Number of integration points for calculating the compensation pressure.");
 
-      prm.declare_entry("Reference profile point", Types::Point<2>(),
-                        "This is an array of two points along where the cross section is taken");
+      prm.declare_entry("reference profile point", Types::Point<2>(),
+                        "This is an X-Y point used to calculate the reference compensation pressure.");
 
     }
     prm.leave_subsection();
