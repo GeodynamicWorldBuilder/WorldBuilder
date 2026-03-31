@@ -63,7 +63,7 @@ namespace WorldBuilder
           // Add `topography` and half space model params to the required parameters.
 
           prm.declare_entry("", Types::Object({"ridge coordinates", "spreading velocity",
-                                               "max depth", "min ocean depth", "bottom density", 
+                                               "max depth", "min ocean depth", "bottom density",
                                                "top density"
                                               }), "Half space cooled topography");
 
@@ -107,7 +107,7 @@ namespace WorldBuilder
 
         void
         HalfSpaceCooling::parse_entries(Parameters &prm,
-                                          const std::vector<Point<2>> &coordinates)
+                                        const std::vector<Point<2>> &coordinates)
         {
           min_depth_surface = Objects::Surface(prm.get("min depth",coordinates));
           min_depth = min_depth_surface.minimum;
@@ -154,8 +154,8 @@ namespace WorldBuilder
 
         double
         HalfSpaceCooling::get_topography(const Point<3> &position_in_cartesian_coordinates,
-                                           const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                                           double /*topo*/) const
+                                         const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                                         double /*topo*/) const
         {
           (void) position_in_natural_coordinates;
           Objects::NaturalCoordinate position_in_natural_coordinates_at_min_depth = Objects::NaturalCoordinate(position_in_cartesian_coordinates,
@@ -180,7 +180,7 @@ namespace WorldBuilder
 
           // age of half space cooling model is used to compute the heights and added with initial depth and topo
           double half_space_cooling_height = (2.0 * bottom_density * alpha * (bottom_temperature - top_temperature) / top_density) *
-                                            std::sqrt(thermal_diffusivity * age / Consts::PI);
+                                             std::sqrt(thermal_diffusivity * age / Consts::PI);
 
           return -(half_space_cooling_height + min_ocean_depth);
 
