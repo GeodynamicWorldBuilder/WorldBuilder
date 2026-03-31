@@ -58,7 +58,7 @@ The region is 4000 x 3000 x 660 km Cartesian box (x,y,z) representing continenta
 :align: center
 :::
 
-Figure (1): different colours represent different features: oceanic plate (dark blue), continental plate (light blue), mountain ranges (pink), intra-continental volcanic provinces (red)
+Figure (1): different colours represent different features: oceanic plate (dark blue), continental plate (dark green), mountain ranges (light green), intra-continental volcanic provinces (orange)
 
 :::{figure}  big_mantle_wedge_Europe_mantle_view.png
 :name:  big_mantle_wedge_Europe_mantle_view
@@ -66,7 +66,7 @@ Figure (1): different colours represent different features: oceanic plate (dark 
 :align: center
 :::
 
-Figure (2): different colours represent different features: oceanic plate (dark blue), continental plate (light blue), mountain ranges (pink), intra-continental volcanic provinces and subducted slab (red)
+Figure (2): different colours represent different features: oceanic plate (dark blue), continental plate (dark green), mountain ranges (light green), and subducted slab (orange)
 
 :::{figure}  big_mantle_wedge_Europe_plumes_view.png
 :name:  big_mantle_wedge_Europe_plumes_view
@@ -74,4 +74,4 @@ Figure (2): different colours represent different features: oceanic plate (dark 
 :align: center
 :::
 
-Figure (3): different colours represent different features: oceanic plate (dark blue), continental plate (light blue), mountain ranges (light pink), intra-continental volcanic provinces and subducted slab (dark pink), ascending plumes (red)
+Figure (3): different colours represent different features: oceanic plate (dark blue), continental plate (dark green), mountain ranges (light green), subducted slab (orange), intra-continental volcanic provinces and ascending plumes (red)
