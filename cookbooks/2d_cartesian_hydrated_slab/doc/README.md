@@ -2,8 +2,7 @@
 2D Hydrated Subducting Plate
 ======================
 
-A simple setup of a subducting plate in a Cartesian box which contains hydrated lithologies. There are four lithologies, a 3 km
-thick sediment layer, a 4 km thick mid-ocean ridge basalt (MORB) layer, a 4 thick gabbro layer, and a 9 km thick peridotite layer. The lithologies are specified to have an upper bound on the amount of bound water that they can hold of 3 wt%, 1 wt%, 0.5 wt%, and 2 wt% for sediment, MORB, gabbro, and peridotite, respectively. 
+A simple setup of a subducting plate in a Cartesian box which contains hydrated lithologies calculated using parameterized phase diagrams {cite:p}`Tian2019`. There are four lithologies, a 3 km thick sediment layer, a 4 km thick mid-ocean ridge basalt (MORB) layer, a 4 km thick gabbro layer, and a 9 km thick peridotite layer. The lithologies are specified to have an upper bound on the amount of bound water that they can hold of 3 wt%, 1 wt%, 0.5 wt%, and 2 wt% for sediment, MORB, gabbro, and peridotite, respectively. 
 
 The relevant part of the World Builder file for prescribing the water content within the unsubducted oceanic plate looks like this:
 

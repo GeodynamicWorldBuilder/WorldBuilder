@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>World Builder Perlin Noise Playground</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #151c33;
+      --panel-2: #1b2544;
+      --text: #e7ecff;
+      --muted: #aab6e8;
+      --accent: #7aa2ff;
+      --border: #2b3764;
+      --good: #4ade80;
+      --warn: #fbbf24;
+      --bad: #f87171;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #0b1020 0%, #0f1630 100%);
+      color: var(--text);
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: rgba(21, 28, 51, 0.92);
+      border-right: 1px solid var(--border);
+      padding: 20px;
+      overflow-y: auto;
+      backdrop-filter: blur(10px);
+    }
+
+    .main {
+      padding: 20px;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 16px;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 1.35rem;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+    }
+
+    p, label, small, button, input, select, textarea, pre {
+      font: inherit;
+    }
+
+    .muted {
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .section {
+      margin-top: 18px;
+      padding: 14px;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .control {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .control-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    input[type="number"], select {
+      width: 100%;
+      background: #0d1430;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    button {
+      background: var(--accent);
+      color: #071127;
+      border: 0;
+      border-radius: 12px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    button.secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .button-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(130px, 1fr));
+      gap: 12px;
+    }
+
+    .stat {
+      background: rgba(21, 28, 51, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .stat .label {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+    }
+
+    .stat .value {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .canvas-wrap {
+      background: rgba(21, 28, 51, 0.72);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px;
+      min-height: 0;
+      display: grid;
+      place-items: center;
+    }
+
+    canvas {
+      width: min(100%, 900px);
+      aspect-ratio: 1 / 1;
+      image-rendering: pixelated;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #0b1020;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .footer {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    code {
+      background: rgba(255,255,255,0.06);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      background: #0d1430;
+      margin-top: 8px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .good { background: var(--good); }
+    .warn { background: var(--warn); }
+    .bad  { background: var(--bad); }
+
+    .note {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.45;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 960px) {
+      .app { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <h1>Perlin Noise Playground</h1>
+      <p class="muted">
+        Interactive preview for the World Builder <code>perlin_noise</code> topography model.
+        Coordinates are entered in <strong>km</strong> for the model geometry, then converted to
+        <strong>meters</strong> internally before evaluating the Perlin field. That makes the
+        frequency directly comparable to geodynamic model scales.
+      </p>
+
+      <div class="section">
+        <h2>Noise parameters</h2>
+        <div class="control">
+          <div class="control-top">
+            <label for="frequencyExp">Base frequency (log10 scale)</label>
+            <span id="frequencyValue"></span>
+          </div>
+          <input id="frequencyExp" type="range" min="-8" max="0" step="0.01" value="-5">
+          <small class="muted">
+            Uses <code>frequency = 10^x</code>. For a 100 km scale model, values near 1e-5 to 1e-4
+            are often the most informative.
+          </small>
+          <small class="muted" id="wavelengthInfo"></small>
+        </div>
+
+        <div class="control">
+          <div class="control-top"><label for="octaves">Octaves</label><span id="octavesValue"></span></div>
+          <input id="octaves" type="range" min="1" max="10" step="1" value="4">
+        </div>
+
+        <div class="control">
+          <div class="control-top"><label for="persistence">Persistence</label><span id="persistenceValue"></span></div>
+          <input id="persistence" type="range" min="0" max="1.5" step="0.01" value="0.5">
+        </div>
+
+        <div class="control">
+          <div class="control-top"><label for="lacunarity">Lacunarity</label><span id="lacunarityValue"></span></div>
+          <input id="lacunarity" type="range" min="1" max="5" step="0.01" value="2">
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Topography range</h2>
+        <div class="row">
+          <div class="control">
+            <label for="minTopography">Min topography (m)</label>
+            <input id="minTopography" type="number" value="-1000" step="100">
+          </div>
+          <div class="control">
+            <label for="maxTopography">Max topography (m)</label>
+            <input id="maxTopography" type="number" value="1000" step="100">
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Geodynamic model geometry</h2>
+        <div class="row">
+          <div class="control">
+            <label for="scaleXKm">Model width (km)</label>
+            <input id="scaleXKm" type="number" value="100" step="1" min="1">
+          </div>
+          <div class="control">
+            <label for="scaleYKm">Model height (km)</label>
+            <input id="scaleYKm" type="number" value="50" step="1" min="1">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="control">
+            <label for="offsetXKm">Offset X (km)</label>
+            <input id="offsetXKm" type="number" value="0" step="1">
+          </div>
+          <div class="control">
+            <label for="offsetYKm">Offset Y (km)</label>
+            <input id="offsetYKm" type="number" value="0" step="1">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="control">
+            <label for="modelDepthKm">Model depth (km)</label>
+            <input id="modelDepthKm" type="number" value="100" step="1" min="1">
+          </div>
+          <div class="control">
+            <label for="modelResolutionKm">Horizontal model resolution (km)</label>
+            <input id="modelResolutionKm" type="number" value="2" step="0.1" min="0.1">
+          </div>
+        </div>
+
+        <div class="note">
+          The new resolution field compares the smallest Perlin wavelength generated by the highest octave
+          to your geodynamic grid spacing.
+        </div>
+
+        <div id="resolutionBadge" class="badge">
+          <span class="dot good"></span>
+          <span>Resolution check</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Preview controls</h2>
+        <div class="row">
+          <div class="control">
+            <label for="resolution">Preview resolution</label>
+            <select id="resolution">
+              <option value="128">128 × 128</option>
+              <option value="256" selected>256 × 256</option>
+              <option value="384">384 × 384</option>
+              <option value="512">512 × 512</option>
+            </select>
+          </div>
+          <div class="control">
+            <label for="colorMode">Color mode</label>
+            <select id="colorMode">
+              <option value="terrain" selected>Terrain</option>
+              <option value="grayscale">Grayscale</option>
+              <option value="blue-red">Blue / Red</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="control">
+            <label for="seed">Seed</label>
+            <input id="seed" type="number" value="42" step="1">
+          </div>
+          <div class="control">
+            <label for="crossSectionY">Cross-section y index</label>
+            <input id="crossSectionY" type="number" value="128" step="1" min="0">
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button id="rerollBtn">Reroll permutation</button>
+          <button class="secondary" id="resetBtn">Reset defaults</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>JSON snippet</h2>
+        <pre id="jsonOut" style="white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; color: #d9e3ff;"></pre>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="toolbar">
+        <div>
+          <strong>2D surface preview</strong>
+          <div class="muted">Sampling the noise field at surface coordinates only, analogous to the C++ model.</div>
+        </div>
+      </div>
+
+      <div class="stats" id="stats"></div>
+
+      <div class="canvas-wrap">
+        <canvas id="canvas" width="256" height="256"></canvas>
+      </div>
+
+      <div class="canvas-wrap" style="padding: 10px 14px;">
+        <canvas id="profileCanvas" width="900" height="240" style="width:min(100%,900px); aspect-ratio:auto;"></canvas>
+      </div>
+
+      <div class="footer">
+        The preview follows the plugin logic closely: octave noise is normalized by the summed amplitudes,
+        then mapped with <code>min + (noise * 0.5 + 0.5) * (max - min)</code>. The diagnostics below are
+        geodynamic helpers added on top of the World Builder logic so you can compare the synthetic roughness
+        to your model resolution.
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const defaults = {
+      frequencyExp: -5,
+      octaves: 4,
+      persistence: 0.5,
+      lacunarity: 2,
+      minTopography: -1000,
+      maxTopography: 1000,
+      scaleXKm: 100,
+      scaleYKm: 50,
+      offsetXKm: 0,
+      offsetYKm: 0,
+      modelDepthKm: 100,
+      modelResolutionKm: 2,
+      resolution: 256,
+      colorMode: 'terrain',
+      seed: 42,
+      crossSectionY: 128,
+    };
+
+    const els = {};
+    [
+      'frequencyExp','octaves','persistence','lacunarity','minTopography','maxTopography',
+      'scaleXKm','scaleYKm','offsetXKm','offsetYKm','modelDepthKm','modelResolutionKm',
+      'resolution','colorMode','seed','crossSectionY',
+      'rerollBtn','resetBtn','canvas','profileCanvas','jsonOut','stats',
+      'frequencyValue','octavesValue','persistenceValue','lacunarityValue','wavelengthInfo','resolutionBadge'
+    ].forEach(id => els[id] = document.getElementById(id));
+
+    const ctx = els.canvas.getContext('2d');
+    const pctx = els.profileCanvas.getContext('2d');
+
+    function mulberry32(seed) {
+      let a = seed >>> 0;
+      return function() {
+        a |= 0;
+        a = (a + 0x6D2B79F5) | 0;
+        let t = Math.imul(a ^ (a >>> 15), 1 | a);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    function buildPermutation(seed) {
+      const rand = mulberry32(seed);
+      const p = Array.from({ length: 256 }, (_, i) => i);
+      for (let i = 255; i > 0; --i) {
+        const j = Math.floor(rand() * (i + 1));
+        [p[i], p[j]] = [p[j], p[i]];
+      }
+      return p;
+    }
+
+    function fade(t) {
+      return t * t * t * (t * (t * 6 - 15) + 10);
+    }
+
+    function lerp(t, a, b) {
+      return a + t * (b - a);
+    }
+
+    function grad(hash, x, y, z) {
+      const h = hash & 15;
+      const u = h < 8 ? x : y;
+      const v = h < 4 ? y : (h === 12 || h === 14 ? x : z);
+      return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
+    }
+
+    function noiseFactory(permArray) {
+      const perm = idx => permArray[idx & 255];
+      return function noise(x, y, z) {
+        const X = Math.floor(x) & 255;
+        const Y = Math.floor(y) & 255;
+        const Z = Math.floor(z) & 255;
+
+        x -= Math.floor(x);
+        y -= Math.floor(y);
+        z -= Math.floor(z);
+
+        const u = fade(x);
+        const v = fade(y);
+        const w = fade(z);
+
+        const A = perm(X) + Y;
+        const AA = perm(A) + Z;
+        const AB = perm(A + 1) + Z;
+        const B = perm(X + 1) + Y;
+        const BA = perm(B) + Z;
+        const BB = perm(B + 1) + Z;
+
+        return lerp(
+          w,
+          lerp(
+            v,
+            lerp(u, grad(perm(AA), x, y, z), grad(perm(BA), x - 1, y, z)),
+            lerp(u, grad(perm(AB), x, y - 1, z), grad(perm(BB), x - 1, y - 1, z))
+          ),
+          lerp(
+            v,
+            lerp(u, grad(perm(AA + 1), x, y, z - 1), grad(perm(BA + 1), x - 1, y, z - 1)),
+            lerp(u, grad(perm(AB + 1), x, y - 1, z - 1), grad(perm(BB + 1), x - 1, y - 1, z - 1))
+          )
+        );
+      };
+    }
+
+    function octaveNoise(noise, x, y, z, params) {
+      const octaves = Math.max(0, params.octaves | 0);
+      if (octaves === 0) return 0;
+
+      let total = 0;
+      let frequencyLocal = params.frequency;
+      let amplitude = 1;
+      let maxValue = 0;
+
+      for (let i = 0; i < octaves; i++) {
+        total += noise(x * frequencyLocal, y * frequencyLocal, z * frequencyLocal) * amplitude;
+        maxValue += amplitude;
+        amplitude *= params.persistence;
+        frequencyLocal *= params.lacunarity;
+      }
+
+      return maxValue <= 0 ? 0 : total / maxValue;
+    }
+
+    function colorize(value, min, max, mode) {
+      const t = max === min ? 0.5 : Math.max(0, Math.min(1, (value - min) / (max - min)));
+
+      if (mode === 'grayscale') {
+        const c = Math.round(t * 255);
+        return [c, c, c, 255];
+      }
+
+      if (mode === 'blue-red') {
+        const r = Math.round(255 * t);
+        const b = Math.round(255 * (1 - t));
+        return [r, 70, b, 255];
+      }
+
+      if (value < 0) {
+        const s = min >= 0 ? 0.5 : Math.max(0, Math.min(1, (value - min) / (0 - min || 1)));
+        return [
+          Math.round(20 + 40 * s),
+          Math.round(60 + 120 * s),
+          Math.round(120 + 100 * s),
+          255
+        ];
+      }
+
+      const s = max <= 0 ? 0.5 : Math.max(0, Math.min(1, value / (max || 1)));
+      return [
+        Math.round(80 + 150 * s),
+        Math.round(90 + 120 * s),
+        Math.round(40 + 70 * (1 - s)),
+        255
+      ];
+    }
+
+    function readParams() {
+      const frequencyExp = parseFloat(els.frequencyExp.value);
+      return {
+        frequencyExp,
+        frequency: Math.pow(10, frequencyExp),
+        octaves: parseInt(els.octaves.value, 10),
+        persistence: parseFloat(els.persistence.value),
+        lacunarity: parseFloat(els.lacunarity.value),
+        minTopography: parseFloat(els.minTopography.value),
+        maxTopography: parseFloat(els.maxTopography.value),
+        scaleXKm: parseFloat(els.scaleXKm.value),
+        scaleYKm: parseFloat(els.scaleYKm.value),
+        offsetXKm: parseFloat(els.offsetXKm.value),
+        offsetYKm: parseFloat(els.offsetYKm.value),
+        modelDepthKm: parseFloat(els.modelDepthKm.value),
+        modelResolutionKm: parseFloat(els.modelResolutionKm.value),
+        resolution: parseInt(els.resolution.value, 10),
+        colorMode: els.colorMode.value,
+        seed: parseInt(els.seed.value, 10) || 0,
+        crossSectionY: parseInt(els.crossSectionY.value, 10) || 0,
+      };
+    }
+
+    function diagnostics(params) {
+      const baseWavelengthM = params.frequency > 0 ? 1.0 / params.frequency : Infinity;
+      const maxFrequency = params.frequency * Math.pow(params.lacunarity, Math.max(0, params.octaves - 1));
+      const smallestWavelengthM = maxFrequency > 0 ? 1.0 / maxFrequency : Infinity;
+      const baseWavelengthKm = baseWavelengthM / 1000.0;
+      const smallestWavelengthKm = smallestWavelengthM / 1000.0;
+      const cellsPerSmallestFeature = smallestWavelengthKm / params.modelResolutionKm;
+      return {
+        baseWavelengthKm,
+        smallestWavelengthKm,
+        cellsPerSmallestFeature,
+        maxFrequency,
+      };
+    }
+
+    function formatKm(value) {
+      if (!Number.isFinite(value)) return '∞';
+      return value >= 1000 ? value.toExponential(2) : value.toFixed(2);
+    }
+
+    function resolutionStatus(cellsPerFeature) {
+      if (cellsPerFeature >= 6) {
+        return { cls: 'good', label: 'Well resolved', text: 'Smallest feature spans at least ~6 grid cells.' };
+      }
+      if (cellsPerFeature >= 3) {
+        return { cls: 'warn', label: 'Marginal', text: 'Smallest feature spans ~3–6 cells. Use with caution.' };
+      }
+      return { cls: 'bad', label: 'Under-resolved', text: 'Smallest feature is below ~3 cells and is likely too fine for the model.' };
+    }
+
+    function updateLabels(params, diag) {
+      els.frequencyValue.textContent = `${params.frequency.toExponential(2)} (10^${params.frequencyExp.toFixed(2)})`;
+      els.wavelengthInfo.innerHTML = `Base wavelength ≈ <strong>${formatKm(diag.baseWavelengthKm)} km</strong>; smallest wavelength from highest octave ≈ <strong>${formatKm(diag.smallestWavelengthKm)} km</strong>.`;
+      els.octavesValue.textContent = String(params.octaves);
+      els.persistenceValue.textContent = params.persistence.toFixed(2);
+      els.lacunarityValue.textContent = params.lacunarity.toFixed(2);
+    }
+
+    function updateResolutionBadge(diag) {
+      const status = resolutionStatus(diag.cellsPerSmallestFeature);
+      els.resolutionBadge.innerHTML = `
+        <span class="dot ${status.cls}"></span>
+        <span>${status.label} — ${diag.cellsPerSmallestFeature.toFixed(2)} cells per smallest feature</span>
+      `;
+      els.resolutionBadge.title = status.text;
+    }
+
+    function render() {
+      const params = readParams();
+      const diag = diagnostics(params);
+      updateLabels(params, diag);
+      updateResolutionBadge(diag);
+
+      if (params.maxTopography < params.minTopography) {
+        [params.minTopography, params.maxTopography] = [params.maxTopography, params.minTopography];
+      }
+
+      const resolution = params.resolution;
+      els.canvas.width = resolution;
+      els.canvas.height = resolution;
+
+      const permutation = buildPermutation(params.seed);
+      const noise = noiseFactory(permutation);
+      const image = ctx.createImageData(resolution, resolution);
+      const data = image.data;
+      const values = new Float64Array(resolution * resolution);
+
+      let min = Infinity;
+      let max = -Infinity;
+      let sum = 0;
+      let sumSq = 0;
+
+      for (let j = 0; j < resolution; j++) {
+        for (let i = 0; i < resolution; i++) {
+          const xKm = params.offsetXKm + (i / (resolution - 1)) * params.scaleXKm;
+          const yKm = params.offsetYKm + (j / (resolution - 1)) * params.scaleYKm;
+          const x = xKm * 1000.0;
+          const y = yKm * 1000.0;
+          const n = octaveNoise(noise, x, y, 0.0, params);
+          const topo = params.minTopography + (n * 0.5 + 0.5) * (params.maxTopography - params.minTopography);
+          const idx = j * resolution + i;
+          values[idx] = topo;
+          if (topo < min) min = topo;
+          if (topo > max) max = topo;
+          sum += topo;
+          sumSq += topo * topo;
+        }
+      }
+
+      for (let idx = 0; idx < values.length; idx++) {
+        const rgba = colorize(values[idx], params.minTopography, params.maxTopography, params.colorMode);
+        const base = idx * 4;
+        data[base + 0] = rgba[0];
+        data[base + 1] = rgba[1];
+        data[base + 2] = rgba[2];
+        data[base + 3] = rgba[3];
+      }
+      ctx.putImageData(image, 0, 0);
+
+      const mean = sum / values.length;
+      const variance = Math.max(0, sumSq / values.length - mean * mean);
+      const std = Math.sqrt(variance);
+      const yIndex = Math.max(0, Math.min(resolution - 1, params.crossSectionY));
+      els.crossSectionY.max = String(resolution - 1);
+      drawProfile(values, resolution, yIndex, params.minTopography, params.maxTopography);
+      updateStats({ min, max, mean, std, yIndex, resolution, params, diag });
+      updateJson(params, diag);
+    }
+
+    function drawProfile(values, resolution, yIndex, minTopo, maxTopo) {
+      const w = els.profileCanvas.width;
+      const h = els.profileCanvas.height;
+      pctx.clearRect(0, 0, w, h);
+
+      pctx.fillStyle = '#0d1430';
+      pctx.fillRect(0, 0, w, h);
+
+      pctx.strokeStyle = '#33406f';
+      pctx.lineWidth = 1;
+      for (let i = 0; i <= 4; i++) {
+        const y = 20 + (i / 4) * (h - 40);
+        pctx.beginPath();
+        pctx.moveTo(40, y);
+        pctx.lineTo(w - 20, y);
+        pctx.stroke();
+      }
+
+      const zeroY = mapValue(0, minTopo, maxTopo, h - 20, 20);
+      pctx.strokeStyle = '#7aa2ff';
+      pctx.beginPath();
+      pctx.moveTo(40, zeroY);
+      pctx.lineTo(w - 20, zeroY);
+      pctx.stroke();
+
+      pctx.strokeStyle = '#dbe6ff';
+      pctx.lineWidth = 2;
+      pctx.beginPath();
+      for (let x = 0; x < resolution; x++) {
+        const value = values[yIndex * resolution + x];
+        const px = 40 + (x / (resolution - 1)) * (w - 60);
+        const py = mapValue(value, minTopo, maxTopo, h - 20, 20);
+        if (x === 0) pctx.moveTo(px, py);
+        else pctx.lineTo(px, py);
+      }
+      pctx.stroke();
+
+      pctx.fillStyle = '#aab6e8';
+      pctx.font = '12px Inter, sans-serif';
+      pctx.fillText(`Cross-section at y index ${yIndex}`, 40, 14);
+      pctx.fillText(`${maxTopo.toFixed(0)} m`, 4, 26);
+      pctx.fillText(`0 m`, 10, Math.max(12, zeroY - 4));
+      pctx.fillText(`${minTopo.toFixed(0)} m`, 4, h - 8);
+    }
+
+    function mapValue(v, inMin, inMax, outMin, outMax) {
+      if (inMax === inMin) return (outMin + outMax) / 2;
+      const t = (v - inMin) / (inMax - inMin);
+      return outMin + t * (outMax - outMin);
+    }
+
+    function updateStats({ min, max, mean, std, yIndex, resolution, params, diag }) {
+      const dxKm = params.scaleXKm / Math.max(1, resolution - 1);
+      const dyKm = params.scaleYKm / Math.max(1, resolution - 1);
+      els.stats.innerHTML = `
+        <div class="stat"><div class="label">Observed min</div><div class="value">${min.toFixed(1)} m</div></div>
+        <div class="stat"><div class="label">Observed max</div><div class="value">${max.toFixed(1)} m</div></div>
+        <div class="stat"><div class="label">Mean</div><div class="value">${mean.toFixed(1)} m</div></div>
+        <div class="stat"><div class="label">Std dev</div><div class="value">${std.toFixed(1)} m</div></div>
+        <div class="stat"><div class="label">Model size</div><div class="value">${params.scaleXKm}×${params.scaleYKm} km</div></div>
+        <div class="stat"><div class="label">Model depth</div><div class="value">${params.modelDepthKm} km</div></div>
+        <div class="stat"><div class="label">Model resolution</div><div class="value">${params.modelResolutionKm.toFixed(2)} km</div></div>
+        <div class="stat"><div class="label">Preview grid spacing</div><div class="value">${dxKm.toFixed(2)} × ${dyKm.toFixed(2)} km</div></div>
+        <div class="stat"><div class="label">Base wavelength</div><div class="value">${formatKm(diag.baseWavelengthKm)} km</div></div>
+        <div class="stat"><div class="label">Smallest wavelength</div><div class="value">${formatKm(diag.smallestWavelengthKm)} km</div></div>
+        <div class="stat"><div class="label">Cells per smallest feature</div><div class="value">${diag.cellsPerSmallestFeature.toFixed(2)}</div></div>
+        <div class="stat"><div class="label">Cross-section row</div><div class="value">${yIndex}</div></div>
+      `;
+    }
+
+    function updateJson(params, diag) {
+      const snippet = {
+        model: 'perlin_noise',
+        'min depth': 0,
+        'max depth': params.modelDepthKm * 1000.0,
+        'min topography': params.minTopography,
+        'max topography': params.maxTopography,
+        frequency: params.frequency,
+        octaves: params.octaves,
+        persistence: params.persistence,
+        lacunarity: params.lacunarity,
+        operation: 'add'
+      };
+
+      els.jsonOut.textContent = JSON.stringify(snippet, null, 2) + `
+
+// Geodynamic diagnostics:
+// width = ${params.scaleXKm} km
+// height = ${params.scaleYKm} km
+// depth = ${params.modelDepthKm} km
+// model horizontal resolution = ${params.modelResolutionKm} km
+// base wavelength = ${formatKm(diag.baseWavelengthKm)} km
+// smallest wavelength = ${formatKm(diag.smallestWavelengthKm)} km
+// cells per smallest feature = ${diag.cellsPerSmallestFeature.toFixed(2)}`;
+    }
+
+    function setDefaults() {
+      Object.entries(defaults).forEach(([key, value]) => {
+        els[key].value = value;
+      });
+      render();
+    }
+
+    Object.keys(defaults).forEach(id => {
+      els[id].addEventListener('input', render);
+      els[id].addEventListener('change', render);
+    });
+
+    els.rerollBtn.addEventListener('click', () => {
+      els.seed.value = String((parseInt(els.seed.value, 10) || 0) + 1);
+      render();
+    });
+
+    els.resetBtn.addEventListener('click', setDefaults);
+
+    setDefaults();
+  </script>
+</body>
+</html>

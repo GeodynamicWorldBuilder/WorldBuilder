@@ -116,10 +116,6 @@ namespace WorldBuilder
         // remove Snippets so they don't appear in the documentation:
         remove_key(declarations, "defaultSnippets");
 
-        // write out declarations
-        file.open (output_dir + "world_builder_declarations.tex");
-        WBAssertThrow(file.is_open(), "Error: Could not open file '" + output_dir + "world_builder_declarations.tex' for string the tex declarations.");
-
         LatexWriter<StringBuffer, UTF8<>, UTF8<>, CrtAllocator, kWriteNanAndInfFlag> tex_writer(buffer);
         declarations.Accept(tex_writer);
         file << buffer.GetString();
