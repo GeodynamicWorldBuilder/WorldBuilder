@@ -98,6 +98,19 @@ namespace WorldBuilder
       void initialize(std::string &filename, bool has_output_dir = false, const std::string &output_dir = "");
 
       /**
+       * A struct to store all properties of a composition.
+       * \param index A unique integer defining the composition and linking to its properties
+       * \param name The name of the composition (optional, default to its index as a string)
+       * \param reference_density The reference density of the composition (default to 3300 kg/m^3)
+       */
+      struct composition_property
+      {
+        unsigned int index;
+        std::string name;
+        double reference_density;
+      };
+
+      /**
        * A generic get function to retrieve setting from the parameter file.
        * Note that this is dependent on the current path/subsection which you are in.
        * \param name The name of the entry to retrieved
@@ -141,6 +154,15 @@ namespace WorldBuilder
       std::vector<T> get_vector(const std::string &name, std::vector<std::shared_ptr<A> > &, std::vector<std::shared_ptr<B> > &, std::vector<std::shared_ptr<C> > &, std::vector<std::shared_ptr<D> > &, std::vector<std::shared_ptr<E> > &);
 
       /**
+       * A specialized version of get which can return vectors/arrays.
+       * \param name The name of the entry to retrieved
+       * \param composition_properties The map of compositions and their properties defined by the user
+       */
+      template<class T>
+      std::vector<T> get_vector(const std::string &name,
+                                const std::map<unsigned int, Parameters::composition_property> &composition_properties);
+
+      /**
        * A specialized version of get which can return unique pointers.
        * \param name The name of the entry to retrieved
        */
@@ -180,13 +202,6 @@ namespace WorldBuilder
        */
       bool
       check_entry(const std::string &name) const;
-
-      struct composition_property
-      {
-        unsigned int index;
-        std::string name;
-        double reference_density;
-      };
 
       /**
        * Parse composition properties.

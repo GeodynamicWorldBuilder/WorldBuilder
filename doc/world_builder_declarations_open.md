@@ -3212,14 +3212,35 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/3/compositions/items
 :open:
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_3_compositions_items
 
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/3/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_1_composition-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/3/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_1_composition-models_items_oneOf_3_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/3/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_1_composition-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::

@@ -1992,6 +1992,82 @@ namespace WorldBuilder
     return vector;
   }
 
+  template<>
+  std::vector<unsigned int>
+  Parameters::get_vector(const std::string &name,
+                         const std::map<unsigned int, Parameters::composition_property> &composition_properties)
+  {
+    std::vector<unsigned int> vector;
+
+    const std::string strict_base = this->get_full_json_path();
+    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr)
+      {
+        Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+        for (size_t i = 0; i < array->Size(); ++i )
+          {
+            const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
+            Value *entry = Pointer(base.c_str()).Get(parameters);
+
+            // user can define either an index (usigned int)
+            // or a compositon name (string)
+            // if latter, assign the corresponding index in the composition properties
+            if (entry->IsUint())
+              {
+                vector.push_back(entry->GetUint());
+              }
+            else if (entry->IsString())
+              {
+                const std::string feature_composition_name = entry->GetString();
+                bool is_found_in_composition_properties = false;
+
+                // composition_properties is a map of index and properties
+                // loop over it to find the name and assign the corresponding index
+                for (const std::pair<const unsigned int, Parameters::composition_property> &global_composition_entry : composition_properties)
+                  {
+                    const Parameters::composition_property &global_composition = global_composition_entry.second;
+                    // compare globally defined composition name
+                    // with feature-defined composition name
+                    // and assign the corresponding index if found
+                    if (global_composition.name == feature_composition_name)
+                      {
+                        vector.push_back(global_composition_entry.first);
+                        is_found_in_composition_properties = true;
+                        break;
+                      }
+                  }
+                WBAssertThrow(is_found_in_composition_properties,
+                              "internal error: could not find the value \"" << feature_composition_name << "\" in the composition properties at: "
+                              << this->get_full_json_schema_path() + "/" + name + "/items/enum");
+              }
+            else
+              {
+                WBAssertThrow(false,
+                              "internal error: expected an unsigned int or a string for the value at: "
+                              << base);
+              }
+          }
+      }
+    else
+      {
+        const Value *value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/minItems").c_str()).Get(declarations);
+        WBAssertThrow(value != nullptr,
+                      "internal error: could not retrieve the minItems value at: "
+                      << this->get_full_json_schema_path() + "/" + name + "/minItems value");
+
+        const size_t min_size = value->GetUint();
+
+        const unsigned int default_value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/items/default value").c_str()).Get(declarations)->GetUint();
+
+        // set to min size
+        for (size_t i = 0; i < min_size; ++i)
+          {
+            vector.push_back(default_value);
+          }
+      }
+    return vector;
+  }
+
   template<class T>
   std::unique_ptr<T>
   Parameters::get_unique_pointer(const std::string &name)
