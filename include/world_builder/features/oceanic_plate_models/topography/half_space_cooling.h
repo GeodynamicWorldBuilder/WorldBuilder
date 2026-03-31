@@ -41,18 +41,18 @@ namespace WorldBuilder
          * the returned topography or composition of the topography and composition
          * functions of this class will be.
          */
-        class Half_space_cooling final: public Interface
+        class HalfSpaceCooling final: public Interface
         {
           public:
             /**
              * constructor
              */
-            Half_space_cooling(WorldBuilder::World *world);
+            HalfSpaceCooling(WorldBuilder::World *world);
 
             /**
              * Destructor
              */
-            ~Half_space_cooling() override final;
+            ~HalfSpaceCooling() override final;
 
             /**
              * declare and read in the world builder file into the parameters class

@@ -39,7 +39,7 @@ namespace WorldBuilder
     {
       namespace Topography
       {
-        Half_space_cooling::Half_space_cooling(WorldBuilder::World *world_):
+        HalfSpaceCooling::HalfSpaceCooling(WorldBuilder::World *world_):
           min_depth(NaN::DSNAN),
           max_depth(NaN::DSNAN),
           min_ocean_depth(NaN::DSNAN),
@@ -53,17 +53,18 @@ namespace WorldBuilder
           this->name = "half space cooling";
         }
 
-        Half_space_cooling::~Half_space_cooling()
+        HalfSpaceCooling::~HalfSpaceCooling()
           = default;
 
         void
-        Half_space_cooling::declare_entries(Parameters &prm, const std::string & /*unused*/)
+        HalfSpaceCooling::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
           // Document plugin and require entries if needed.
           // Add `topography` and half space model params to the required parameters.
 
           prm.declare_entry("", Types::Object({"ridge coordinates", "spreading velocity",
-                                               "max depth", "min ocean depth", "bottom density"
+                                               "max depth", "min ocean depth", "bottom density", 
+                                               "top density"
                                               }), "Half space cooled topography");
 
           prm.declare_entry("min depth", Types::OneOf(Types::Double(0),
@@ -105,7 +106,7 @@ namespace WorldBuilder
         }
 
         void
-        Half_space_cooling::parse_entries(Parameters &prm,
+        HalfSpaceCooling::parse_entries(Parameters &prm,
                                           const std::vector<Point<2>> &coordinates)
         {
           min_depth_surface = Objects::Surface(prm.get("min depth",coordinates));
@@ -152,10 +153,9 @@ namespace WorldBuilder
         }
 
         double
-        Half_space_cooling::get_topography(const Point<3> &position_in_cartesian_coordinates,
+        HalfSpaceCooling::get_topography(const Point<3> &position_in_cartesian_coordinates,
                                            const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                                           double /*topo*/)
-        const
+                                           double /*topo*/) const
         {
           (void) position_in_natural_coordinates;
           Objects::NaturalCoordinate position_in_natural_coordinates_at_min_depth = Objects::NaturalCoordinate(position_in_cartesian_coordinates,
@@ -171,21 +171,22 @@ namespace WorldBuilder
                                                    position_in_natural_coordinates_at_min_depth,
                                                    subducting_plate_velocities,
                                                    ridge_migration_times);
-
-          double age = ridge_parameters[1] / ridge_parameters[0]; // in sec
+          double ridge_distance = ridge_parameters[1];
+          double spreading_velocity = ridge_parameters[0];
+          double age = ridge_distance / spreading_velocity; // in sec
 
           const double thermal_diffusivity = this->world->thermal_diffusivity;
           const double alpha = this->world->thermal_expansion_coefficient;
 
           // age of half space cooling model is used to compute the heights and added with initial depth and topo
-          double height = (2 * bottom_density * alpha * (bottom_temperature-top_temperature))
-                          /(top_density - bottom_density) * sqrt(thermal_diffusivity * age / Consts::PI);
+          double half_space_cooling_height = (2.0 * bottom_density * alpha * (bottom_temperature - top_temperature) / top_density) *
+                                            std::sqrt(thermal_diffusivity * age / Consts::PI);
 
-          return -(height + min_ocean_depth);
+          return -(half_space_cooling_height + min_ocean_depth);
 
         }
 
-        WB_REGISTER_FEATURE_OCEANIC_PLATE_TOPOGRAPHY_MODEL(Half_space_cooling, half space cooling)
+        WB_REGISTER_FEATURE_OCEANIC_PLATE_TOPOGRAPHY_MODEL(HalfSpaceCooling, half space cooling)
       } // namespace Topography
     } // namespace OceanicPlateModels
   } // namespace Features
