@@ -171,7 +171,8 @@ namespace WorldBuilder
                                                    position_in_natural_coordinates_at_min_depth,
                                                    subducting_plate_velocities,
                                                    ridge_migration_times);
-          double ridge_distance = ridge_parameters[1];
+            =
+              double ridge_distance = ridge_parameters[1];
           double spreading_velocity = ridge_parameters[0];
           double age = ridge_distance / spreading_velocity; // in sec
 
@@ -179,8 +180,8 @@ namespace WorldBuilder
           const double alpha = this->world->thermal_expansion_coefficient;
 
           // age of half space cooling model is used to compute the heights and added with initial depth and topo
-          double half_space_cooling_height = (2.0 * bottom_density * alpha * (bottom_temperature - top_temperature) / top_density) *
-                                             std::sqrt(thermal_diffusivity * age / Consts::PI);
+          double half_space_cooling_height = (2.0 * bottom_density * alpha * (bottom_temperature - top_temperature)
+                                              / (bottom_density - top_density)) * std::sqrt(thermal_diffusivity * age / Consts::PI);
 
           return -(half_space_cooling_height + min_ocean_depth);
 
