@@ -2,12 +2,13 @@
 # file. 
 # Now define parameters:
 # dim = 3
-# compositions = 1
+# compositions = 6
 # grain compositions = 1
 # number of grains = 10
 # x y z d c1 c2 c3 c4 c5 c6
-0 0 0 0
-2 2 2 2
-4 4 4 4
-6 6 6 6
-8 8 8 8
+5 5 2.5 7.5
+2 8 7.5 2.5
+8 8 7.5 2.5
+5 3 7 3
+4 0 1 9
+5 6 9 1
