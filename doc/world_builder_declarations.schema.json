@@ -1954,6 +1954,137 @@
                                     "oneOf": [
                                         {
                                             "type": "object",
+                                            "description": "Ascii file grains model. The Euler angles and volume fractions of each grain are read in from an ascii file.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "compositions"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the grains model.",
+                                                    "enum": [
+                                                        "ascii file"
+                                                    ]
+                                                },
+                                                "min depth": {
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 0.0,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 0.0
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "max depth": {
+                                                    "description": "The depth in meters to which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 1.7976931348623157e308,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 1.7976931348623157e308
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "compositions": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "A list with the integer labels of the composition which are present there.",
+                                                    "items": {
+                                                        "default value": 0,
+                                                        "type": "integer",
+                                                        "description": ""
+                                                    }
+                                                },
+                                                "file directory": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The directory where the ascii file is located."
+                                                },
+                                                "filename": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the ascii file."
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
                                             "description": "Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.",
                                             "additionalProperties": false,
                                             "required": [
@@ -3603,6 +3734,57 @@
                                                 "oneOf": [
                                                     {
                                                         "type": "object",
+                                                        "description": "Ascii file grains model. The Euler angles and volume fractions of each grain are read in from an ascii file.",
+                                                        "additionalProperties": false,
+                                                        "required": [
+                                                            "model",
+                                                            "compositions"
+                                                        ],
+                                                        "properties": {
+                                                            "model": {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": "The name of the grains model.",
+                                                                "enum": [
+                                                                    "ascii file"
+                                                                ]
+                                                            },
+                                                            "min distance fault center": {
+                                                                "default value": 0.0,
+                                                                "type": "number",
+                                                                "description": "The distance from the fault center in meters from which the composition of this feature is present."
+                                                            },
+                                                            "max distance fault center": {
+                                                                "default value": 1.7976931348623157e308,
+                                                                "type": "number",
+                                                                "description": "The distance from the fault in meters to which the composition of this feature is present."
+                                                            },
+                                                            "compositions": {
+                                                                "type": "array",
+                                                                "minItems": 0,
+                                                                "maxItems": 4294967295,
+                                                                "uniqueItems": false,
+                                                                "description": "A list with the integer labels of the composition which are present there.",
+                                                                "items": {
+                                                                    "default value": 0,
+                                                                    "type": "integer",
+                                                                    "description": ""
+                                                                }
+                                                            },
+                                                            "file directory": {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": "The directory where the ascii file is located."
+                                                            },
+                                                            "filename": {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": "The name of the ascii file."
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "object",
                                                         "description": "Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.",
                                                         "additionalProperties": false,
                                                         "required": [
@@ -4516,6 +4698,57 @@
                                 "type": "array",
                                 "items": {
                                     "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "description": "Ascii file grains model. The Euler angles and volume fractions of each grain are read in from an ascii file.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "compositions"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the grains model.",
+                                                    "enum": [
+                                                        "ascii file"
+                                                    ]
+                                                },
+                                                "min distance fault center": {
+                                                    "default value": 0.0,
+                                                    "type": "number",
+                                                    "description": "The distance from the fault center in meters from which the composition of this feature is present."
+                                                },
+                                                "max distance fault center": {
+                                                    "default value": 1.7976931348623157e308,
+                                                    "type": "number",
+                                                    "description": "The distance from the fault in meters to which the composition of this feature is present."
+                                                },
+                                                "compositions": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "A list with the integer labels of the composition which are present there.",
+                                                    "items": {
+                                                        "default value": 0,
+                                                        "type": "integer",
+                                                        "description": ""
+                                                    }
+                                                },
+                                                "file directory": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The directory where the ascii file is located."
+                                                },
+                                                "filename": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the ascii file."
+                                                }
+                                            }
+                                        },
                                         {
                                             "type": "object",
                                             "description": "Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.",
@@ -5503,6 +5736,57 @@
                                                             "oneOf": [
                                                                 {
                                                                     "type": "object",
+                                                                    "description": "Ascii file grains model. The Euler angles and volume fractions of each grain are read in from an ascii file.",
+                                                                    "additionalProperties": false,
+                                                                    "required": [
+                                                                        "model",
+                                                                        "compositions"
+                                                                    ],
+                                                                    "properties": {
+                                                                        "model": {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": "The name of the grains model.",
+                                                                            "enum": [
+                                                                                "ascii file"
+                                                                            ]
+                                                                        },
+                                                                        "min distance fault center": {
+                                                                            "default value": 0.0,
+                                                                            "type": "number",
+                                                                            "description": "The distance from the fault center in meters from which the composition of this feature is present."
+                                                                        },
+                                                                        "max distance fault center": {
+                                                                            "default value": 1.7976931348623157e308,
+                                                                            "type": "number",
+                                                                            "description": "The distance from the fault in meters to which the composition of this feature is present."
+                                                                        },
+                                                                        "compositions": {
+                                                                            "type": "array",
+                                                                            "minItems": 0,
+                                                                            "maxItems": 4294967295,
+                                                                            "uniqueItems": false,
+                                                                            "description": "A list with the integer labels of the composition which are present there.",
+                                                                            "items": {
+                                                                                "default value": 0,
+                                                                                "type": "integer",
+                                                                                "description": ""
+                                                                            }
+                                                                        },
+                                                                        "file directory": {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": "The directory where the ascii file is located."
+                                                                        },
+                                                                        "filename": {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": "The name of the ascii file."
+                                                                        }
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "type": "object",
                                                                     "description": "Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.",
                                                                     "additionalProperties": false,
                                                                     "required": [
@@ -6416,6 +6700,57 @@
                                             "type": "array",
                                             "items": {
                                                 "oneOf": [
+                                                    {
+                                                        "type": "object",
+                                                        "description": "Ascii file grains model. The Euler angles and volume fractions of each grain are read in from an ascii file.",
+                                                        "additionalProperties": false,
+                                                        "required": [
+                                                            "model",
+                                                            "compositions"
+                                                        ],
+                                                        "properties": {
+                                                            "model": {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": "The name of the grains model.",
+                                                                "enum": [
+                                                                    "ascii file"
+                                                                ]
+                                                            },
+                                                            "min distance fault center": {
+                                                                "default value": 0.0,
+                                                                "type": "number",
+                                                                "description": "The distance from the fault center in meters from which the composition of this feature is present."
+                                                            },
+                                                            "max distance fault center": {
+                                                                "default value": 1.7976931348623157e308,
+                                                                "type": "number",
+                                                                "description": "The distance from the fault in meters to which the composition of this feature is present."
+                                                            },
+                                                            "compositions": {
+                                                                "type": "array",
+                                                                "minItems": 0,
+                                                                "maxItems": 4294967295,
+                                                                "uniqueItems": false,
+                                                                "description": "A list with the integer labels of the composition which are present there.",
+                                                                "items": {
+                                                                    "default value": 0,
+                                                                    "type": "integer",
+                                                                    "description": ""
+                                                                }
+                                                            },
+                                                            "file directory": {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": "The directory where the ascii file is located."
+                                                            },
+                                                            "filename": {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": "The name of the ascii file."
+                                                            }
+                                                        }
+                                                    },
                                                     {
                                                         "type": "object",
                                                         "description": "Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.",
@@ -7879,6 +8214,137 @@
                                 "type": "array",
                                 "items": {
                                     "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "description": "Ascii file grains model. The Euler angles and volume fractions of each grain are read in from an ascii file.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "compositions"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the grains model.",
+                                                    "enum": [
+                                                        "ascii file"
+                                                    ]
+                                                },
+                                                "min depth": {
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 0.0,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 0.0
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "max depth": {
+                                                    "description": "The depth in meters to which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 1.7976931348623157e308,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 1.7976931348623157e308
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "compositions": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "A list with the integer labels of the composition which are present there.",
+                                                    "items": {
+                                                        "default value": 0,
+                                                        "type": "integer",
+                                                        "description": ""
+                                                    }
+                                                },
+                                                "file directory": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The directory where the ascii file is located."
+                                                },
+                                                "filename": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the ascii file."
+                                                }
+                                            }
+                                        },
                                         {
                                             "type": "object",
                                             "description": "Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.",
@@ -10677,6 +11143,137 @@
                                     "oneOf": [
                                         {
                                             "type": "object",
+                                            "description": "Ascii file grains model. The Euler angles and volume fractions of each grain are read in from an ascii file.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "compositions"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the grains model.",
+                                                    "enum": [
+                                                        "ascii file"
+                                                    ]
+                                                },
+                                                "min depth": {
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 0.0,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 0.0
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "max depth": {
+                                                    "description": "The depth in meters to which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 1.7976931348623157e308,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 1.7976931348623157e308
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "compositions": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "A list with the integer labels of the composition which are present there.",
+                                                    "items": {
+                                                        "default value": 0,
+                                                        "type": "integer",
+                                                        "description": ""
+                                                    }
+                                                },
+                                                "file directory": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The directory where the ascii file is located."
+                                                },
+                                                "filename": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the ascii file."
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
                                             "description": "Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.",
                                             "additionalProperties": false,
                                             "required": [
@@ -12504,6 +13101,57 @@
                                     "oneOf": [
                                         {
                                             "type": "object",
+                                            "description": "Ascii file grains model. The Euler angles and volume fractions of each grain are read in from an ascii file.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "compositions"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the grains model.",
+                                                    "enum": [
+                                                        "ascii file"
+                                                    ]
+                                                },
+                                                "min depth": {
+                                                    "default value": 0.0,
+                                                    "type": "number",
+                                                    "description": "The depth in meters from which the grains of this feature are present."
+                                                },
+                                                "max depth": {
+                                                    "default value": 1.7976931348623157e308,
+                                                    "type": "number",
+                                                    "description": "The depth in meters to which the grains of this feature are present."
+                                                },
+                                                "compositions": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "A list with the integer labels of the composition which are present there.",
+                                                    "items": {
+                                                        "default value": 0,
+                                                        "type": "integer",
+                                                        "description": ""
+                                                    }
+                                                },
+                                                "file directory": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The directory where the ascii file is located."
+                                                },
+                                                "filename": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the ascii file."
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
                                             "description": "Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.",
                                             "additionalProperties": false,
                                             "required": [
@@ -13960,6 +14608,57 @@
                                                 "oneOf": [
                                                     {
                                                         "type": "object",
+                                                        "description": "Ascii file grains model. The Euler angles and volume fractions of each grain are read in from an ascii file.",
+                                                        "additionalProperties": false,
+                                                        "required": [
+                                                            "model",
+                                                            "compositions"
+                                                        ],
+                                                        "properties": {
+                                                            "model": {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": "The name of the grains model.",
+                                                                "enum": [
+                                                                    "ascii file"
+                                                                ]
+                                                            },
+                                                            "min distance slab top": {
+                                                                "default value": 0.0,
+                                                                "type": "number",
+                                                                "description": "The distance from the slab top in meters from which the composition of this feature is present."
+                                                            },
+                                                            "max distance slab top": {
+                                                                "default value": 1.7976931348623157e308,
+                                                                "type": "number",
+                                                                "description": "The distance from the slab top in meters to which the composition of this feature is present."
+                                                            },
+                                                            "compositions": {
+                                                                "type": "array",
+                                                                "minItems": 0,
+                                                                "maxItems": 4294967295,
+                                                                "uniqueItems": false,
+                                                                "description": "A list with the integer labels of the composition which are present there.",
+                                                                "items": {
+                                                                    "default value": 0,
+                                                                    "type": "integer",
+                                                                    "description": ""
+                                                                }
+                                                            },
+                                                            "file directory": {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": "The directory where the ascii file is located."
+                                                            },
+                                                            "filename": {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": "The name of the ascii file."
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "object",
                                                         "description": "Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.",
                                                         "additionalProperties": false,
                                                         "required": [
@@ -15221,6 +15920,57 @@
                                 "type": "array",
                                 "items": {
                                     "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "description": "Ascii file grains model. The Euler angles and volume fractions of each grain are read in from an ascii file.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "compositions"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the grains model.",
+                                                    "enum": [
+                                                        "ascii file"
+                                                    ]
+                                                },
+                                                "min distance slab top": {
+                                                    "default value": 0.0,
+                                                    "type": "number",
+                                                    "description": "The distance from the slab top in meters from which the composition of this feature is present."
+                                                },
+                                                "max distance slab top": {
+                                                    "default value": 1.7976931348623157e308,
+                                                    "type": "number",
+                                                    "description": "The distance from the slab top in meters to which the composition of this feature is present."
+                                                },
+                                                "compositions": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "A list with the integer labels of the composition which are present there.",
+                                                    "items": {
+                                                        "default value": 0,
+                                                        "type": "integer",
+                                                        "description": ""
+                                                    }
+                                                },
+                                                "file directory": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The directory where the ascii file is located."
+                                                },
+                                                "filename": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the ascii file."
+                                                }
+                                            }
+                                        },
                                         {
                                             "type": "object",
                                             "description": "Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.",
@@ -16556,6 +17306,57 @@
                                                             "oneOf": [
                                                                 {
                                                                     "type": "object",
+                                                                    "description": "Ascii file grains model. The Euler angles and volume fractions of each grain are read in from an ascii file.",
+                                                                    "additionalProperties": false,
+                                                                    "required": [
+                                                                        "model",
+                                                                        "compositions"
+                                                                    ],
+                                                                    "properties": {
+                                                                        "model": {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": "The name of the grains model.",
+                                                                            "enum": [
+                                                                                "ascii file"
+                                                                            ]
+                                                                        },
+                                                                        "min distance slab top": {
+                                                                            "default value": 0.0,
+                                                                            "type": "number",
+                                                                            "description": "The distance from the slab top in meters from which the composition of this feature is present."
+                                                                        },
+                                                                        "max distance slab top": {
+                                                                            "default value": 1.7976931348623157e308,
+                                                                            "type": "number",
+                                                                            "description": "The distance from the slab top in meters to which the composition of this feature is present."
+                                                                        },
+                                                                        "compositions": {
+                                                                            "type": "array",
+                                                                            "minItems": 0,
+                                                                            "maxItems": 4294967295,
+                                                                            "uniqueItems": false,
+                                                                            "description": "A list with the integer labels of the composition which are present there.",
+                                                                            "items": {
+                                                                                "default value": 0,
+                                                                                "type": "integer",
+                                                                                "description": ""
+                                                                            }
+                                                                        },
+                                                                        "file directory": {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": "The directory where the ascii file is located."
+                                                                        },
+                                                                        "filename": {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": "The name of the ascii file."
+                                                                        }
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "type": "object",
                                                                     "description": "Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.",
                                                                     "additionalProperties": false,
                                                                     "required": [
@@ -17819,6 +18620,57 @@
                                                 "oneOf": [
                                                     {
                                                         "type": "object",
+                                                        "description": "Ascii file grains model. The Euler angles and volume fractions of each grain are read in from an ascii file.",
+                                                        "additionalProperties": false,
+                                                        "required": [
+                                                            "model",
+                                                            "compositions"
+                                                        ],
+                                                        "properties": {
+                                                            "model": {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": "The name of the grains model.",
+                                                                "enum": [
+                                                                    "ascii file"
+                                                                ]
+                                                            },
+                                                            "min distance slab top": {
+                                                                "default value": 0.0,
+                                                                "type": "number",
+                                                                "description": "The distance from the slab top in meters from which the composition of this feature is present."
+                                                            },
+                                                            "max distance slab top": {
+                                                                "default value": 1.7976931348623157e308,
+                                                                "type": "number",
+                                                                "description": "The distance from the slab top in meters to which the composition of this feature is present."
+                                                            },
+                                                            "compositions": {
+                                                                "type": "array",
+                                                                "minItems": 0,
+                                                                "maxItems": 4294967295,
+                                                                "uniqueItems": false,
+                                                                "description": "A list with the integer labels of the composition which are present there.",
+                                                                "items": {
+                                                                    "default value": 0,
+                                                                    "type": "integer",
+                                                                    "description": ""
+                                                                }
+                                                            },
+                                                            "file directory": {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": "The directory where the ascii file is located."
+                                                            },
+                                                            "filename": {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": "The name of the ascii file."
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "object",
                                                         "description": "Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.",
                                                         "additionalProperties": false,
                                                         "required": [
@@ -18282,11 +19134,11 @@
             "type": "integer",
             "description": "Number of integration points for calculating the compensation pressure."
         },
-        "Reference profile point": {
+        "reference profile point": {
             "type": "array",
             "minItems": 2,
             "maxItems": 2,
-            "description": "This is an array of two points along where the cross section is taken",
+            "description": "This is an X-Y point used to calculate the reference compensation pressure.",
             "items": {
                 "type": "number"
             }
