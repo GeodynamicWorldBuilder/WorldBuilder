@@ -171,8 +171,8 @@ namespace WorldBuilder
                                                    position_in_natural_coordinates_at_min_depth,
                                                    subducting_plate_velocities,
                                                    ridge_migration_times);
-            =
-              double ridge_distance = ridge_parameters[1];
+
+          double ridge_distance = ridge_parameters[1];
           double spreading_velocity = ridge_parameters[0];
           double age = ridge_distance / spreading_velocity; // in sec
 
