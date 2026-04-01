@@ -18282,11 +18282,11 @@
             "type": "integer",
             "description": "Number of integration points for calculating the compensation pressure."
         },
-        "Reference profile point": {
+        "reference profile point": {
             "type": "array",
             "minItems": 2,
             "maxItems": 2,
-            "description": "This is an array of two points along where the cross section is taken",
+            "description": "This is an X-Y point used to calculate the reference compensation pressure.",
             "items": {
                 "type": "number"
             }
