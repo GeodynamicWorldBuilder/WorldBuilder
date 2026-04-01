@@ -176,7 +176,7 @@ namespace WorldBuilder
           const double age = distance_to_ridge / spreading_velocity;
 
           // This formula addresses the horizontal heat transfer by having the spreading velocity and distance to the ridge in it.
-          // (Chapter 7 Heat, Fowler M. The solid earth: an introduction to global geophysics[M]. Cambridge University Press, 1990)
+          // Ref: Turcotte & Schubert eqn 4.211
           const double kappa = this->world->thermal_diffusivity;
           const double alpha = this->world->thermal_expansion_coefficient;
 
