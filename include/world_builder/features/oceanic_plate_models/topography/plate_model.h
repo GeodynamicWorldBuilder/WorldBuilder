@@ -71,7 +71,7 @@ namespace WorldBuilder
              */
             double get_topography(const Point<3> &position_in_cartesian_coordinates,
                                   const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                                  const double current_topography
+                                  const double current_height
                                  ) const override final;
 
           private:

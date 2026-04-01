@@ -155,7 +155,7 @@ namespace WorldBuilder
         double
         PlateModel::get_topography(const Point<3> &position_in_cartesian_coordinates,
                                    const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                                   const double /*current_topography*/) const
+                                   const double current_height) const
         {
 
           (void) position_in_natural_coordinates;
@@ -193,8 +193,7 @@ namespace WorldBuilder
           double plate_cooling_height = (bottom_density * alpha * (bottom_temperature-top_temperature) * L)
                                         / (bottom_density - top_density) * (0.5 - 4/(Consts::PI * Consts::PI) * sum);
 
-          //return apply_operation(operation, current_topography, -plate_topography);
-          return -(min_ocean_depth + plate_cooling_height);
+          return apply_operation(operation, current_height, -(min_ocean_depth+plate_cooling_height));
         }
 
         WB_REGISTER_FEATURE_OCEANIC_PLATE_TOPOGRAPHY_MODEL(PlateModel, plate model)
