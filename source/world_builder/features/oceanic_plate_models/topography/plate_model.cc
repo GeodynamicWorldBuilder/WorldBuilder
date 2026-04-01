@@ -171,7 +171,9 @@ namespace WorldBuilder
                                                  subducting_plate_velocities,
                                                  ridge_migration_times);
 
-          const double age = ridge_parameters[1] / ridge_parameters[0];
+          const double spreading_velocity = ridge_parameters[0];
+          const double distance_to_ridge = ridge_parameters[1];
+          const double age = distance_to_ridge / spreading_velocity;
 
           // This formula addresses the horizontal heat transfer by having the spreading velocity and distance to the ridge in it.
           // (Chapter 7 Heat, Fowler M. The solid earth: an introduction to global geophysics[M]. Cambridge University Press, 1990)
@@ -185,16 +187,14 @@ namespace WorldBuilder
           for (int n = 1; n <= summation_number; ++n)
             {
               const double n2 = double(n) * double(n);
-              sum += (1.0 / n2) *
-                     (1.0 - std::exp(-(n2 * Consts::PI * Consts::PI * kappa * age) / (L * L)));
+              sum += (1/n2) * std::exp(-n2 * Consts::PI*Consts::PI * kappa * age / (L * L));
             }
 
-          double plate_topography =
-            min_ocean_depth + (2.0 * bottom_density * alpha * (bottom_temperature - top_temperature) * L
-                               / (top_density * Consts::PI * Consts::PI)) * sum;
+          double plate_cooling_height = (bottom_density * alpha * (bottom_temperature-top_temperature) * L)
+                                        / (bottom_density - top_density) * (0.5 - 4/(Consts::PI * Consts::PI) * sum);
 
           //return apply_operation(operation, current_topography, -plate_topography);
-          return -plate_topography;
+          return -(min_ocean_depth + plate_cooling_height);
         }
 
         WB_REGISTER_FEATURE_OCEANIC_PLATE_TOPOGRAPHY_MODEL(PlateModel, plate model)

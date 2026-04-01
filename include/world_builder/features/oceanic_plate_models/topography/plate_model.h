@@ -36,15 +36,11 @@ namespace WorldBuilder
     {
       namespace Topography
       {
-        /**
-         * This class represents a oceanic plate and can implement submodules
-         * for temperature and composition. These submodules determine what
-         * the returned temperature or composition of the temperature and composition
-         * functions of this class will be.
-         * In this plugin, the temperature of the plate is derived from the plate model,
-         * featuring continuous cooling of a plate from a spreading ridge by both vertical
-         * and horizontal heat conduction. This temperature driven topography is then updated.
-         */
+        /* This class implements the subsidence of the oceanic plate as it moves
+        and cools away from the ridge axis, following the plate cooling model.
+        In this model, the base of the plate is maintained at a constant temperature
+        while the plate cools through both vertical and horizontal heat conduction.
+        */
         class PlateModel final: public Interface
         {
           public:
@@ -69,7 +65,6 @@ namespace WorldBuilder
              */
             void parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates) override final;
 
-
             /**
              * Returns a temperature based on the given position, depth in the model,
              * gravity and current temperature.
@@ -78,7 +73,6 @@ namespace WorldBuilder
                                   const Objects::NaturalCoordinate &position_in_natural_coordinates,
                                   const double current_topography
                                  ) const override final;
-
 
           private:
             // plate model temperature submodule parameters
