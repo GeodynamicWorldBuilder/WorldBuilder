@@ -193,8 +193,8 @@ namespace WorldBuilder
       prm.declare_entry("number of integration points", Types::Int(100),
                         "Number of integration points for calculating the compensation pressure.");
 
-      prm.declare_entry("Reference profile point", Types::Point<2>(),
-                        "This is an array of two points along where the cross section is taken");
+      prm.declare_entry("reference profile point", Types::Point<2>(),
+                        "This is an X-Y point used to calculate the reference compensation pressure.");
 
     }
     prm.leave_subsection();
@@ -318,16 +318,13 @@ namespace WorldBuilder
       random_number_engine.seed(static_cast<unsigned int>(local_seed+MPI_RANK));
 
     /**
-     * Mapping of composition properties as a struct
-     * Composition indices (required) mapped to their properties (optional).
+     * A map storing composition indices (required) and their properties (optional).
      * Parsing is handled in parameters.cc
      * Struct with default values is defined in types/composition_property
      */
-    const auto parsed_composition_properties = prm.get_composition_properties("composition properties");
-
-    for (const auto &composition_entry : parsed_composition_properties)
+    for (const Parameters::composition_property &cp_parsed : prm.get_composition_properties("composition properties"))
       {
-        composition_properties.emplace(composition_entry.index, composition_entry);
+        composition_properties.emplace(cp_parsed.index, cp_parsed);
       }
 
     /**

@@ -181,7 +181,7 @@ namespace WorldBuilder
       bool
       check_entry(const std::string &name) const;
 
-      struct composition_properties
+      struct composition_property
       {
         unsigned int index;
         std::string name;
@@ -194,7 +194,7 @@ namespace WorldBuilder
        * If the entry is absent, the vector is empty.
        * \param name The name of the entry to be declared
        */
-      std::vector<composition_properties>
+      std::vector<composition_property>
       get_composition_properties(const std::string &name) const;
 
       /**
