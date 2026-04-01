@@ -72,7 +72,7 @@ namespace WorldBuilder
              */
             double get_topography(const Point<3> &position_in_cartesian_coordinates,
                                   const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                                  const double /*topography*/) const override;
+                                  const double current_height) const override;
 
           private:
             // uniform topography submodule parameters
