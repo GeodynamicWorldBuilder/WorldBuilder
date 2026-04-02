@@ -1,0 +1,380 @@
+{
+  "version": "1.2",
+  "surface temperature": 273.15,
+  "potential mantle temperature": 1573.15,
+  "thermal expansion coefficient": 3e-5,
+  "thermal diffusivity": 1e-6,
+  "coordinate system": {"model": "cartesian"},
+  "features":
+  [
+    {
+      "model": "continental plate",
+      "name": "upper_crust1",
+      "max depth": 25e3,
+      "coordinates": [
+        [-1e3, -1e3],
+        [500e3, -1e3],
+        [500e3, 600e3],
+        [-1e3, 1100e3]
+      ],
+      "temperature models": [
+        {
+          "model":"linear",
+          "min depth":0.0,
+          "max depth":25e3,
+          "top temperature":273.15,
+          "bottom temperature":550.0
+        }
+      ],
+      "composition models": [
+        {"model":"uniform", "compositions":[0]}
+      ]
+    },
+
+    {
+      "model": "continental plate",
+      "name": "orogen_crust_3_continuous",
+      "max depth": [[60e3]],
+      "coordinates": [
+        [-1e3, 1100e3],
+        [500e3, 600e3],
+        [500e3, 1000e3],
+        [-1e3, 1500e3]
+      ],
+      "topography models": [
+        {
+          "model": "depth surface",
+          "topography": -4000.0
+        }
+      ],
+      "temperature models": [
+        {
+          "model": "linear",
+          "min depth": 0.0,
+          "max depth": [
+            [25e3],
+            [28e3, [[-1e3,1180e3],[500e3,680e3]]],
+            [32e3, [[-1e3,1260e3],[500e3,760e3]]],
+            [35e3, [[-1e3,1300e3],[500e3,800e3]]],
+            [32e3, [[-1e3,1340e3],[500e3,840e3]]],
+            [28e3, [[-1e3,1420e3],[500e3,920e3]]]
+          ],
+          "top temperature": 273.15,
+          "bottom temperature": 700.0
+        },
+        {
+          "model": "linear",
+          "min depth": [
+            [25e3],
+            [28e3, [[-1e3,1180e3],[500e3,680e3]]],
+            [32e3, [[-1e3,1260e3],[500e3,760e3]]],
+            [35e3, [[-1e3,1300e3],[500e3,800e3]]],
+            [32e3, [[-1e3,1340e3],[500e3,840e3]]],
+            [28e3, [[-1e3,1420e3],[500e3,920e3]]]
+          ],
+          "max depth": [
+            [40e3],
+            [46e3, [[-1e3,1180e3],[500e3,680e3]]],
+            [53e3, [[-1e3,1260e3],[500e3,760e3]]],
+            [60e3, [[-1e3,1300e3],[500e3,800e3]]],
+            [53e3, [[-1e3,1340e3],[500e3,840e3]]],
+            [46e3, [[-1e3,1420e3],[500e3,920e3]]]
+          ],
+          "top temperature": 700.0,
+          "bottom temperature": 950.0
+        }
+      ],
+      "composition models": [
+        {
+          "model": "uniform",
+          "compositions": [1],
+          "max depth": [
+            [25e3],
+            [28e3, [[-1e3,1180e3],[500e3,680e3]]],
+            [32e3, [[-1e3,1260e3],[500e3,760e3]]],
+            [35e3, [[-1e3,1300e3],[500e3,800e3]]],
+            [32e3, [[-1e3,1340e3],[500e3,840e3]]],
+            [28e3, [[-1e3,1420e3],[500e3,920e3]]]
+          ]
+        },
+        {
+          "model": "uniform",
+          "compositions": [4],
+          "min depth": [
+            [25e3],
+            [28e3, [[-1e3,1180e3],[500e3,680e3]]],
+            [32e3, [[-1e3,1260e3],[500e3,760e3]]],
+            [35e3, [[-1e3,1300e3],[500e3,800e3]]],
+            [32e3, [[-1e3,1340e3],[500e3,840e3]]],
+            [28e3, [[-1e3,1420e3],[500e3,920e3]]]
+          ],
+          "max depth": [
+            [40e3],
+            [46e3, [[-1e3,1180e3],[500e3,680e3]]],
+            [53e3, [[-1e3,1260e3],[500e3,760e3]]],
+            [60e3, [[-1e3,1300e3],[500e3,800e3]]],
+            [53e3, [[-1e3,1340e3],[500e3,840e3]]],
+            [46e3, [[-1e3,1420e3],[500e3,920e3]]]
+          ]
+        }
+      ]
+    },
+
+    {
+      "model": "continental plate",
+      "name": "upper_crust2",
+      "max depth": 25e3,
+      "coordinates": [
+        [-1e3, 1500e3],
+        [500e3, 1000e3],
+        [500e3, 2000e3],
+        [-1e3, 2000e3]
+      ],
+      "temperature models": [
+        {
+          "model":"linear",
+          "min depth":0.0,
+          "max depth":25e3,
+          "top temperature":273.15,
+          "bottom temperature":550.0
+        }
+      ],
+      "composition models": [
+        {"model":"uniform", "compositions":[2]}
+      ]
+    },
+
+    {
+      "model": "continental plate",
+      "name": "lower_crust1",
+      "min depth": 25e3,
+      "max depth": 40e3,
+      "coordinates": [
+        [-1e3, -1e3],
+        [500e3, -1e3],
+        [500e3, 600e3],
+        [-1e3, 1100e3]
+      ],
+      "temperature models": [
+        {
+          "model":"linear",
+          "min depth":25e3,
+          "max depth":40e3,
+          "top temperature":550.0,
+          "bottom temperature":800.0
+        }
+      ],
+      "composition models": [
+        {"model":"uniform", "compositions":[3]}
+      ]
+    },
+
+    {
+      "model": "continental plate",
+      "name": "lower_crust2",
+      "min depth": 25e3,
+      "max depth": 40e3,
+      "coordinates": [
+        [-1e3, 1500e3],
+        [500e3, 1000e3],
+        [500e3, 2000e3],
+        [-1e3, 2000e3]
+      ],
+      "temperature models": [
+        {
+          "model":"linear",
+          "min depth":25e3,
+          "max depth":40e3,
+          "top temperature":550.0,
+          "bottom temperature":800.0
+        }
+      ],
+      "composition models": [
+        {"model":"uniform", "compositions":[5]}
+      ]
+    },
+
+    {
+      "model": "mantle layer",
+      "name": "mantle_lithosphere_normal_1",
+      "min depth": 40e3,
+      "max depth": 120e3,
+      "coordinates": [
+        [-1e3, -1e3],
+        [500e3, -1e3],
+        [500e3, 600e3],
+        [-1e3, 1100e3]
+      ],
+      "temperature models": [
+        {
+          "model":"linear",
+          "min depth":40e3,
+          "max depth":120e3,
+          "top temperature":800.0,
+          "bottom temperature":1573.15
+        }
+      ],
+      "composition models": [
+        {"model":"uniform", "compositions":[6]}
+      ]
+    },
+
+    {
+      "model": "mantle layer",
+      "name": "orogen_mantle_3_continuous",
+      "max depth": [[200e3]],
+      "coordinates": [
+        [-1e3, 1100e3],
+        [500e3, 600e3],
+        [500e3, 1000e3],
+        [-1e3, 1500e3]
+      ],
+      "temperature models": [
+        {
+          "model": "linear",
+          "min depth": [
+            [40e3],
+            [46e3, [[-1e3,1180e3],[500e3,680e3]]],
+            [53e3, [[-1e3,1260e3],[500e3,760e3]]],
+            [60e3, [[-1e3,1300e3],[500e3,800e3]]],
+            [53e3, [[-1e3,1340e3],[500e3,840e3]]],
+            [46e3, [[-1e3,1420e3],[500e3,920e3]]]
+          ],
+          "max depth": [
+            [120e3],
+            [132e3, [[-1e3,1180e3],[500e3,680e3]]],
+            [145e3, [[-1e3,1260e3],[500e3,760e3]]],
+            [155e3, [[-1e3,1300e3],[500e3,800e3]]],
+            [145e3, [[-1e3,1340e3],[500e3,840e3]]],
+            [132e3, [[-1e3,1420e3],[500e3,920e3]]]
+          ],
+          "top temperature": 950.0,
+          "bottom temperature": 1573.15
+        },
+        {
+          "model": "linear",
+          "min depth": [
+            [120e3],
+            [132e3, [[-1e3,1180e3],[500e3,680e3]]],
+            [145e3, [[-1e3,1260e3],[500e3,760e3]]],
+            [155e3, [[-1e3,1300e3],[500e3,800e3]]],
+            [145e3, [[-1e3,1340e3],[500e3,840e3]]],
+            [132e3, [[-1e3,1420e3],[500e3,920e3]]]
+          ],
+          "max depth": [[200e3]],
+          "top temperature": 1573.15,
+          "bottom temperature": 1680.0
+        }
+      ],
+      "composition models": [
+        {
+          "model": "uniform",
+          "compositions": [7],
+          "min depth": [
+            [40e3],
+            [46e3, [[-1e3,1180e3],[500e3,680e3]]],
+            [53e3, [[-1e3,1260e3],[500e3,760e3]]],
+            [60e3, [[-1e3,1300e3],[500e3,800e3]]],
+            [53e3, [[-1e3,1340e3],[500e3,840e3]]],
+            [46e3, [[-1e3,1420e3],[500e3,920e3]]]
+          ],
+          "max depth": [
+            [120e3],
+            [132e3, [[-1e3,1180e3],[500e3,680e3]]],
+            [145e3, [[-1e3,1260e3],[500e3,760e3]]],
+            [155e3, [[-1e3,1300e3],[500e3,800e3]]],
+            [145e3, [[-1e3,1340e3],[500e3,840e3]]],
+            [132e3, [[-1e3,1420e3],[500e3,920e3]]]
+          ]
+        },
+        {
+          "model": "uniform",
+          "compositions": [10],
+          "min depth": [
+            [120e3],
+            [132e3, [[-1e3,1180e3],[500e3,680e3]]],
+            [145e3, [[-1e3,1260e3],[500e3,760e3]]],
+            [155e3, [[-1e3,1300e3],[500e3,800e3]]],
+            [145e3, [[-1e3,1340e3],[500e3,840e3]]],
+            [132e3, [[-1e3,1420e3],[500e3,920e3]]]
+          ]
+        }
+      ]
+    },
+
+    {
+      "model": "mantle layer",
+      "name": "mantle_lithosphere_normal_2",
+      "min depth": 40e3,
+      "max depth": 120e3,
+      "coordinates": [
+        [-1e3, 1500e3],
+        [500e3, 1000e3],
+        [500e3, 2000e3],
+        [-1e3, 2000e3]
+      ],
+      "temperature models": [
+        {
+          "model":"linear",
+          "min depth":40e3,
+          "max depth":120e3,
+          "top temperature":800.0,
+          "bottom temperature":1573.15
+        }
+      ],
+      "composition models": [
+        {"model":"uniform", "compositions":[8]}
+      ]
+    },
+
+    {
+      "model": "mantle layer",
+      "name": "asthenosphere_1",
+      "min depth": 120e3,
+      "max depth": 200e3,
+      "coordinates": [
+        [-1e3, -1e3],
+        [500e3, -1e3],
+        [500e3, 600e3],
+        [-1e3, 1100e3]
+      ],
+      "temperature models": [
+        {
+          "model":"linear",
+          "min depth":120e3,
+          "max depth":200e3,
+          "top temperature":1573.15,
+          "bottom temperature":1680.0
+        }
+      ],
+      "composition models": [
+        {"model":"uniform", "compositions":[9]}
+      ]
+    },
+
+    {
+      "model": "mantle layer",
+      "name": "asthenosphere_2",
+      "min depth": 120e3,
+      "max depth": 200e3,
+      "coordinates": [
+        [-1e3, 1500e3],
+        [500e3, 1000e3],
+        [500e3, 2000e3],
+        [-1e3, 2000e3]
+      ],
+      "temperature models": [
+        {
+          "model":"linear",
+          "min depth":120e3,
+          "max depth":200e3,
+          "top temperature":1573.15,
+          "bottom temperature":1680.0
+        }
+      ],
+      "composition models": [
+        {"model":"uniform", "compositions":[11]}
+      ]
+    }
+  ]
+}
