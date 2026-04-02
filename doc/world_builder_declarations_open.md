@@ -29766,17 +29766,17 @@
 - **description**:Number of integration points for calculating the compensation pressure.
 ::::::::::::::::::::::::
 
-::::::::::::::::::::::::{dropdown} /Reference profile point
+::::::::::::::::::::::::{dropdown} /reference profile point
 :open:
-:name: open_Reference-profile-point
+:name: open_reference-profile-point
 
 - **type**:array
 - **minItems**:2
 - **maxItems**:2
-- **description**:This is an array of two points along where the cross section is taken
-:::::::::::::::::::::::{dropdown} /Reference profile point/items
+- **description**:This is an X-Y point used to calculate the reference compensation pressure.
+:::::::::::::::::::::::{dropdown} /reference profile point/items
 :open:
-:name: open_Reference-profile-point_items
+:name: open_reference-profile-point_items
 
 - **type**:number
 :::::::::::::::::::::::
