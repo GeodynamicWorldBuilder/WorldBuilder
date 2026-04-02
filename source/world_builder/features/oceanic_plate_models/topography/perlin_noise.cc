@@ -66,7 +66,7 @@ namespace WorldBuilder
         void
         PerlinNoise::declare_entries(Parameters &prm, const std::string &)
         {
-          // Document plugin. This model exposes min/max topography and Perlin
+          // This model exposes min/max topography and Perlin
           // settings rather than a single `topography` field.
           prm.declare_entry("", Types::Object(),
                             "Perlin noise topography model for oceanic plates.");
@@ -131,10 +131,11 @@ namespace WorldBuilder
         }
 
         double
-        PerlinNoise::get_topography(const Point<3> & /*position_in_cartesian_coordinates*/,
+        PerlinNoise::get_topography(const Point<3> &position,
                                     const Objects::NaturalCoordinate &position_in_natural_coordinates,
                                     double topography) const
         {
+          (void) position;
           const double depth = position_in_natural_coordinates.get_depth_coordinate();
           if (depth <= max_depth && depth >= min_depth)
             {

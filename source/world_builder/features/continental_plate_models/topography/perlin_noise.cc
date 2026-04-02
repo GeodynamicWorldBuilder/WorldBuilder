@@ -66,7 +66,7 @@ namespace WorldBuilder
         void
         PerlinNoise::declare_entries(Parameters &prm, const std::string &)
         {
-          // Document plugin. Unlike some topography plugins (e.g. DepthSurface)
+          // Unlike some topography plugins (e.g. DepthSurface)
           // this model does not require a single `topography` field; instead
           // it exposes `min topography` / `max topography` and Perlin settings.
           prm.declare_entry("", Types::Object(),

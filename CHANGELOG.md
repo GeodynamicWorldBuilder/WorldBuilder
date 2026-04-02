@@ -2,15 +2,17 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-with the addition of author(s), date of change and optionally the relevant issue. 
+with the addition of author(s), date of change and optionally the relevant issue.
 
-Add new entries a the bottom of the current list in the subheading. Item format: 
+Add new entries a the bottom of the current list in the subheading. Item format:
 - Description. [Name; date; relevant github issue tag(s) and or pull requests]
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 ### Added
+
+- Added perlin topography models for continental and oceanic plates . \[Tilman May; 2025-03-31; [#922](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/922)\]
 
 ### Changed
 
@@ -74,7 +76,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Added a `--resolution-limit` option to gwb-grid to limit the resolution specified in the .grid file. \[Menno Fraters; 2024-02-16; [#653](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/653)\]
 - Added a `random` composition in the `continental plate` feature that allows the user to specify a random compositional value to a given compositional field. \[Arushi Saxena; Menno Fraters; 2024-02-26; [#651](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/651)\]
 
-### Changed 
+### Changed
 - Unified the directories `cookbooks/` and `doc/sphinx/user_manual/cookbooks`. All information about cookbooks including the documentation is now bundled in the top-level `cookbooks/` directory. \[Rene Gassmoeller; 2024-02-14; [#558](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/558)\]
 - Deleted the deprecated Latex manual. Use the new sphinx documentation instead, which can be build into a .pdf file as well. \[Rene Gassmoeller; 2024-02-14; [#595](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/595)\]
 - Relocated the code that is used to calculate spreading center quantities like distance from the ridge, and spreading rate. Currently the spreading rate is just a constant value, but this will be changed in a follow up pull request. \[Daniel Douglas; 2024-02-14; [#590](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/590)\]
@@ -89,7 +91,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [0.5.0]
 ### Added
 - The World Builder Visualizer can now compress vtu files with zlib and output in binary through the vtu11 library. ASCII output is still available.  \[Menno Fraters; 2021-06-26; [#282](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/282)\]
-- The option to use a half space cooling model for the temperature of an oceanic plate has been added to the oceanic plate feature. \[Magali Billen; 2021-07-15; [#317](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/317)\] 
+- The option to use a half space cooling model for the temperature of an oceanic plate has been added to the oceanic plate feature. \[Magali Billen; 2021-07-15; [#317](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/317)\]
 - Information about the depth of the reference surface in the PointDistanceFromCurvedPlanes structure. \[Menno Fraters; 2021-07-20; [#320](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/320)\]
 - The option for a smooth slab temperature structure that conserves mass with distance along the slab surface. \[Magali Billen; 2021-07-28; [#323](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/323)\]
 - The option for a temperature model for an oceanic plate with a constant age using the plate model. \[Haoyuan Li; 2021-10-29; [#344](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/344)\]
@@ -136,7 +138,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - The interface of the properties functions of features now takes a reference to the properties vector instead of creating a copy. All internal features have been changed, but all user created features will have to be adjusted as well.  \[Rene Gassmoeller; 2023-05-11; [#485](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/485)\]
 - The World Builder can now be easily build included in another CMake project by using ADD_SUBDIRECTORY. It now uses `PROJECT_*_DIR` instead of `CMAKE_*_DIR` and if it is build by an external project, the targets will have a `wb_` prefix. \[Menno Fraters; 2023-01-27; [#492](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/492)\]
 
-### Fixed 
+### Fixed
 - Using slabs and faults beyond the -180 to 180 range gave issues. These are now fixed and it now works and is tested for the -380 to 380 range. \[Menno Fraters; 2021-10-22; [#338](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/338), [#340](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/340) and [#342](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/342)\]
 - The ridge coordinates for the mass conservative slab temperature model where not converted to radians internally. \[Menno Fraters; 2021-10-27; [#352](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/352)\]
 - Fixed the taper of temperature at the slab tip for the bottom part of the slab, and fixed issue with negative temperatures above slab when there is an existing overririding plate temperature. \[Magali Billen; 2021-11-02; [#353](https:https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/353)\]
@@ -161,15 +163,15 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - A large overhoal of the distance_point_from_curved_planes function improving the accuracy in spherical coordinates. This may slightly change the results, but it should be an improvement both in accuracy and performance. Also makes available a coordinate system independent distrance function and some fast trigonometric functions. \[Menno Fraters; 2021-06-11; [#255](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/255)\]
 
 ### Fixed
-- Fixed namespaces, adding `WorldBuilder::` where needed. \[Timo Heister; 2020-08-10; [#205](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/205)\] 
-- Fixed bug in linear temperature models in several features when using a top/center temperature which computes the background (-1). \[Menno Fraters; 2021-06-22; [#273](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/273)\] 
+- Fixed namespaces, adding `WorldBuilder::` where needed. \[Timo Heister; 2020-08-10; [#205](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/205)\]
+- Fixed bug in linear temperature models in several features when using a top/center temperature which computes the background (-1). \[Menno Fraters; 2021-06-22; [#273](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/273)\]
 
 ## [0.3.0] - 2020-06-19
 ### Added
 - An experimental grains interface containing grain sizes and orientations has been added. [Menno Fraters;;]
 ### Changed
 - Fortran compiler is now optional [Menno Fraters;;]
-- The world builder no longer requires or uses OpenMP. It was not used in the core  library, but used to speed up the Visualization program. That uses its own threads now. [Menno Fraters;;] 
+- The world builder no longer requires or uses OpenMP. It was not used in the core  library, but used to speed up the Visualization program. That uses its own threads now. [Menno Fraters;;]
 - The usage of cmake has been moderized allowing for more flexibility [Menno Fraters;;]
 ### Fixed
 - The code has been refactored and cleaned exstinively and new compiler warnings have been  enabled and fixed. [Menno Fraters;;]
