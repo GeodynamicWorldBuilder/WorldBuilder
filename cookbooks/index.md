@@ -12,4 +12,6 @@ This section contains self-contained cookbooks on how to design different geodyn
 simple_subduction_2d_cartesian/doc/README
 simple_subduction_2d_chunk/doc/README
 2d_cartesian_hydrated_slab/doc/README
+3d_cartesian_perlin_noise/doc/README
+
 ```
