@@ -16,8 +16,8 @@ All model parameters can be adjusted depending on specific research objectives.
 :::{tab-item} Root model information
 ```{literalinclude} ../3d_rifting_model_of_SCS.wb
 :language: json
-:lineno-start: 29
-:lines: 29-144
+:lineno-start: 18
+:lines: 18-60
 ```
 :::
 :::{tab-item} Full File
