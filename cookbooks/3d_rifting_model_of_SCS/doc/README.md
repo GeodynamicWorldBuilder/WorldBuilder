@@ -29,6 +29,18 @@ All model parameters can be adjusted depending on specific research objectives.
 ::::
 
 
+The figure below shows a geological map for model reference. 
+
+```{figure} ./GWB_SCS_R.jpg
+:name: GWB_SCS_R
+:alt: 3d rifting model of SCS. 
+:align: center
+
+The simplified tectonic map of the northern margin of the South China Sea, modified from Zhang et al. (2019). The location of the Hainan mantle plume in the model is taken from Xia et al. (2025).
+Zhang, Y., Qi, J., and Wu, J. Cenozoic Faults Systems and Its Geodynamics of the Continental Margin Basins in the Northern of South China Sea. Earth Science. 2019, 44(2): 603-625 (in Chinese with English abstract).
+Xia, S., Guo, T., Zhao, F., et al. Late Cenozoic magmatism of the South China Sea driven by the Hainan mantle plume. Science Bulletin, 2025, 70: 604-608.
+```
+
 The figure below show the result of the model. 
 
 ```{figure} ./GWB_SCS.jpg
