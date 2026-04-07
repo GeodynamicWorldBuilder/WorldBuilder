@@ -7,7 +7,7 @@ This model is designed based on the northwestern continental margin of the South
 To facilitate numerical simulations and rheological parameter assignment, each structural unit is defined with distinct compositional fields.
 The continental margin represents typical passive margin basins, mainly corresponding to the Qiongdongnan Basin and the Pearl River Mouth Basin. 
 Three island blocks are included in the model, representing Hainan Island, Xisha Islands, and Zhongsha Islands. These regions are characterized by significantly thickened lithosphere compared to the surrounding margin.
-The oceanic domain represents the Northwestern Sub-basin and Eastern Sub-basin of the South China Sea. It is modeled as relatively thin oceanic lithosphere and includes two orthogonal spreading ridge systems to approximate seafloor spreading fabric.
+The oceanic domain represents the Northwestern sub-basin and Eastern sub-basin of the South China Sea. It is modeled as relatively thin oceanic lithosphere and includes two orthogonal spreading ridge systems to approximate seafloor spreading fabric.
 A mantle plume is introduced as Hainan plume. The plume is defined by a moderate positive thermal anomaly relative to the ambient mantle.
 In addition, a transitional boundary with gradual variations in both thickness and temperature is set up using `max depth`.
 All model parameters can be adjusted depending on specific research objectives.
