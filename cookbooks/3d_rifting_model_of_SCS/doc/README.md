@@ -2,7 +2,7 @@
 3D Rifting Model of the South China Sea
 =========================
 
-This model is designed based on the northwestern continental margin of the South China Sea. It incorporates key tectonic units including the continental margin, islands, oceanic crust, and a mantle plume.The geometries of different plates in the model were digitized using ArcMap. 
+This model is designed based on the northwestern continental margin of the South China Sea. It incorporates key tectonic units including the continental margin, islands, oceanic crust, and a mantle plume. The geometries of different plates in the model were digitized using ArcMap. 
 
 To facilitate numerical simulations and rheological parameter assignment, each structural unit is defined with distinct compositional fields.
 The continental margin represents typical passive margin basins, mainly corresponding to the Qiongdongnan Basin and the Pearl River Mouth Basin. 
