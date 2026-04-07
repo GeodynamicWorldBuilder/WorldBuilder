@@ -1,5 +1,5 @@
 (part:user_manual:chap:cookbooks:sec:3d_rifting_model_of_SCS)=
-3D Rifting Model of SCS
+3D Rifting Model of the South China Sea
 =========================
 
 This model is designed based on the northwestern continental margin of the South China Sea. It incorporates key tectonic units including the continental margin, islands, oceanic crust, and a mantle plume.The geometries of different plates in the model were digitized using ArcMap. 
