@@ -1,0 +1,62 @@
+{
+  "version": "1.1",
+  "coordinate system":{"model":"cartesian"},
+  "features":
+  [
+    {"model":"mantle layer", "name":"upper mantle", "max depth":300e3,
+       "coordinates":[[-500e3,0],[-500e3,650e3],[500e3,650e3],[500e3,0]],
+       "composition models":[{"model":"uniform", "compositions":[4]}]},
+
+    {"model":"continental plate", "name":"Passive margin", "max depth":[[300e3]], 
+       "coordinates":[[-500e3,0],[-500e3,650e3],[500e3,650e3],[500e3,0]],
+       "temperature models":[{"model":"linear", "max depth":[[70e3]]}],
+       "composition models":[{"model":"uniform", "compositions":[1], "max depth":[[17e3]]},{"model":"uniform", "compositions":[2], "min depth":[[17e3]]},{"model":"uniform", "compositions":[3], "min depth":[[32e3]]},{"model":"uniform", "compositions":[4], "min depth":[[70e3]]}]}, 
+		 
+	{"model":"continental plate", "name":"Hainan island", "max depth":[[300e3]], 
+		"coordinates":[[-500e3,650e3],[-500e3,522e3],[-468e3,498e3],[-413e3,472e3],[-313e3,480e3],[-271e3,515e3],[-218e3,565e3],[-180e3,569e3],[-157e3,587e3],[-148e3,627e3],[-171e3,650e3]],
+		"temperature models":[{"model":"linear", "max depth":[[120e3],[70e3,[[-500e3,522e3],[-468e3,498e3],[-413e3,472e3],[-313e3,480e3],[-271e3,515e3],[-218e3,565e3],[-180e3,569e3],[-157e3,587e3],[-148e3,627e3],[-171e3,650e3]]]]}],
+		"composition models":[{"model":"uniform","compositions":[5],"max depth":[[20e3],[17e3,[[-500e3,522e3],[-468e3,498e3],[-413e3,472e3],[-313e3,480e3],[-271e3,515e3],[-218e3,565e3],[-180e3,569e3],[-157e3,587e3],[-148e3,627e3],[-171e3,650e3]]]]},
+                              {"model":"uniform","compositions":[6],"min depth":[[20e3],[17e3,[[-500e3,522e3],[-468e3,498e3],[-413e3,472e3],[-313e3,480e3],[-271e3,515e3],[-218e3,565e3],[-180e3,569e3],[-157e3,587e3],[-148e3,627e3],[-171e3,650e3]]]]},
+                              {"model":"uniform","compositions":[7],"min depth":[[40e3],[32e3,[[-500e3,522e3],[-468e3,498e3],[-413e3,472e3],[-313e3,480e3],[-271e3,515e3],[-218e3,565e3],[-180e3,569e3],[-157e3,587e3],[-148e3,627e3],[-171e3,650e3]]]]},
+                              {"model":"uniform","compositions":[4],"min depth":[[120e3],[70e3,[[-500e3,522e3],[-468e3,498e3],[-413e3,472e3],[-313e3,480e3],[-271e3,515e3],[-218e3,565e3],[-180e3,569e3],[-157e3,587e3],[-148e3,627e3],[-171e3,650e3]]]]}]},	 
+ 
+	  {"model":"continental plate", "name":"Xisha island", "max depth":[[300e3]], 
+      "coordinates":[[-318e3,199e3],[-314e3,166e3],[-291e3,132e3],[-264e3,106e3],[-217e3,100e3],[-179e3,110e3],[-151e3,152e3],[-154e3,184e3],[-185e3,212e3],[-209e3,224e3],[-239e3,228e3],[-269e3,232e3],[-305e3,234e3]],
+       "temperature models":[{"model":"linear", "max depth":[[120e3]]}],
+       "composition models":[{"model":"uniform", "compositions":[5], "max depth":[[20e3]]},
+                             {"model":"uniform", "compositions":[6], "min depth":[[20e3]]},
+                             {"model":"uniform", "compositions":[7], "min depth":[[40e3]]},
+		                     {"model":"uniform", "compositions":[4], "min depth":[[120e3]]}]},	 
+	  
+	  {"model":"continental plate", "name":"zhongsha island", "max depth":[[300e3]], 
+       "coordinates":[[-19e3,0e3],[63e3,0e3],[80e3,22e3],[113e3,44e3],[131e3,92e3],[88e3,111e3],[9e3,129e3],[-24e3,140e3],[-49e3,111e3],[-55e3,74e3],[-53e3,37e3]],
+       "temperature models":[{"model":"linear", "max depth":[[120e3]]}],
+       "composition models":[{"model":"uniform", "compositions":[5], "max depth":[[20e3]]},
+                             {"model":"uniform", "compositions":[6], "min depth":[[20e3]]},
+		                     {"model":"uniform", "compositions":[7], "min depth":[[40e3]]},
+		                     {"model":"uniform", "compositions":[4], "min depth":[[120e3]]}]},		 
+    
+	   {"model":"oceanic plate", "name":"SW-S subbasin", "max depth":[[300e3]], 
+		"coordinates":[[355.4e3,135.3e3],[342.1e3,139.0e3],[323.3e3,143.5e3],[306.4e3,156.0e3],[285.8e3,168.2e3],[268.1e3,174.2e3],[257.2e3,188.8e3],[247.9e3,202.3e3],[218.3e3,211.5e3],[200.8e3,226.1e3],[192.1e3,242.2e3],[169.9e3,245.9e3],[153.0e3,239.1e3],[139.5e3,243.8e3],[116.7e3,249.9e3],[98.5e3,246.7e3],[70.4e3,236.1e3],[49.5e3,234.8e3],[41.8e3,245.1e3],[32.6e3,247.8e3],[20.4e3,241.2e3],[23.0e3,226.1e3],[31.5e3,212.3e3],[29.7e3,198.6e3],[20.7e3,193.0e3],[-2.1e3,195.4e3],[-22.5e3,197.5e3],[-36.2e3,194.9e3],[-33.6e3,186.1e3],[-38.9e3,172.9e3],[-50.2e3,166.0e3],[-43.9e3,153.9e3],[-9.5e3,146.2e3],[20.7e3,136.4e3],[41.0e3,127.1e3],[83.4e3,126.9e3],[124.6e3,115.2e3],[147.7e3,112.1e3],[188.4e3,98.6e3],[198.2e3,86.7e3],[195.3e3,65.8e3],[181.0e3,49.4e3],[156.7e3,39.3e3],[139.2e3,36.7e3],[126.0e3,29.8e3],[109.6e3,17.6e3],[103.7e3,0.0e3],[500.0e3,0.0e3],[500.0e3,89.3e3],[452.3e3,101.2e3],[405.5e3,110.3e3],[376.1e3,124.2e3]],
+        "temperature models":[{"model":"half space model", "max depth":[[100e3]], "spreading velocity":0.04, 
+        "ridge coordinates":[[[34.9e3,164.4e3],[73.6e3,172.7e3],[95.7e3,196.5e3],[148e3,197.2e3],[176.4e3,180.7e3],[214.8e3,166.1e3],[233.0e3,157.8e3]],
+                             [[161.9e3,38.4e3],[193e3,24.5e3],[230e3,5.7e3],[291.3e3,-28.2e3],[424.7e3,-102.8e3],[517.7e3,-153.5e3]]]}],
+        "composition models":[{"model":"uniform", "compositions":[8], "max depth":[[15e3]]},
+                              {"model":"uniform", "compositions":[3], "min depth":[[15e3]]},
+		                      {"model":"uniform", "compositions":[4], "min depth":[[35e3]]}]},
+	
+	{"model":"plume", "name":"Hot spot",
+     "coordinates":[[256e3,265e3],[130.8e3,280e3],[5.6e3,295e3],[-119.6e3,310e3],[-244.8e3,325e3],[-370e3,340e3]],
+     "cross section depths":[50e3,100e3,150e3,200e3,250e3,300e3],
+     "semi-major axis":[200e3,140e3,90e3,60e3,50e3,50e3],
+     "eccentricity":[0.75, 0.75, 0.5, 0.5, 0.5,0.5],
+     "rotation angles":[30, 30, 25, 25, 30, 30],
+     "temperature models":[{"model":"gaussian", "operation":"add",
+     "centerline temperatures":[180,190,200,210,220,230],
+     "gaussian sigmas":[0.35, 0.32, 0.3,0.28,0.25,0.25],
+     "depths":[50e3,100e3,150e3,200e3,250e3,300e3]}], 
+     "composition models":[{"model":"uniform","compositions":[9], "min depth":0}]}
+  ]
+}
+
+
