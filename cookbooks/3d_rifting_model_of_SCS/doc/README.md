@@ -17,7 +17,7 @@ All model parameters can be adjusted depending on specific research objectives.
 ```{literalinclude} ../3d_rifting_model_of_SCS.wb
 :language: json
 :lineno-start: 15
-:lines: 15-60
+:lines: 15-46
 ```
 :::
 :::{tab-item} Full File
