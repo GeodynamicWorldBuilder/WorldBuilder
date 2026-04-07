@@ -3,175 +3,30 @@
   "coordinate system":{"model":"cartesian"},
   "features":
   [
-    {
-       "model":"mantle layer", "name":"upper mantle", "max depth":300e3,
+    {"model":"mantle layer", "name":"upper mantle", "max depth":300e3,
        "coordinates":[[-500e3,0],[-500e3,650e3],[500e3,650e3],[500e3,0]],
-       "composition models":[{"model":"uniform", "compositions":[4]}]
-    },
-  
-    {
-       "model":"continental plate", "name":"Passive margin", "max depth":[[300e3]], 
+       "composition models":[{"model":"uniform", "compositions":[4]}]},
+
+    {"model":"continental plate", "name":"Passive margin", "max depth":[[300e3]], 
        "coordinates":[[-500e3,0],[-500e3,650e3],[500e3,650e3],[500e3,0]],
-       "temperature models":
-         [
-           {"model":"linear", "max depth":[[70e3]]}
-         ],
-       "composition models":
-         [
-           {"model":"uniform", "compositions":[1], "max depth":[[17e3]]},
-           {"model":"uniform", "compositions":[2], "min depth":[[17e3]]},
-		   {"model":"uniform", "compositions":[3], "min depth":[[32e3]]},
-		   {"model":"uniform", "compositions":[4], "min depth":[[70e3]]}
-         ]
-	}, 
+       "temperature models":[{"model":"linear", "max depth":[[70e3]]}],
+       "composition models":[{"model":"uniform", "compositions":[1], "max depth":[[17e3]]},{"model":"uniform", "compositions":[2], "min depth":[[17e3]]},{"model":"uniform", "compositions":[3], "min depth":[[32e3]]},{"model":"uniform", "compositions":[4], "min depth":[[70e3]]}]}, 
 		 
-	{	 
-		"model":"continental plate", "name":"Hainan island", "max depth":[[300e3]], 
-		"coordinates":[
-					  [-500e3,650e3],
-					  [-500e3,522e3],
-					  [-468e3,498e3],
-					  [-413e3,472e3],
-					  [-313e3,480e3],
-					  [-271e3,515e3],
-					  [-218e3,565e3],
-					  [-180e3,569e3],
-					  [-157e3,587e3],
-					  [-148e3,627e3],
-					  [-171e3,650e3]
-					  ],
-
-		"temperature models":
-		[
-		  {"model":"linear", "max depth":[[120e3],
-										  [70e3,[
-											  [-500e3,522e3],
-											  [-468e3,498e3],
-											  [-413e3,472e3],
-											  [-313e3,480e3],
-											  [-271e3,515e3],
-											  [-218e3,565e3],
-											  [-180e3,569e3],
-											  [-157e3,587e3],
-											  [-148e3,627e3],
-											  [-171e3,650e3]
-										  ]]
-		  ]}
-		],
-
-		"composition models":
-		[
-		  {
-			"model":"uniform",
-			"compositions":[5],
-			"max depth":[
-			  [20e3],
-			  [17e3,[
-				  [-500e3,522e3],
-				  [-468e3,498e3],
-				  [-413e3,472e3],
-				  [-313e3,480e3],
-				  [-271e3,515e3],
-				  [-218e3,565e3],
-				  [-180e3,569e3],
-				  [-157e3,587e3],
-				  [-148e3,627e3],
-				  [-171e3,650e3]
-			  ]]
-			]
-		  },
-
-		  {
-			"model":"uniform",
-			"compositions":[6],
-			"min depth":[
-			  [20e3],
-			  [17e3,[
-				  [-500e3,522e3],
-				  [-468e3,498e3],
-				  [-413e3,472e3],
-				  [-313e3,480e3],
-				  [-271e3,515e3],
-				  [-218e3,565e3],
-				  [-180e3,569e3],
-				  [-157e3,587e3],
-				  [-148e3,627e3],
-				  [-171e3,650e3]
-			  ]]
-			]
-		  },
-
-		  {
-			"model":"uniform",
-			"compositions":[7],
-			"min depth":[
-			  [40e3],
-			  [32e3,[
-				  [-500e3,522e3],
-				  [-468e3,498e3],
-				  [-413e3,472e3],
-				  [-313e3,480e3],
-				  [-271e3,515e3],
-				  [-218e3,565e3],
-				  [-180e3,569e3],
-				  [-157e3,587e3],
-				  [-148e3,627e3],
-				  [-171e3,650e3]
-			  ]]
-			]
-		  },
-
-		  {
-			"model":"uniform",
-			"compositions":[4],
-			"min depth":[
-			  [120e3],
-			  [70e3,[
-				  [-500e3,522e3],
-				  [-468e3,498e3],
-				  [-413e3,472e3],
-				  [-313e3,480e3],
-				  [-271e3,515e3],
-				  [-218e3,565e3],
-				  [-180e3,569e3],
-				  [-157e3,587e3],
-				  [-148e3,627e3],
-				  [-171e3,650e3]
-			  ]]
-			]
-		  }
-		]	 
-	},	 
+	{"model":"continental plate", "name":"Hainan island", "max depth":[[300e3]], 
+		"coordinates":[[-500e3,650e3],[-500e3,522e3],[-468e3,498e3],[-413e3,472e3],[-313e3,480e3],[-271e3,515e3],[-218e3,565e3],[-180e3,569e3],[-157e3,587e3],[-148e3,627e3],[-171e3,650e3]],
+		"temperature models":[{"model":"linear", "max depth":[[120e3],[70e3,[[-500e3,522e3],[-468e3,498e3],[-413e3,472e3],[-313e3,480e3],[-271e3,515e3],[-218e3,565e3],[-180e3,569e3],[-157e3,587e3],[-148e3,627e3],[-171e3,650e3]]]]}],
+		"composition models":[{"model":"uniform","compositions":[5],"max depth":[[20e3],[17e3,[[-500e3,522e3],[-468e3,498e3],[-413e3,472e3],[-313e3,480e3],[-271e3,515e3],[-218e3,565e3],[-180e3,569e3],[-157e3,587e3],[-148e3,627e3],[-171e3,650e3]]]]},
+                              {"model":"uniform","compositions":[6],"min depth":[[20e3],[17e3,[[-500e3,522e3],[-468e3,498e3],[-413e3,472e3],[-313e3,480e3],[-271e3,515e3],[-218e3,565e3],[-180e3,569e3],[-157e3,587e3],[-148e3,627e3],[-171e3,650e3]]]]},
+                              {"model":"uniform","compositions":[7],"min depth":[[40e3],[32e3,[[-500e3,522e3],[-468e3,498e3],[-413e3,472e3],[-313e3,480e3],[-271e3,515e3],[-218e3,565e3],[-180e3,569e3],[-157e3,587e3],[-148e3,627e3],[-171e3,650e3]]]]},
+                              {"model":"uniform","compositions":[4],"min depth":[[120e3],[70e3,[[-500e3,522e3],[-468e3,498e3],[-413e3,472e3],[-313e3,480e3],[-271e3,515e3],[-218e3,565e3],[-180e3,569e3],[-157e3,587e3],[-148e3,627e3],[-171e3,650e3]]]]}]},	 
  
-	  {	 
-	"model":"continental plate", "name":"Xisha island", "max depth":[[300e3]], 
-      "coordinates":[
-                     [-318e3,199e3],
-                     [-314e3,166e3],
-                     [-291e3,132e3],
-                     [-264e3,106e3],
-                     [-217e3,100e3],
-                     [-179e3,110e3],
-                     [-151e3,152e3],
-                     [-154e3,184e3],
-                     [-185e3,212e3],
-                     [-209e3,224e3],
-                     [-239e3,228e3],
-                     [-269e3,232e3],
-                     [-305e3,234e3]
-                    ],
-       "temperature models":
-         [
-           {"model":"linear", "max depth":[[120e3]]}
-         ],
-       "composition models":
-         [
-           {"model":"uniform", "compositions":[5], "max depth":[[20e3]]},
-           {"model":"uniform", "compositions":[6], "min depth":[[20e3]]},
-		   {"model":"uniform", "compositions":[7], "min depth":[[40e3]]},
-		   {"model":"uniform", "compositions":[4], "min depth":[[120e3]]}
-         ] 
-	  },	 
+	  {"model":"continental plate", "name":"Xisha island", "max depth":[[300e3]], 
+      "coordinates":[[-318e3,199e3],[-314e3,166e3],[-291e3,132e3],[-264e3,106e3],[-217e3,100e3],[-179e3,110e3],[-151e3,152e3],[-154e3,184e3],[-185e3,212e3],[-209e3,224e3],[-239e3,228e3],[-269e3,232e3],[-305e3,234e3]],
+       "temperature models":[{"model":"linear", "max depth":[[120e3]]}],
+       "composition models":[{"model":"uniform", "compositions":[5], "max depth":[[20e3]]},
+                             {"model":"uniform", "compositions":[6], "min depth":[[20e3]]},
+                             {"model":"uniform", "compositions":[7], "min depth":[[40e3]]},
+		                     {"model":"uniform", "compositions":[4], "min depth":[[120e3]]}]},	 
 
 	  
 	  {	 
