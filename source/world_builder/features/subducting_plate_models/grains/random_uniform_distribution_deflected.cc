@@ -24,9 +24,11 @@
 #include "world_builder/types/bool.h"
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"
+#include "world_builder/types/one_of.h"
 #include "world_builder/types/unsigned_int.h"
 #include "world_builder/utilities.h"
 #include "world_builder/world.h"
+
 
 namespace WorldBuilder
 {
@@ -66,8 +68,8 @@ namespace WorldBuilder
           prm.declare_entry("max distance slab top", Types::Double(std::numeric_limits<double>::max()),
                             "The distance from the slab top in meters to which the composition of this feature is present.");
 
-          prm.declare_entry("compositions", Types::Array(Types::UnsignedInt(),0),
-                            "A list with the integer labels of the composition which are present there.");
+          prm.declare_entry("compositions", Types::Array(Types::OneOf(Types::UnsignedInt(), Types::String("")),0),
+                            "A list of indices or names of the composition which are present there.");
 
           prm.declare_entry("orientation operation", Types::String("replace", std::vector<std::string> {"replace"}),
                             "Whether the value should replace any value previously defined at this location (replace) or "

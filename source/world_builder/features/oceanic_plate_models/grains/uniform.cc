@@ -28,6 +28,7 @@
 #include "world_builder/types/unsigned_int.h"
 #include "world_builder/types/value_at_points.h"
 #include "world_builder/utilities.h"
+#include "world_builder/world.h"
 
 
 namespace WorldBuilder
@@ -74,8 +75,8 @@ namespace WorldBuilder
                             "The depth in meters to which the composition of this feature is present.");
 
 
-          prm.declare_entry("compositions", Types::Array(Types::UnsignedInt(),0),
-                            "A list with the integer labels of the composition which are present there.");
+          prm.declare_entry("compositions", Types::Array(Types::OneOf(Types::UnsignedInt(), Types::String("")),0),
+                            "A list of indices or names of the composition which are present there.");
 
           prm.declare_entry("rotation matrices", Types::Array(Types::Array(Types::Array(Types::Double(0),3,3),3,3),0),
                             "A list with the labels of the grains which are present there for each compositions.");

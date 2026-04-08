@@ -26,6 +26,7 @@
 #include "world_builder/types/object.h"
 #include "world_builder/types/unsigned_int.h"
 #include "world_builder/utilities.h"
+#include "world_builder/world.h"
 
 
 namespace WorldBuilder

@@ -24,8 +24,10 @@
 #include "world_builder/types/array.h"
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"
+#include "world_builder/types/one_of.h"
 #include "world_builder/types/unsigned_int.h"
 #include "world_builder/utilities.h"
+#include "world_builder/world.h"
 
 
 namespace WorldBuilder
