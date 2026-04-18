@@ -27,8 +27,10 @@
 #include <world_builder/types/array.h>
 #include <world_builder/types/double.h>
 #include <world_builder/types/object.h>
+#include <world_builder/types/one_of.h>
 #include <world_builder/types/string.h>
 #include <world_builder/types/unsigned_int.h>
+#include "world_builder/world.h"
 
 
 namespace WorldBuilder
@@ -68,8 +70,8 @@ namespace WorldBuilder
                             "The composition fraction at the top of the slab (layer).");
           prm.declare_entry("bottom fractions",  Types::Array(Types::Double(0.0),1),
                             "The composition fraction at the bottom of the slab (layer).");
-          prm.declare_entry("compositions", Types::Array(Types::UnsignedInt(),0),
-                            "A list with the labels of the composition which are present there.");
+          prm.declare_entry("compositions", Types::Array(Types::OneOf(Types::UnsignedInt(), Types::String("")),0),
+                            "A list of indices or names of the composition which are present there.");
           prm.declare_entry("operation", Types::String("replace", std::vector<std::string> {"replace", "replace defined only", "add", "subtract"}),
                             "Whether the value should replace any value previously defined at this location (replace) or "
                             "add the value to the previously define value. Replacing implies that all compositions not "
@@ -86,7 +88,7 @@ namespace WorldBuilder
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
           top_fraction = prm.get_vector<double>("top fractions");
           bottom_fraction = prm.get_vector<double>("bottom fractions");
-          compositions = prm.get_vector<unsigned int>("compositions");
+          compositions = prm.get_vector<unsigned int>("compositions", this->world->composition_properties);
         }
 
 

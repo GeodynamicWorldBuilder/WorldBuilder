@@ -8107,7 +8107,7 @@ TEST_CASE("WorldBuilder Utilities function: calculate_effective_trench_and_plate
                     Contains("The age of trench at subducting initiation is less than 0. "));
 }
 
-TEST_CASE("WorldBuilder composition property maps")
+TEST_CASE("WorldBuilder composition properties map")
 {
   std::vector<std::pair<std::string,double>> approval_tests;
 
@@ -8118,7 +8118,10 @@ TEST_CASE("WorldBuilder composition property maps")
 
   CHECK(world.composition_properties[0].index == 0);
   CHECK(world.composition_properties[0].name == "0");
-
   CHECK(world.composition_properties[1].name == "harzburgite");
   CHECK(world.composition_properties[3].reference_density == Approx(3350.0));
+
+  CHECK(world.properties({{75e3,50e3,0}},50e3, {{{{2,3,0}}}})[0] == Approx(1.0)); // supposed to be pyroxenite (3)
+  CHECK(world.properties({{75e3,50e3,0}},50e3, {{{{2,2,0}}}})[0] == Approx(0.0)); // not supposed to be composition index 2
+  CHECK(world.properties({{25e3,50e3,0}},50e3, {{{{2,1,0}}}})[0] == Approx(1.0)); // supposed to be harzburgite (1)
 }

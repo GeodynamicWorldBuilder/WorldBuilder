@@ -22,12 +22,28 @@
   ],
   "features":[
     {
-      "model":"continental plate",
+      "model":"oceanic plate",
       "name":"TestPlate",
       "max depth":300e3,
-      "coordinates":[[0,0],[100e3,0],[100e3,100e3],[0,100e3]],
+      "coordinates":[[0,0],[100e3,0],[100e3,50e3],[0,50e3]],
       "temperature models":[{"model":"uniform", "max depth":250e3, "temperature":293.15}],
       "composition models":[{"model":"uniform", "max depth":250e3, "compositions":[0]}]
+    },
+    {
+      "model":"continental plate",
+      "name":"TestPlate2",
+      "max depth":300e3,
+      "coordinates":[[0,50e3],[50e3,50e3],[50e3,100e3],[0,100e3]],
+      "temperature models":[{"model":"uniform", "max depth":250e3, "temperature":293.15}],
+      "composition models":[{"model":"uniform", "max depth":250e3, "compositions":["harzburgite"]}]
+    },
+    {
+      "model":"continental plate",
+      "name":"TestPlate3",
+      "max depth":300e3,
+      "coordinates":[[50e3,50e3],[100e3,50e3],[100e3,100e3],[50e3,100e3]],
+      "temperature models":[{"model":"uniform", "max depth":250e3, "temperature":293.15}],
+      "composition models":[{"model":"uniform", "max depth":250e3, "compositions":["pyroxenite"]}]
     }
   ]
 }

@@ -2296,13 +2296,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_1_composition-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -2580,13 +2598,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/compositions/items
 :name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/compositions/items/oneOf
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -2832,13 +2868,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/3/compositions/items
 :name: closed_features_items_oneOf_1_composition-models_items_oneOf_3_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/3/compositions/items/oneOf
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/3/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_3_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/3/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -4541,13 +4595,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_1_density-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/1/density models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_1_density-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -5411,13 +5483,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/2/compositions/items
 :name: closed_features_items_oneOf_2_segments_items_composition-models_items_oneOf_2_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/2/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/2/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/2/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -5475,13 +5565,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/3/compositions/items
 :name: closed_features_items_oneOf_2_segments_items_composition-models_items_oneOf_3_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/3/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/3/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/3/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -5574,13 +5682,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_2_segments_items_grains-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_segments_items_grains-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_segments_items_grains-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_segments_items_grains-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -5645,13 +5771,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/2/compositions/items
 :name: closed_features_items_oneOf_2_segments_items_grains-models_items_oneOf_2_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/2/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_segments_items_grains-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/2/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_segments_items_grains-models_items_oneOf_2_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/2/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_segments_items_grains-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -5745,13 +5889,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/3/compositions/items
 :name: closed_features_items_oneOf_2_segments_items_grains-models_items_oneOf_3_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/3/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_segments_items_grains-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/3/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_segments_items_grains-models_items_oneOf_3_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/3/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_segments_items_grains-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -6159,13 +6321,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/2/segments/items/density models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_2_segments_items_density-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/2/segments/items/density models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_segments_items_density-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/2/segments/items/density models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_segments_items_density-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/2/segments/items/density models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_segments_items_density-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -6727,13 +6907,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/2/compositions/items
 :name: closed_features_items_oneOf_2_composition-models_items_oneOf_2_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/2/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/2/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_composition-models_items_oneOf_2_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/2/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -6791,13 +6989,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/3/compositions/items
 :name: closed_features_items_oneOf_2_composition-models_items_oneOf_3_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/3/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_composition-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/3/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_composition-models_items_oneOf_3_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/3/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_composition-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -6890,13 +7106,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_2_grains-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_grains-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_grains-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_grains-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -6961,13 +7195,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/2/compositions/items
 :name: closed_features_items_oneOf_2_grains-models_items_oneOf_2_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/2/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_grains-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/2/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_grains-models_items_oneOf_2_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/2/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_grains-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -7061,13 +7313,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/3/compositions/items
 :name: closed_features_items_oneOf_2_grains-models_items_oneOf_3_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/3/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_grains-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/3/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_grains-models_items_oneOf_3_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/3/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_grains-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -7475,13 +7745,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/2/density models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_2_density-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/2/density models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_density-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/2/density models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_density-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/2/density models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_density-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -8147,13 +8435,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/2/compositions/items
 :name: closed_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_2_compositions_items
+
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/2/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/2/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::
+
+:::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/2/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::
+
+
 :::::::::::
 
 ::::::::::::
@@ -8211,13 +8517,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/3/compositions/items
 :name: closed_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_3_compositions_items
+
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/3/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/3/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::
+
+:::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/3/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::
+
+
 :::::::::::
 
 ::::::::::::
@@ -8310,13 +8634,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::
+
+:::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::
+
+
 :::::::::::
 
 ::::::::::::
@@ -8381,13 +8723,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/2/compositions/items
 :name: closed_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_2_compositions_items
+
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/2/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/2/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_2_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::
+
+:::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/2/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::
+
+
 :::::::::::
 
 ::::::::::::
@@ -8481,13 +8841,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/3/compositions/items
 :name: closed_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_3_compositions_items
+
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/3/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/3/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_3_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::
+
+:::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/3/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::
+
+
 :::::::::::
 
 ::::::::::::
@@ -8895,13 +9273,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/density models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_2_sections_items_segments_items_density-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/density models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_sections_items_segments_items_density-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/density models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_sections_items_segments_items_density-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::
+
+:::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/density models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_sections_items_segments_items_density-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::
+
+
 :::::::::::
 
 ::::::::::::
@@ -9463,13 +9859,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/2/compositions/items
 :name: closed_features_items_oneOf_2_sections_items_composition-models_items_oneOf_2_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/2/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_sections_items_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/2/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_sections_items_composition-models_items_oneOf_2_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/2/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_sections_items_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -9527,13 +9941,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/3/compositions/items
 :name: closed_features_items_oneOf_2_sections_items_composition-models_items_oneOf_3_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/3/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_sections_items_composition-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/3/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_sections_items_composition-models_items_oneOf_3_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/3/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_sections_items_composition-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -9626,13 +10058,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_2_sections_items_grains-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_sections_items_grains-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_sections_items_grains-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_sections_items_grains-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -9697,13 +10147,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/2/compositions/items
 :name: closed_features_items_oneOf_2_sections_items_grains-models_items_oneOf_2_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/2/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_sections_items_grains-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/2/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_sections_items_grains-models_items_oneOf_2_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/2/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_sections_items_grains-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -9797,13 +10265,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/3/compositions/items
 :name: closed_features_items_oneOf_2_sections_items_grains-models_items_oneOf_3_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/3/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_sections_items_grains-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/3/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_sections_items_grains-models_items_oneOf_3_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/3/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_sections_items_grains-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -10211,13 +10697,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/2/sections/items/density models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_2_sections_items_density-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/2/sections/items/density models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_2_sections_items_density-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/2/sections/items/density models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_2_sections_items_density-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/2/sections/items/density models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_2_sections_items_density-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -11789,13 +12293,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/2/compositions/items
 :name: closed_features_items_oneOf_3_composition-models_items_oneOf_2_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/2/compositions/items/oneOf
+:name: closed_features_items_oneOf_3_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/2/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_3_composition-models_items_oneOf_2_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/2/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_3_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -12024,13 +12546,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_3_grains-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_3_grains-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_3_grains-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_3_grains-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -12231,13 +12771,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/compositions/items
 :name: closed_features_items_oneOf_3_grains-models_items_oneOf_2_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/compositions/items/oneOf
+:name: closed_features_items_oneOf_3_grains-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_3_grains-models_items_oneOf_2_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_3_grains-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -12467,13 +13025,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/3/compositions/items
 :name: closed_features_items_oneOf_3_grains-models_items_oneOf_3_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/3/compositions/items/oneOf
+:name: closed_features_items_oneOf_3_grains-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/3/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_3_grains-models_items_oneOf_3_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/3/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_3_grains-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -13386,13 +13962,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_3_density-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/3/density models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_3_density-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -16061,13 +16655,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/2/compositions/items
 :name: closed_features_items_oneOf_4_composition-models_items_oneOf_2_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/2/compositions/items/oneOf
+:name: closed_features_items_oneOf_4_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/2/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_4_composition-models_items_oneOf_2_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/2/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_4_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -16309,13 +16921,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/3/compositions/items
 :name: closed_features_items_oneOf_4_composition-models_items_oneOf_3_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/3/compositions/items/oneOf
+:name: closed_features_items_oneOf_4_composition-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/3/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_4_composition-models_items_oneOf_3_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/3/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_4_composition-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -17019,13 +17649,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/3/compositions/items
 :name: closed_features_items_oneOf_4_grains-models_items_oneOf_3_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/3/compositions/items/oneOf
+:name: closed_features_items_oneOf_4_grains-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/3/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_4_grains-models_items_oneOf_3_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/3/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_4_grains-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -18475,13 +19123,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_4_density-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/4/density models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_4_density-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -19254,13 +19920,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/compositions/items
 :name: closed_features_items_oneOf_5_composition-models_items_oneOf_2_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/compositions/items/oneOf
+:name: closed_features_items_oneOf_5_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_5_composition-models_items_oneOf_2_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_5_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -19353,13 +20037,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_5_grains-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_5_grains-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_5_grains-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_5_grains-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -19560,13 +20262,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/compositions/items
 :name: closed_features_items_oneOf_5_grains-models_items_oneOf_2_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/compositions/items/oneOf
+:name: closed_features_items_oneOf_5_grains-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_5_grains-models_items_oneOf_2_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_5_grains-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -19660,13 +20380,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/compositions/items
 :name: closed_features_items_oneOf_5_grains-models_items_oneOf_3_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/compositions/items/oneOf
+:name: closed_features_items_oneOf_5_grains-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_5_grains-models_items_oneOf_3_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_5_grains-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -20083,13 +20821,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/5/density models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_5_density-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/5/density models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_5_density-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/5/density models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_5_density-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/5/density models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_5_density-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -21042,13 +21798,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with labels of compositions present.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_6_segments_items_composition-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_segments_items_composition-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_segments_items_composition-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_segments_items_composition-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -21210,13 +21984,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/2/compositions/items
 :name: closed_features_items_oneOf_6_segments_items_composition-models_items_oneOf_2_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/2/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/2/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/2/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -21282,13 +22074,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/3/compositions/items
 :name: closed_features_items_oneOf_6_segments_items_composition-models_items_oneOf_3_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/3/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/3/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/3/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -21370,13 +22180,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/4/compositions/items
 :name: closed_features_items_oneOf_6_segments_items_composition-models_items_oneOf_4_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/4/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_segments_items_composition-models_items_oneOf_4_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/4/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_segments_items_composition-models_items_oneOf_4_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/4/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_segments_items_composition-models_items_oneOf_4_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -21469,13 +22297,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_6_segments_items_grains-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_segments_items_grains-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_segments_items_grains-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_segments_items_grains-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -21540,13 +22386,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/2/compositions/items
 :name: closed_features_items_oneOf_6_segments_items_grains-models_items_oneOf_2_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/2/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_segments_items_grains-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/2/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_segments_items_grains-models_items_oneOf_2_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/2/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_segments_items_grains-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -22054,13 +22918,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/6/segments/items/density models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_6_segments_items_density-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/segments/items/density models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_segments_items_density-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/density models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_segments_items_density-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/density models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_segments_items_density-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -22863,13 +23745,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with labels of compositions present.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_6_composition-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_composition-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_composition-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_composition-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -23031,13 +23931,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/2/compositions/items
 :name: closed_features_items_oneOf_6_composition-models_items_oneOf_2_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/2/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/2/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_composition-models_items_oneOf_2_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/2/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -23103,13 +24021,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/3/compositions/items
 :name: closed_features_items_oneOf_6_composition-models_items_oneOf_3_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/3/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_composition-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/3/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_composition-models_items_oneOf_3_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/3/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_composition-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -23191,13 +24127,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/4/compositions/items
 :name: closed_features_items_oneOf_6_composition-models_items_oneOf_4_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/4/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_composition-models_items_oneOf_4_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/4/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_composition-models_items_oneOf_4_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/4/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_composition-models_items_oneOf_4_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -23290,13 +24244,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_6_grains-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_grains-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_grains-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_grains-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -23361,13 +24333,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/2/compositions/items
 :name: closed_features_items_oneOf_6_grains-models_items_oneOf_2_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/2/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_grains-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/2/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_grains-models_items_oneOf_2_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/2/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_grains-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -23875,13 +24865,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/6/density models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_6_density-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/6/density models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_density-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/6/density models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_density-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/6/density models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_density-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::
@@ -24788,13 +25796,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with labels of compositions present.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::
+
+
 :::::::::::
 
 ::::::::::::
@@ -24956,13 +25982,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/2/compositions/items
 :name: closed_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_2_compositions_items
+
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/2/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/2/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/2/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::
+
+
 :::::::::::
 
 ::::::::::::
@@ -25028,13 +26072,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/3/compositions/items
 :name: closed_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_3_compositions_items
+
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/3/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/3/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/3/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::
+
+
 :::::::::::
 
 ::::::::::::
@@ -25116,13 +26178,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/4/compositions/items
 :name: closed_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_4_compositions_items
+
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/4/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_4_compositions_items_oneOf
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/4/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_4_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/4/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_4_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::
+
+
 :::::::::::
 
 ::::::::::::
@@ -25215,13 +26295,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::
+
+
 :::::::::::
 
 ::::::::::::
@@ -25286,13 +26384,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/2/compositions/items
 :name: closed_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_2_compositions_items
+
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/2/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/2/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_2_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/2/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::
+
+
 :::::::::::
 
 ::::::::::::
@@ -25800,13 +26916,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/density models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_6_sections_items_segments_items_density-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/density models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_sections_items_segments_items_density-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/density models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_sections_items_segments_items_density-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/density models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_sections_items_segments_items_density-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::
+
+
 :::::::::::
 
 ::::::::::::
@@ -26609,13 +27743,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with labels of compositions present.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_6_sections_items_composition-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_sections_items_composition-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_sections_items_composition-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_sections_items_composition-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -26777,13 +27929,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/2/compositions/items
 :name: closed_features_items_oneOf_6_sections_items_composition-models_items_oneOf_2_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/2/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_sections_items_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/2/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_sections_items_composition-models_items_oneOf_2_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/2/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_sections_items_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -26849,13 +28019,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/3/compositions/items
 :name: closed_features_items_oneOf_6_sections_items_composition-models_items_oneOf_3_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/3/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_sections_items_composition-models_items_oneOf_3_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/3/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_sections_items_composition-models_items_oneOf_3_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/3/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_sections_items_composition-models_items_oneOf_3_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -26937,13 +28125,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/4/compositions/items
 :name: closed_features_items_oneOf_6_sections_items_composition-models_items_oneOf_4_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/4/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_sections_items_composition-models_items_oneOf_4_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/4/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_sections_items_composition-models_items_oneOf_4_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/4/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_sections_items_composition-models_items_oneOf_4_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -27036,13 +28242,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_6_sections_items_grains-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_sections_items_grains-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_sections_items_grains-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_sections_items_grains-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -27107,13 +28331,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/2/compositions/items
 :name: closed_features_items_oneOf_6_sections_items_grains-models_items_oneOf_2_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/2/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_sections_items_grains-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/2/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_sections_items_grains-models_items_oneOf_2_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/2/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_sections_items_grains-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
@@ -27621,13 +28863,31 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
+- **description**:A list of indices or names of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/6/sections/items/density models/items/oneOf/1/compositions/items
 :name: closed_features_items_oneOf_6_sections_items_density-models_items_oneOf_1_compositions_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/density models/items/oneOf/1/compositions/items/oneOf
+:name: closed_features_items_oneOf_6_sections_items_density-models_items_oneOf_1_compositions_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/density models/items/oneOf/1/compositions/items/oneOf/1
+:name: closed_features_items_oneOf_6_sections_items_density-models_items_oneOf_1_compositions_items_oneOf_1
 
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/density models/items/oneOf/1/compositions/items/oneOf/2
+:name: closed_features_items_oneOf_6_sections_items_density-models_items_oneOf_1_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
 :::::::::::::
 
 ::::::::::::::
