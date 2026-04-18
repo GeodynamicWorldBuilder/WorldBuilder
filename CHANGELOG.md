@@ -18,6 +18,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - Added Perlin noise models for composition and temperature across features, and gwb-dat coverage tests for Cartesian Perlin noise inputs. \[Tilman May; 2026-03-29; [#906](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/906)\]
 
+- Added perlin topography models for continental and oceanic plates . \[Tilman May; 2025-03-31; [#922](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/922)\]
+
 ### Changed
 
 ### Fixed
