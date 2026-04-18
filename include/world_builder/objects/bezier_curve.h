@@ -66,20 +66,32 @@ namespace WorldBuilder
         ClosestPointOnCurve closest_point_on_curve_segment(const Point<2> &p, const bool verbose = false) const;
 
         /**
-         * @brief
+         * @brief Returns a point that lies on the bezier curve at some interval x between coordinate i and coordinate
+         *        i + 1. If x = 0, returns point i, if x = 1, returns point i + 1.
          *
-         * @param i
-         * @param x
+         * @param i The index of the coordinate that defines the bezier curve.
+         * @param x The value used to determine additional points that lie on the bezier curve between coordinates i
+         *          and i + 1
          * @return Point<2>
          */
         Point<2> operator()(const size_t i, const double x) const;
 
+        double get_bezier_arclength() const
+        {
+          return total_arclength;
+        }
+
+        std::vector<double> get_bezier_segment_lengths() const
+        {
+          return lengths;
+        }
+
       private:
         std::vector<Point<2> > points;
-        std::vector<std::array<Point<2>,2 > > control_points;
+        std::vector<std::array<Point<2>,2 > > control_points; // [  { {1,2}, {2,3} Point } array  ] vector
         std::vector<double> lengths;
         std::vector<double> angles;
-
+        double total_arclength; // The arc length of the bezier curve from the first coordinate to the last coordinate
     };
   }
 

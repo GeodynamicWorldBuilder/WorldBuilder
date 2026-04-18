@@ -114,7 +114,8 @@ namespace WorldBuilder
                                   "If the tag is not provided or empty, it is set to the model name.");
                 prm.declare_entry("coordinates", Types::Array(Types::Point<2>(), 1),
                                   "An array of 2d Points representing an array of coordinates where the feature is located.");
-
+                prm.declare_entry("geometry type", Types::String("contours"),
+                                  "The model geometry type");
                 prm.declare_entry("interpolation",Types::String("global"),
                                   "What type of interpolation should be used to enforce the minimum points per "
                                   "distance parameter. Options are 'global' and "
