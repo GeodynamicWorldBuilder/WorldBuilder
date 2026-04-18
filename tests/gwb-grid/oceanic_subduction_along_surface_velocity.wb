@@ -1,0 +1,170 @@
+{
+  "version": "1.2",
+  "cross section": [
+    [
+      0,
+      0
+    ],
+    [
+      5000e3,
+      0e3
+    ]
+  ],
+  "coordinate system": {
+    "model": "cartesian"
+  },
+  "gravity model": {
+    "model": "uniform",
+    "magnitude": 10
+  },
+  "features": [
+    {
+      "model": "oceanic plate",
+      "name": "First oceanic plate",
+      "max depth": 250e3,
+      "coordinates": [
+        [
+          -1e3,
+          1e10
+        ],
+        [
+          500e3,
+          1e10
+        ],
+        [
+          500e3,
+          -1e10
+        ],
+        [
+          -1e3,
+          -1e10
+        ]
+      ],
+      "temperature models": [
+        {
+          "model": "plate model",
+          "min depth": -10000.0,
+          "max depth": 150000.0,
+          "spreading velocity": 0.02,
+          "ridge coordinates": [
+            [
+              [
+                0,
+                -500.0
+              ],
+              [
+                0,
+                500.0
+              ]
+            ]
+          ]
+        }
+      ],
+      "velocity models": [{"model": "uniform raw", "velocity": [2.0, 0, 0]}]
+    },
+    {
+      "model": "subducting plate",
+      "name": "Slab",
+      "coordinates": [
+        [
+          500000.0,
+          -1000.0
+        ],
+        [
+          500000.0,
+          1000.0
+        ]
+      ],
+      "dip point": [
+        20000000.0,
+        0.0
+      ],
+       "segments":[ 
+         {"length":11.143e03, "thickness":[200.0e03], "angle":[4.869,5.747]}, 
+         {"length":11.159e03, "thickness":[200.0e03], "angle":[5.747,6.848]}, 
+         {"length":11.184e03, "thickness":[200.0e03], "angle":[6.848,8.260]}, 
+         {"length":11.224e03, "thickness":[200.0e03], "angle":[8.260,10.081]}, 
+         {"length":11.289e03, "thickness":[200.0e03], "angle":[10.081,12.398]}, 
+         {"length":11.392e03, "thickness":[200.0e03], "angle":[12.398,15.240]}, 
+         {"length":11.548e03, "thickness":[200.0e03], "angle":[15.240,18.538]}, 
+         {"length":11.769e03, "thickness":[200.0e03], "angle":[18.538,22.117]}, 
+         {"length":12.057e03, "thickness":[200.0e03], "angle":[22.117,25.727]}, 
+         {"length":12.399e03, "thickness":[200.0e03], "angle":[25.727,29.113]}, 
+         {"length":12.769e03, "thickness":[200.0e03], "angle":[29.113,32.092]}, 
+         {"length":13.134e03, "thickness":[200.0e03], "angle":[32.092,34.585]}, 
+         {"length":13.471e03, "thickness":[200.0e03], "angle":[34.585,36.610]}, 
+         {"length":13.768e03, "thickness":[200.0e03], "angle":[36.610,38.246]}, 
+         {"length":14.022e03, "thickness":[200.0e03], "angle":[38.246,39.580]}, 
+         {"length":14.239e03, "thickness":[200.0e03], "angle":[39.580,40.675]}, 
+         {"length":14.418e03, "thickness":[200.0e03], "angle":[40.675,41.546]}, 
+         {"length":14.553e03, "thickness":[200.0e03], "angle":[41.546,42.175]}, 
+         {"length":14.635e03, "thickness":[200.0e03], "angle":[42.175,42.533]}, 
+         {"length":14.655e03, "thickness":[200.0e03], "angle":[42.533,42.608]}, 
+         {"length":14.614e03, "thickness":[200.0e03], "angle":[42.608,42.426]}, 
+         {"length":14.526e03, "thickness":[200.0e03], "angle":[42.426,42.058]}, 
+         {"length":14.412e03, "thickness":[200.0e03], "angle":[42.058,41.615]}, 
+         {"length":14.306e03, "thickness":[200.0e03], "angle":[41.615,41.230]}, 
+         {"length":14.232e03, "thickness":[200.0e03], "angle":[41.230,41.018]}, 
+         {"length":14.211e03, "thickness":[200.0e03], "angle":[41.018,41.046]}, 
+         {"length":14.245e03, "thickness":[200.0e03], "angle":[41.046,41.302]}, 
+         {"length":14.324e03, "thickness":[200.0e03], "angle":[41.302,41.711]}, 
+         {"length":14.426e03, "thickness":[200.0e03], "angle":[41.711,42.170]}, 
+         {"length":14.531e03, "thickness":[200.0e03], "angle":[42.170,42.605]}, 
+         {"length":14.626e03, "thickness":[200.0e03], "angle":[42.605,43.004]}, 
+         {"length":14.716e03, "thickness":[200.0e03], "angle":[43.004,43.415]}, 
+         {"length":14.820e03, "thickness":[200.0e03], "angle":[43.415,43.913]}, 
+         {"length":14.954e03, "thickness":[200.0e03], "angle":[43.913,44.547]}, 
+         {"length":15.128e03, "thickness":[200.0e03], "angle":[44.547,45.292]}, 
+         {"length":15.328e03, "thickness":[200.0e03], "angle":[45.292,46.052]}, 
+         {"length":15.524e03, "thickness":[200.0e03], "angle":[46.052,46.700]}, 
+         {"length":15.677e03, "thickness":[200.0e03], "angle":[46.700,47.136]}, 
+         {"length":15.762e03, "thickness":[200.0e03], "angle":[47.136,47.339]}, 
+         {"length":15.779e03, "thickness":[200.0e03], "angle":[47.339,47.392]}, 
+         {"length":15.770e03, "thickness":[200.0e03], "angle":[47.392,47.467]}, 
+         {"length":15.791e03, "thickness":[200.0e03], "angle":[47.467,47.784]}, 
+         {"length":15.911e03, "thickness":[200.0e03], "angle":[47.784,48.535]}, 
+         {"length":16.189e03, "thickness":[200.0e03], "angle":[48.535,49.808]}, 
+         {"length":16.662e03, "thickness":[200.0e03], "angle":[49.808,51.565]}, 
+         {"length":17.348e03, "thickness":[200.0e03], "angle":[51.565,53.660]}, 
+         {"length":18.237e03, "thickness":[200.0e03], "angle":[53.660,55.909]}, 
+         {"length":19.307e03, "thickness":[200.0e03], "angle":[55.909,58.147]}, 
+         {"length":20.531e03, "thickness":[200.0e03], "angle":[58.147,60.270]}, 
+         {"length":21.891e03, "thickness":[200.0e03], "angle":[60.270,62.235]}, 
+         {"length":23.385e03, "thickness":[200.0e03], "angle":[62.235,64.049]}, 
+         {"length":25.033e03, "thickness":[200.0e03], "angle":[64.049,65.742]}, 
+         {"length":26.866e03, "thickness":[200.0e03], "angle":[65.742,67.342]}, 
+         {"length":28.894e03, "thickness":[200.0e03], "angle":[67.342,68.853]}, 
+         {"length":31.093e03, "thickness":[200.0e03], "angle":[68.853,70.250]}, 
+         {"length":33.562e03, "thickness":[200.0e03], "angle":[70.250,71.496]} 
+      ],
+      "temperature models": [
+        {
+          "model": "mass conserving",
+          "density": 3300,
+          "thermal conductivity": 3.3,
+          "adiabatic heating": true,
+          "ridge coordinates": [
+            [
+              [
+                0,
+                -500.0
+              ],
+              [
+                0,
+                500.0
+              ]
+            ]
+          ],
+          "coupling depth": 50000.0,
+          "taper distance": 100000.0,
+          "min distance slab top": -100000.0,
+          "max distance slab top": 150000.0,
+          "reference model name": "plate model",
+          "spreading velocity": 0.02,
+          "subducting velocity": 0.02
+        }
+      ],
+      "velocity models": [{"model": "along surface", "velocity magnitude": 2.0}]
+    }
+  ]
+}
