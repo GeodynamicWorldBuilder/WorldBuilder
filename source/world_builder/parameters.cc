@@ -38,6 +38,7 @@
 #include "world_builder/features/oceanic_plate_models/velocity/interface.h"
 #include "world_builder/features/oceanic_plate_models/topography/interface.h"
 #include "world_builder/features/oceanic_plate_models/density/interface.h"
+#include "world_builder/features/oceanic_plate_models/indicator/interface.h"
 #include "world_builder/features/plume_models/composition/interface.h"
 #include "world_builder/features/plume_models/grains/interface.h"
 #include "world_builder/features/plume_models/temperature/interface.h"
@@ -47,6 +48,7 @@
 #include "world_builder/features/subducting_plate_models/velocity/interface.h"
 #include "world_builder/gravity_model/interface.h"
 #include "world_builder/types/composition_property.h"
+#include "world_builder/types/indicator_property.h"
 #include "world_builder/types/object.h"
 #include "world_builder/utilities.h"
 #include "data/LITHO1.0/litho_coord_data.h"
@@ -256,6 +258,52 @@ namespace WorldBuilder
       }
 
     return cp_output;
+  }
+
+
+  std::vector<Parameters::indicator_property>
+  Parameters::get_indicator_property(const std::string &name) const
+  {
+    // parse entries as indices linked to names
+    // struct data type allows easy extension for more properties in the future
+    std::vector<Parameters::indicator_property> indicator_property_output;
+
+    const std::string strict_base = this->get_full_json_path();
+    const Value *indicator_property_entries = Pointer((strict_base + "/" + name).c_str()).Get(parameters);
+
+    if (indicator_property_entries == nullptr)
+      return indicator_property_output;
+
+    WBAssertThrow(indicator_property_entries->IsArray(),
+                  "Invalid entry \"" << name << "\": expected an array of objects with required key \"index\" and optional key \"name\".");
+
+    std::map<unsigned int, bool> seen_indexes;
+    indicator_property_output.reserve(indicator_property_entries->Size());
+
+    for (SizeType i = 0; i < indicator_property_entries->Size(); ++i)
+      {
+        const Value &entry = (*indicator_property_entries)[i];
+
+        // index must be unique
+        const unsigned int indicator_index = entry["index"].GetUint();
+        WBAssertThrow(seen_indexes.find(indicator_index) == seen_indexes.end(),
+                      "Duplicate indicator index " << indicator_index << " in \"" << name << "\".");
+        seen_indexes[indicator_index] = true;
+
+        // name defaults to index (as string) unless user defined
+        const std::string indicator_name =
+          entry.HasMember("name") ? entry["name"].GetString()
+          : std::to_string(indicator_index);
+
+        indicator_property_output.emplace_back(
+          Parameters::indicator_property
+        {
+          indicator_index,
+          indicator_name
+        });
+      }
+
+    return indicator_property_output;
   }
 
 
@@ -1992,6 +2040,87 @@ namespace WorldBuilder
     return vector;
   }
 
+  template<>
+  std::vector<unsigned int>
+  Parameters::get_vector(const std::string &name,
+                         const std::map<unsigned int, Parameters::indicator_property> &indicator_properties)
+  {
+    std::vector<unsigned int> vector;
+    const std::string strict_base = this->get_full_json_path();
+
+    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr)
+      {
+        Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+        for (size_t i = 0; i < array->Size(); ++i )
+          {
+            const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
+            Value *entry = Pointer(base.c_str()).Get(parameters);
+
+            if (entry->IsUint())
+              {
+                const unsigned int index = entry->GetUint();
+
+                // ensure index exists
+                WBAssertThrow(indicator_properties.find(index) != indicator_properties.end(),
+                              "Invalid indicator index " << index << " at: " << base);
+
+                vector.push_back(index);
+              }
+            else if (entry->IsString())
+              {
+                const std::string feature_indicator_name = entry->GetString();
+                bool found = false;
+
+                // search by name (still needs loop unless you build name→index map)
+                for (const auto &paired_entry : indicator_properties)
+                  {
+                    const unsigned int &idx = paired_entry.first;
+                    const Parameters::indicator_property &prop = paired_entry.second;
+                    if (prop.name == feature_indicator_name)
+                      {
+                        vector.push_back(idx);
+                        found = true;
+                        break;
+                      }
+                  }
+
+                WBAssertThrow(found,
+                              "internal error: could not find the value \"" << feature_indicator_name
+                              << "\" in the indicator properties at: "
+                              << this->get_full_json_schema_path() + "/" + name + "/items/enum");
+              }
+            else
+              {
+                WBAssertThrow(false,
+                              "internal error: expected an unsigned int or a string for the value at: "
+                              << base);
+              }
+          }
+      }
+    else
+      {
+        const Value *value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/minItems").c_str()).Get(declarations);
+
+        WBAssertThrow(value != nullptr,
+                      "internal error: could not retrieve the minItems value at: "
+                      << this->get_full_json_schema_path() + "/" + name + "/minItems value");
+
+        const size_t min_size = value->GetUint();
+
+        const unsigned int default_value =
+          Pointer((this->get_full_json_schema_path()  + "/" + name + "/items/default value").c_str())
+          .Get(declarations)->GetUint();
+
+        for (size_t i = 0; i < min_size; ++i)
+          {
+            vector.push_back(default_value);
+          }
+      }
+
+    return vector;
+  }
+
   template<class T>
   std::unique_ptr<T>
   Parameters::get_unique_pointer(const std::string &name)
@@ -2496,6 +2625,14 @@ namespace WorldBuilder
   template bool
   Parameters::get_unique_pointers<Features::OceanicPlateModels::Density::Interface>(const std::string &name,
       std::vector<std::unique_ptr<Features::OceanicPlateModels::Density::Interface> > &vector);
+
+  /**
+   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+   * Note that the variable with this name has to be loaded before this function is called.
+   */
+  template bool
+  Parameters::get_unique_pointers<Features::OceanicPlateModels::Indicator::Interface>(const std::string &name,
+      std::vector<std::unique_ptr<Features::OceanicPlateModels::Indicator::Interface> > &vector);
 
 
   /**
