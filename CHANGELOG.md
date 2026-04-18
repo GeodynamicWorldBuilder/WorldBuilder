@@ -39,6 +39,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Added an experimental (initial) topography infrastructure. This can also make use of the surface plugins, which includes the Litho1.0 dataset. \[Menno Fraters; 2026-02-21; [#780](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/780), [#848](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/848)\]
 
 ### Changed
+- Modify the implementation of the Bezier curve to account for the special case of co-linear points. \[Daniel Douglas; 2025-01-23; [#799](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/799)\]
 - The tian2019 composition model now returns a mass fraction instead of a mass percentage. \[Daniel Douglas; 2024-11-12; [#767](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/767)\]
 - Only link to MPI libraries if the cmake variable USE_MPI has been set. No longer automatically link to MPI if MPI is found. \[Rene Gassmoeller; 2025-01-20; [#792](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/792)\]
 - Change the Doxygen documentation design using the Doxygen Awesome theme. Also fix the main README logo so it appears in the doxygen start page. \[Rene Gassmoeller; 2025-01-21; [#807](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/807)\]
