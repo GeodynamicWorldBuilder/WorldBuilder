@@ -37,6 +37,7 @@ extensions = [
 'sphinx_design',
 'sphinx_copybutton',
 'sphinxcontrib.bibtex',
+'breathe',
 ]
 
 bibtex_default_style = 'plain'
@@ -54,6 +55,7 @@ myst_enable_extensions = [
 
 # Breathe Configuration
 breathe_default_project = "GWB"
+breathe_projects = {"GWB": "../doxygen/xml"}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
