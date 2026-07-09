@@ -12,6 +12,6 @@ Provide examples how to use the API in different programming languages.
 
 C_interface
 CPP_interface/index
-Fortran_interface
+Fortran_interface/index
 Python_interface
 ```
