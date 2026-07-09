@@ -1,0 +1,19 @@
+# output variables
+grid_type = cartesian
+dim = 3
+compositions = 1 #5
+vtu_output_format = ASCII
+
+# domain of the grid
+x_min = -10
+x_max = 1250
+y_min = 0
+y_max = 410
+z_min = -1
+z_max = 10 
+
+
+# grid properties
+n_cell_x = 120 
+n_cell_y = 40 
+n_cell_z = 10 
