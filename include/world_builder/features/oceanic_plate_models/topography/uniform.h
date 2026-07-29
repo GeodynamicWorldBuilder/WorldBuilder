@@ -75,6 +75,9 @@ namespace WorldBuilder
                                   const Objects::NaturalCoordinate &position_in_natural_coordinates,
                                   double topography) const override final;
 
+            double maximum_topography() const override final;
+
+            double minimum_topography() const override final;
 
           private:
             // uniform topography submodule parameters

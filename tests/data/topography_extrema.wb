@@ -1,0 +1,20 @@
+{
+  "version": "1.2",
+  "coordinate system": {"model": "cartesian"},
+  "cross section": [[0,0], [100000,0]],
+  "features":
+  [
+    {
+      "model": "continental plate",
+      "name": "positive depth-surface topography",
+      "coordinates": [[-1000,-1000], [50000,-1000], [50000,1000], [-1000,1000]],
+      "topography models": [{"model": "depth surface", "topography": -9000}]
+    },
+    {
+      "model": "oceanic plate",
+      "name": "negative depth-surface topography",
+      "coordinates": [[50000,-1000], [101000,-1000], [101000,1000], [50000,1000]],
+      "topography models": [{"model": "depth surface", "topography": 3000}]
+    }
+  ]
+}

@@ -18,6 +18,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - Added Perlin noise models for composition and temperature across features, and gwb-dat coverage tests for Cartesian Perlin noise inputs. \[Tilman May; 2026-03-29; [#906](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/906)\]
 
+- Added `maximum_topography()` and `minimum_topography()` APIs that return guaranteed bounds for all configured topography models. \[Michael Pons; 2026-07-26; [#945](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/945)\]
+
 ### Changed
 
 ### Fixed

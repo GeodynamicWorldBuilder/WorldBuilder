@@ -36,6 +36,7 @@
 #include "world_builder/types/value_at_points.h"
 #include "world_builder/world.h"
 
+#include <algorithm>
 #include <array>
 #include <iostream>
 
@@ -386,6 +387,26 @@ namespace WorldBuilder
                 }
             }
         }
+    }
+
+    double
+    ContinentalPlate::maximum_topography() const
+    {
+      double maximum = -std::numeric_limits<double>::infinity();
+      for (const auto &topography_model : topography_models)
+        maximum = std::max(maximum, topography_model->maximum_topography());
+
+      return maximum;
+    }
+
+    double
+    ContinentalPlate::minimum_topography() const
+    {
+      double minimum = std::numeric_limits<double>::infinity();
+      for (const auto &topography_model : topography_models)
+        minimum = std::min(minimum, topography_model->minimum_topography());
+
+      return minimum;
     }
 
     WB_REGISTER_FEATURE(ContinentalPlate, continental plate)

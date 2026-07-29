@@ -35,6 +35,7 @@
 #include "world_builder/types/value_at_points.h"
 #include "world_builder/world.h"
 
+#include <algorithm>
 
 namespace WorldBuilder
 {
@@ -398,10 +399,29 @@ namespace WorldBuilder
         }
     }
 
+    double
+    OceanicPlate::maximum_topography() const
+    {
+      double maximum = -std::numeric_limits<double>::infinity();
+      for (const auto &topography_model : topography_models)
+        maximum = std::max(maximum, topography_model->maximum_topography());
+
+      return maximum;
+    }
+
+    double
+    OceanicPlate::minimum_topography() const
+    {
+      double minimum = std::numeric_limits<double>::infinity();
+      for (const auto &topography_model : topography_models)
+        minimum = std::min(minimum, topography_model->minimum_topography());
+
+      return minimum;
+    }
+
     /**
      * Register plugin
      */
     WB_REGISTER_FEATURE(OceanicPlate, oceanic plate)
   } // namespace Features
 } // namespace WorldBuilder
-
