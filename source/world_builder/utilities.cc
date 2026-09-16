@@ -508,8 +508,8 @@ namespace WorldBuilder
       double current_angle = 0.0;
       double total_average_angle = 0.0;
       double depth_reference_surface = 0.0;
-      double new_check_point_angle = 0.0;
-      double new_check_point_angle_x_axis = 0.0;
+      double new_check_point_angle = NaN::DQNAN;
+      double new_check_point_angle_x_axis = NaN::DQNAN;
 
       const DepthMethod depth_method = coordinate_system->depth_method();
 
@@ -1141,7 +1141,8 @@ namespace WorldBuilder
         }
 
       WBAssert(!std::isnan(depth_reference_surface), "depth_reference_surface is not a number: " << depth_reference_surface << ".");
-      WBAssert(!std::isnan(new_check_point_angle), "new_check_point_angle is not a number: " << new_check_point_angle << ".");
+      WBAssert(std::isinf(distance) || !std::isnan(new_check_point_angle),
+               "new_check_point_angle is not a number: " << new_check_point_angle << ".");
 
       PointDistanceFromCurvedPlanes return_values(natural_coordinate.get_coordinate_system());
       return_values.distance_from_plane = distance;
@@ -1647,6 +1648,3 @@ namespace WorldBuilder
     }
   } // namespace Utilities
 } // namespace WorldBuilder
-
-
-

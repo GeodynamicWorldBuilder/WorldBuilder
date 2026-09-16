@@ -5588,6 +5588,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back("93",distance_from_planes.closest_trench_point.get_array()[0]);
   approval_tests.emplace_back("94",distance_from_planes.closest_trench_point.get_array()[1]);
   approval_tests.emplace_back("95",distance_from_planes.closest_trench_point.get_array()[2]);
+  CHECK(std::isnan(distance_from_planes.angle));
+  CHECK(std::isnan(distance_from_planes.angle_x_axis));
 
 
   // end section square test 7

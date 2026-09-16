@@ -62,10 +62,10 @@ namespace WorldBuilder
 
           // Declare entries of this plugin
           prm.declare_entry("min distance slab top", Types::Double(0),
-                            "todo The depth in meters from which the composition of this feature is present.");
+                            "The minimum distance in meters from the slab top at which this velocity model is applied.");
 
           prm.declare_entry("max distance slab top", Types::Double(std::numeric_limits<double>::max()),
-                            "todo The depth in meters to which the composition of this feature is present.");
+                            "The maximum distance in meters from the slab top at which this velocity model is applied.");
 
           prm.declare_entry("velocity magnitude", Types::Double(0),
                             "The velocity in meter per year");
@@ -141,4 +141,3 @@ namespace WorldBuilder
     } // namespace SubductingPlateModels
   } // namespace Features
 } // namespace WorldBuilder
-
