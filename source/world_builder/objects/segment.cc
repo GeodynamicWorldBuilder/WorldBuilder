@@ -48,6 +48,10 @@ namespace WorldBuilder
       {
         class Interface;
       }  // namespace Density
+      namespace Indicator
+      {
+        class Interface;
+      }  // namespace Indicator
     }  // namespace FaultModels
     namespace SubductingPlateModels
     {
@@ -78,16 +82,17 @@ namespace WorldBuilder
   namespace Objects
   {
     // todo update function
-    template<class A, class B, class C, class D, class E>
-    Segment<A,B,C,D,E>::Segment(const double default_length_,
-                                const WorldBuilder::Point<2> &default_thickness_,
-                                const WorldBuilder::Point<2> &default_top_truncation_,
-                                const WorldBuilder::Point<2> &default_angle_,
-                                const std::vector<std::shared_ptr<A> > temperature_systems_,
-                                const std::vector<std::shared_ptr<B> > composition_systems_,
-                                const std::vector<std::shared_ptr<C> > grains_systems_,
-                                const std::vector<std::shared_ptr<D> > velocity_systems_,
-                                const std::vector<std::shared_ptr<E> > density_systems_)
+    template<class A, class B, class C, class D, class E, class F>
+    Segment<A,B,C,D,E,F>::Segment(const double default_length_,
+                                  const WorldBuilder::Point<2> &default_thickness_,
+                                  const WorldBuilder::Point<2> &default_top_truncation_,
+                                  const WorldBuilder::Point<2> &default_angle_,
+                                  const std::vector<std::shared_ptr<A> > temperature_systems_,
+                                  const std::vector<std::shared_ptr<B> > composition_systems_,
+                                  const std::vector<std::shared_ptr<C> > grains_systems_,
+                                  const std::vector<std::shared_ptr<D> > velocity_systems_,
+                                  const std::vector<std::shared_ptr<E> > density_systems_,
+                                  const std::vector<std::shared_ptr<F> > indicator_systems_)
       :
       value_length(default_length_),
       default_length(default_length_),
@@ -98,12 +103,13 @@ namespace WorldBuilder
       composition_systems(std::move(composition_systems_)),
       grains_systems(std::move(grains_systems_)),
       velocity_systems(std::move(velocity_systems_)),
-      density_systems(std::move(density_systems_))
+      density_systems(std::move(density_systems_)),
+      indicator_systems(std::move(indicator_systems_))
     {
     }
 
-    template<class A, class B, class C, class D, class E>
-    Segment<A,B,C,D,E>::Segment(Segment const &other)
+    template<class A, class B, class C, class D, class E, class F>
+    Segment<A,B,C,D,E,F>::Segment(Segment const &other)
       :
       value_length(other.value_length),
       default_length(other.default_length),
@@ -114,12 +120,13 @@ namespace WorldBuilder
       composition_systems(other.composition_systems),
       grains_systems(other.grains_systems),
       velocity_systems(other.velocity_systems),
-      density_systems(other.density_systems)
+      density_systems(other.density_systems),
+      indicator_systems(other.indicator_systems)
     {
     }
 
-    template<class A, class B, class C, class D, class E>
-    Segment<A,B,C,D,E>::~Segment ()
+    template<class A, class B, class C, class D, class E, class F>
+    Segment<A,B,C,D,E,F>::~Segment ()
       = default;
 
 
@@ -128,7 +135,7 @@ namespace WorldBuilder
     * Note that the variable with this name has to be loaded before this function is called.
     */
     template class
-    Segment<Features::SubductingPlateModels::Temperature::Interface,Features::SubductingPlateModels::Composition::Interface,Features::SubductingPlateModels::Grains::Interface,Features::SubductingPlateModels::Velocity::Interface,Features::SubductingPlateModels::Density::Interface>;
+    Segment<Features::SubductingPlateModels::Temperature::Interface,Features::SubductingPlateModels::Composition::Interface,Features::SubductingPlateModels::Grains::Interface,Features::SubductingPlateModels::Velocity::Interface,Features::SubductingPlateModels::Density::Interface,Features::SubductingPlateModels::Indicator::Interface>;
 
     /**
     * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.

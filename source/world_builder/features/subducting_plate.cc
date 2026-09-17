@@ -79,6 +79,7 @@ namespace WorldBuilder
       Pointer((path + "/body/coordinates").c_str()).Create(declarations).SetArray();
       Pointer((path + "/body/temperature models").c_str()).Create(declarations).SetArray();
       Pointer((path + "/body/composition models").c_str()).Create(declarations).SetArray();
+      Pointer((path + "/body/indicator models").c_str()).Create(declarations).SetArray();
     }
 
 
@@ -117,7 +118,8 @@ namespace WorldBuilder
                                                                 Types::PluginSystem("", Features::SubductingPlateModels::Composition::Interface::declare_entries, {"model"}),
                                                                 Types::PluginSystem("", Features::SubductingPlateModels::Grains::Interface::declare_entries, {"model"}),
                                                                 Types::PluginSystem("", Features::SubductingPlateModels::Velocity::Interface::declare_entries, {"model"}),
-                                                                Types::PluginSystem("", Features::SubductingPlateModels::Density::Interface::declare_entries, {"model"}))),
+                                                                Types::PluginSystem("", Features::SubductingPlateModels::Density::Interface::declare_entries, {"model"}),
+                                                                Types::PluginSystem("", Features::SubductingPlateModels::Indicator::Interface::declare_entries, {"model"}))),
                         "The depth to which this feature is present");
 
       prm.declare_entry("temperature models",
@@ -135,6 +137,9 @@ namespace WorldBuilder
       prm.declare_entry("density models",
                         Types::PluginSystem("", Features::SubductingPlateModels::Density::Interface::declare_entries, {"model"}),
                         "A list of density models.");
+      prm.declare_entry("indicator models",
+                        Types::PluginSystem("", Features::SubductingPlateModels::Indicator::Interface::declare_entries, {"model"}),
+                        "A list of indicator models.");
 
       if (parent_name != "items")
         {
@@ -187,18 +192,21 @@ namespace WorldBuilder
       default_grains_models.resize(0);
       default_velocity_models.resize(0);
       default_density_models.resize(0);
+      default_indicator_models.resize(0);
       prm.get_shared_pointers<Features::SubductingPlateModels::Temperature::Interface>("temperature models", default_temperature_models);
       prm.get_shared_pointers<Features::SubductingPlateModels::Composition::Interface>("composition models", default_composition_models);
       prm.get_shared_pointers<Features::SubductingPlateModels::Grains::Interface>("grains models", default_grains_models);
       prm.get_shared_pointers<Features::SubductingPlateModels::Velocity::Interface>("velocity models", default_velocity_models);
       prm.get_shared_pointers<Features::SubductingPlateModels::Density::Interface>("density models", default_density_models);
+      prm.get_shared_pointers<Features::SubductingPlateModels::Indicator::Interface>("indicator models", default_indicator_models);
 
       // get the default segments.
       default_segment_vector = prm.get_vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
       Features::SubductingPlateModels::Composition::Interface,
       Features::SubductingPlateModels::Grains::Interface,
       Features::SubductingPlateModels::Velocity::Interface,
-      Features::SubductingPlateModels::Density::Interface> >("segments", default_temperature_models, default_composition_models, default_grains_models,default_velocity_models,default_density_models);
+      Features::SubductingPlateModels::Density::Interface,
+      Features::SubductingPlateModels::Indicator::Interface> >("segments", default_temperature_models, default_composition_models, default_grains_models,default_velocity_models,default_density_models,default_indicator_models);
 
 
       // This vector stores segments to this coordinate/section.
@@ -231,6 +239,7 @@ namespace WorldBuilder
                 std::vector<std::shared_ptr<Features::SubductingPlateModels::Grains::Interface>  > local_default_grains_models;
                 std::vector<std::shared_ptr<Features::SubductingPlateModels::Velocity::Interface>  > local_default_velocity_models;
                 std::vector<std::shared_ptr<Features::SubductingPlateModels::Density::Interface>  > local_default_density_models;
+                std::vector<std::shared_ptr<Features::SubductingPlateModels::Indicator::Interface>  > local_default_indicator_models;
 
                 if (!prm.get_shared_pointers<Features::SubductingPlateModels::Temperature::Interface>("temperature models", local_default_temperature_models))
                   {
@@ -262,11 +271,18 @@ namespace WorldBuilder
                     local_default_density_models = default_density_models;
                   }
 
+                if (!prm.get_shared_pointers<Features::SubductingPlateModels::Indicator::Interface>("indicator models", local_default_indicator_models))
+                  {
+                    // no local indicator model, use global default
+                    local_default_indicator_models = default_indicator_models;
+                  }
+
                 segment_vector[change_coord_number] = prm.get_vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
                                                       Features::SubductingPlateModels::Composition::Interface,
                                                       Features::SubductingPlateModels::Grains::Interface,
                                                       Features::SubductingPlateModels::Velocity::Interface,
-                                                      Features::SubductingPlateModels::Density::Interface> >("segments", local_default_temperature_models, local_default_composition_models, local_default_grains_models, local_default_velocity_models,local_default_density_models);
+                                                      Features::SubductingPlateModels::Density::Interface,
+                                                      Features::SubductingPlateModels::Indicator::Interface> >("segments", local_default_temperature_models, local_default_composition_models, local_default_grains_models, local_default_velocity_models,local_default_density_models,local_default_indicator_models);
 
 
                 WBAssertThrow(segment_vector[change_coord_number].size() == default_segment_vector.size(),
@@ -345,6 +361,19 @@ namespace WorldBuilder
                             }
                         }
                         prm.leave_subsection();
+
+                        prm.enter_subsection("indicator models");
+                        {
+                          for (unsigned int j = 0; j < segment_vector[change_coord_number][i].indicator_systems.size(); ++j)
+                            {
+                              prm.enter_subsection(std::to_string(j));
+                              {
+                                segment_vector[change_coord_number][i].indicator_systems[j]->parse_entries(prm);
+                              }
+                              prm.leave_subsection();
+                            }
+                        }
+                        prm.leave_subsection();
                       }
                       prm.leave_subsection();
                     }
@@ -353,6 +382,7 @@ namespace WorldBuilder
 
               }
               prm.leave_subsection();
+
             }
 
         }
@@ -426,6 +456,19 @@ namespace WorldBuilder
                     prm.enter_subsection(std::to_string(j));
                     {
                       default_segment_vector[i].density_systems[j]->parse_entries(prm);
+                    }
+                    prm.leave_subsection();
+                  }
+              }
+              prm.leave_subsection();
+
+              prm.enter_subsection("indicator models");
+              {
+                for (unsigned int j = 0; j < default_segment_vector[i].indicator_systems.size(); ++j)
+                  {
+                    prm.enter_subsection(std::to_string(j));
+                    {
+                      default_segment_vector[i].indicator_systems[j]->parse_entries(prm);
                     }
                     prm.leave_subsection();
                   }
@@ -891,11 +934,48 @@ namespace WorldBuilder
                             output[entry_in_output[i_property]] = density_current_section + section_fraction * (density_next_section - density_current_section);
                             break;
                           }
+                          case 8: // indicator
+                          {
+                            double indicator_current_section = output[entry_in_output[i_property]];
+                            double indicator_next_section = output[entry_in_output[i_property]];
+
+                            for (const auto &indicator_model: segment_vector[current_section][current_segment].indicator_systems)
+                              indicator_current_section = indicator_model->get_indicator(position_in_cartesian_coordinates,
+                                                                                         depth,
+                                                                                         properties[i_property][1],
+                                                                                         indicator_current_section,
+                                                                                         starting_depth,
+                                                                                         maximum_depth,
+                                                                                         distance_from_planes,
+                                                                                         additional_parameters);
+
+                            for (const auto &indicator_model: segment_vector[next_section][current_segment].indicator_systems)
+                              indicator_next_section = indicator_model->get_indicator(position_in_cartesian_coordinates,
+                                                                                      depth,
+                                                                                      properties[i_property][1],
+                                                                                      indicator_next_section,
+                                                                                      starting_depth,
+                                                                                      maximum_depth,
+                                                                                      distance_from_planes,
+                                                                                      additional_parameters);
+
+                            const double tolerance = std::numeric_limits<double>::epsilon();
+                            WBAssert((std::abs(indicator_current_section) < tolerance || std::abs(indicator_current_section - 1.0) < tolerance)
+                                     && (std::abs(indicator_next_section) < tolerance || std::abs(indicator_next_section - 1.0) < tolerance),
+                                     "Subducting plate indicators must be binary.");
+
+                            // Indicators are categorical: use the nearest section instead of creating fractional values.
+                            output[entry_in_output[i_property]] = section_fraction < 0.5
+                                                                  ? indicator_current_section
+                                                                  : indicator_next_section;
+                            break;
+                          }
                           default:
                           {
                             WBAssertThrow(false,
                                           "Internal error: Unimplemented property provided. " <<
-                                          "Only temperature (1), composition (2), grains (3), tag (4) or velocity (5) are allowed. "
+                                          "Only temperature (1), composition (2), grains (3), tag (4), velocity (5), "
+                                          "density (7), or indicator (8) are allowed. "
                                           "Provided property number was: " << properties[i_property][0]);
                           }
                         }
@@ -946,4 +1026,3 @@ namespace WorldBuilder
     WB_REGISTER_FEATURE(SubductingPlate, subducting plate)
   } // namespace Features
 } // namespace WorldBuilder
-

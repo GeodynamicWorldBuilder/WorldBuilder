@@ -38,15 +38,18 @@
 #include "world_builder/features/oceanic_plate_models/velocity/interface.h"
 #include "world_builder/features/oceanic_plate_models/topography/interface.h"
 #include "world_builder/features/oceanic_plate_models/density/interface.h"
+#include "world_builder/features/oceanic_plate_models/indicator/interface.h"
 #include "world_builder/features/plume_models/composition/interface.h"
 #include "world_builder/features/plume_models/grains/interface.h"
 #include "world_builder/features/plume_models/temperature/interface.h"
 #include "world_builder/features/plume_models/velocity/interface.h"
 #include "world_builder/features/plume_models/density/interface.h"
 #include "world_builder/features/subducting_plate.h"
+#include "world_builder/features/subducting_plate_models/indicator/interface.h"
 #include "world_builder/features/subducting_plate_models/velocity/interface.h"
 #include "world_builder/gravity_model/interface.h"
 #include "world_builder/types/composition_property.h"
+#include "world_builder/types/indicator_property.h"
 #include "world_builder/types/object.h"
 #include "world_builder/utilities.h"
 #include "data/LITHO1.0/litho_coord_data.h"
@@ -255,6 +258,52 @@ namespace WorldBuilder
       }
 
     return cp_output;
+  }
+
+
+  std::vector<Parameters::indicator_property>
+  Parameters::get_indicator_property(const std::string &name) const
+  {
+    // parse entries as indices linked to names
+    // struct data type allows easy extension for more properties in the future
+    std::vector<Parameters::indicator_property> indicator_property_output;
+
+    const std::string strict_base = this->get_full_json_path();
+    const Value *indicator_property_entries = Pointer((strict_base + "/" + name).c_str()).Get(parameters);
+
+    if (indicator_property_entries == nullptr)
+      return indicator_property_output;
+
+    WBAssertThrow(indicator_property_entries->IsArray(),
+                  "Invalid entry \"" << name << "\": expected an array of objects with required key \"index\" and optional key \"name\".");
+
+    std::map<unsigned int, bool> seen_indexes;
+    indicator_property_output.reserve(indicator_property_entries->Size());
+
+    for (SizeType i = 0; i < indicator_property_entries->Size(); ++i)
+      {
+        const Value &entry = (*indicator_property_entries)[i];
+
+        // index must be unique
+        const unsigned int indicator_index = entry["index"].GetUint();
+        WBAssertThrow(seen_indexes.find(indicator_index) == seen_indexes.end(),
+                      "Duplicate indicator index " << indicator_index << " in \"" << name << "\".");
+        seen_indexes[indicator_index] = true;
+
+        // name defaults to index (as string) unless user defined
+        const std::string indicator_name =
+          entry.HasMember("name") ? entry["name"].GetString()
+          : std::to_string(indicator_index);
+
+        indicator_property_output.emplace_back(
+          Parameters::indicator_property
+        {
+          indicator_index,
+          indicator_name
+        });
+      }
+
+    return indicator_property_output;
   }
 
 
@@ -1319,16 +1368,18 @@ namespace WorldBuilder
       Features::SubductingPlateModels::Composition::Interface,
       Features::SubductingPlateModels::Grains::Interface,
       Features::SubductingPlateModels::Velocity::Interface,
-      Features::SubductingPlateModels::Density::Interface> >
+      Features::SubductingPlateModels::Density::Interface,
+      Features::SubductingPlateModels::Indicator::Interface> >
       Parameters::get_vector(const std::string &name,
                              std::vector<std::shared_ptr<Features::SubductingPlateModels::Temperature::Interface> > &default_temperature_models,
                              std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface> > &default_composition_models,
                              std::vector<std::shared_ptr<Features::SubductingPlateModels::Grains::Interface> > &default_grains_models,
                              std::vector<std::shared_ptr<Features::SubductingPlateModels::Velocity::Interface> > &default_velocity_models,
-                             std::vector<std::shared_ptr<Features::SubductingPlateModels::Density::Interface> > &default_density_models)
+                             std::vector<std::shared_ptr<Features::SubductingPlateModels::Density::Interface> > &default_density_models,
+                             std::vector<std::shared_ptr<Features::SubductingPlateModels::Indicator::Interface> > &default_indicator_models)
   {
     using namespace Features::SubductingPlateModels;
-    std::vector<Objects::Segment<Temperature::Interface,Composition::Interface,Grains::Interface,Velocity::Interface,Density::Interface> > vector;
+    std::vector<Objects::Segment<Temperature::Interface,Composition::Interface,Grains::Interface,Velocity::Interface,Density::Interface,Indicator::Interface> > vector;
     this->enter_subsection(name);
     const std::string strict_base = this->get_full_json_path();
     WBAssertThrow(Pointer((strict_base).c_str()).Get(parameters) != nullptr,"Error: " << name
@@ -1584,7 +1635,29 @@ namespace WorldBuilder
                 Pointer((base + "/velocity model default entry").c_str()).Set(parameters,true);
               }
           }
-        vector.emplace_back(length, thickness, top_truncation, angle, temperature_models, composition_models, grains_models, velocity_models, density_models);
+        // now do the same for indicators
+        std::vector<std::shared_ptr<Indicator::Interface> > indicator_models;
+        if (!this->get_shared_pointers<Indicator::Interface>("indicator models", indicator_models) ||
+            Pointer((base + "/indicator model default entry").c_str()).Get(parameters) != nullptr)
+          {
+            indicator_models = default_indicator_models;
+
+            for (searchback = 0; searchback < path.size(); ++searchback)
+              if (Pointer((this->get_full_json_path(path.size()-searchback) + "/indicator models").c_str()).Get(parameters) != nullptr)
+                break;
+
+            if (searchback < path.size())
+              {
+                Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/indicator models").c_str()).Get(parameters)->GetArray());
+                Value value2;
+                value2.CopyFrom(value1, parameters.GetAllocator());
+                Pointer((this->get_full_json_path(path.size()-searchback) + "/indicator models").c_str()).Set(parameters, value1);
+                Pointer((base).c_str()).Get(parameters)->AddMember("indicator models", value2, parameters.GetAllocator());
+                Pointer((base + "/indicator model default entry").c_str()).Set(parameters,true);
+              }
+          }
+
+        vector.emplace_back(length, thickness, top_truncation, angle, temperature_models, composition_models, grains_models, velocity_models, density_models, indicator_models);
 
         this->leave_subsection();
       }
@@ -1988,6 +2061,87 @@ namespace WorldBuilder
             vector.push_back(default_value);
           }
       }
+    return vector;
+  }
+
+  template<>
+  std::vector<unsigned int>
+  Parameters::get_vector(const std::string &name,
+                         const std::map<unsigned int, Parameters::indicator_property> &indicator_properties)
+  {
+    std::vector<unsigned int> vector;
+    const std::string strict_base = this->get_full_json_path();
+
+    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr)
+      {
+        Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+        for (size_t i = 0; i < array->Size(); ++i )
+          {
+            const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
+            Value *entry = Pointer(base.c_str()).Get(parameters);
+
+            if (entry->IsUint())
+              {
+                const unsigned int index = entry->GetUint();
+
+                // ensure index exists
+                WBAssertThrow(indicator_properties.find(index) != indicator_properties.end(),
+                              "Invalid indicator index " << index << " at: " << base);
+
+                vector.push_back(index);
+              }
+            else if (entry->IsString())
+              {
+                const std::string feature_indicator_name = entry->GetString();
+                bool found = false;
+
+                // search by name (still needs loop unless you build name→index map)
+                for (const auto &paired_entry : indicator_properties)
+                  {
+                    const unsigned int &idx = paired_entry.first;
+                    const Parameters::indicator_property &prop = paired_entry.second;
+                    if (prop.name == feature_indicator_name)
+                      {
+                        vector.push_back(idx);
+                        found = true;
+                        break;
+                      }
+                  }
+
+                WBAssertThrow(found,
+                              "internal error: could not find the value \"" << feature_indicator_name
+                              << "\" in the indicator properties at: "
+                              << this->get_full_json_schema_path() + "/" + name + "/items/enum");
+              }
+            else
+              {
+                WBAssertThrow(false,
+                              "internal error: expected an unsigned int or a string for the value at: "
+                              << base);
+              }
+          }
+      }
+    else
+      {
+        const Value *value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/minItems").c_str()).Get(declarations);
+
+        WBAssertThrow(value != nullptr,
+                      "internal error: could not retrieve the minItems value at: "
+                      << this->get_full_json_schema_path() + "/" + name + "/minItems value");
+
+        const size_t min_size = value->GetUint();
+
+        const unsigned int default_value =
+          Pointer((this->get_full_json_schema_path()  + "/" + name + "/items/default value").c_str())
+          .Get(declarations)->GetUint();
+
+        for (size_t i = 0; i < min_size; ++i)
+          {
+            vector.push_back(default_value);
+          }
+      }
+
     return vector;
   }
 
@@ -2496,6 +2650,14 @@ namespace WorldBuilder
   Parameters::get_unique_pointers<Features::OceanicPlateModels::Density::Interface>(const std::string &name,
       std::vector<std::unique_ptr<Features::OceanicPlateModels::Density::Interface> > &vector);
 
+  /**
+   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+   * Note that the variable with this name has to be loaded before this function is called.
+   */
+  template bool
+  Parameters::get_unique_pointers<Features::OceanicPlateModels::Indicator::Interface>(const std::string &name,
+      std::vector<std::unique_ptr<Features::OceanicPlateModels::Indicator::Interface> > &vector);
+
 
   /**
    * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
@@ -2661,6 +2823,10 @@ namespace WorldBuilder
   Parameters::get_shared_pointers<Features::SubductingPlateModels::Density::Interface>(const std::string &name,
       std::vector<std::shared_ptr<Features::SubductingPlateModels::Density::Interface> > &vector);
 
+  template bool
+  Parameters::get_shared_pointers<Features::SubductingPlateModels::Indicator::Interface>(const std::string &name,
+      std::vector<std::shared_ptr<Features::SubductingPlateModels::Indicator::Interface> > &vector);
+
 
   /**
    * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
@@ -2705,4 +2871,3 @@ namespace WorldBuilder
 
 
 } // namespace WorldBuilder
-

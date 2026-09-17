@@ -1,0 +1,21 @@
+{
+  "version":"1.2",
+  "gravity model":{"model":"uniform", "magnitude":10},
+  "indicator properties":[{"index":0,"name":"slab"}],
+  "features":[{
+    "model":"subducting plate", "name":"binary sections", "dip point":[1e7,1e7],
+    "coordinates":[[0,100e3],[500e3,100e3]],
+    "indicator models":[{"model":"uniform","indicators":[0]}],
+    "temperature models":[{"model":"uniform","temperature":1073}],
+    "segments":[
+      {"length":800e3,"thickness":[100e3],"angle":[45]}
+    ],
+    "sections":[{
+      "coordinate":1,
+      "indicator models":[{"model":"uniform","indicators":[]}],
+      "segments":[
+        {"length":800e3,"thickness":[100e3],"angle":[45]}
+      ]
+    }]
+  }]
+}

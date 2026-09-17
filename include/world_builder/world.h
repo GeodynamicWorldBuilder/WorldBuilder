@@ -210,6 +210,18 @@ namespace WorldBuilder
       double composition(const std::array<double, 3> &point, const double depth, const unsigned int composition_number) const;
 
       /**
+       * Returns the indicator based on a 2d Cartesian point and the depth in the
+       * model at that point.
+       */
+      double indicator(const std::array<double, 2> &point, const double depth, const unsigned int indicator_number) const;
+
+      /**
+       * Returns the indicator based on a 3d Cartesian point, the depth in the
+       * model at that point and the gravity norm at that point.
+       */
+      double indicator(const std::array<double, 3> &point, const double depth, const unsigned int indicator_number) const;
+
+      /**
        * Returns the grain orientations and sizes based on a 2d Cartesian point, the depth in
        * the model at that point and the gravity norm at that point.
        */
@@ -259,6 +271,12 @@ namespace WorldBuilder
       * If the index is unknown, returns fallback properties with a generated name.
       */
       Parameters::composition_property get_composition_properties(const unsigned int composition_index) const;
+
+      /**
+      * Return all indicator properties from its index.
+      * If the index is unknown, returns fallback properties with a generated name.
+      */
+      Parameters::indicator_property get_indicator_property(const unsigned int indicator_index) const;
 
       /**
        * This is the parameter class, which stores all the values loaded in
@@ -351,6 +369,11 @@ namespace WorldBuilder
        * A map from composition index to its properties for quick lookups.
        */
       std::map<unsigned int, Parameters::composition_property> composition_properties;
+
+      /**
+       * A map from indicator index to its properties for quick lookups.
+       */
+      std::map<unsigned int, Parameters::indicator_property> indicator_properties;
 
     private:
       /**

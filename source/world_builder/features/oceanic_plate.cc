@@ -25,6 +25,7 @@
 #include "world_builder/features/oceanic_plate_models/velocity/interface.h"
 #include "world_builder/features/oceanic_plate_models/topography/interface.h"
 #include "world_builder/features/oceanic_plate_models/density/interface.h"
+#include "world_builder/features/oceanic_plate_models/indicator/interface.h"
 #include "world_builder/features/feature_utilities.h"
 #include "world_builder/nan.h"
 #include "world_builder/types/array.h"
@@ -83,6 +84,7 @@ namespace WorldBuilder
       Pointer((path + "/body/coordinates").c_str()).Create(declarations).SetArray();
       Pointer((path + "/body/temperature models").c_str()).Create(declarations).SetArray();
       Pointer((path + "/body/composition models").c_str()).Create(declarations).SetArray();
+      Pointer((path + "/body/indicator models").c_str()).Create(declarations).SetArray();
     }
 
 
@@ -116,6 +118,9 @@ namespace WorldBuilder
       prm.declare_entry("density models",
                         Types::PluginSystem("", Features::OceanicPlateModels::Density::Interface::declare_entries, {"model"}),
                         "A list of density models.");
+      prm.declare_entry("indicator models",
+                        Types::PluginSystem("", Features::OceanicPlateModels::Indicator::Interface::declare_entries, {"model"}),
+                        "A list of indicator models.");
     }
 
     void
@@ -233,6 +238,22 @@ namespace WorldBuilder
           }
       }
       prm.leave_subsection();
+
+      prm.get_unique_pointers<Features::OceanicPlateModels::Indicator::Interface>("indicator models", indicator_models);
+
+      prm.enter_subsection("indicator models");
+      {
+        for (unsigned int i = 0; i < indicator_models.size(); ++i)
+          {
+            prm.enter_subsection(std::to_string(i));
+            {
+              indicator_models[i]->parse_entries(prm,coordinates);
+            }
+            prm.leave_subsection();
+          }
+      }
+      prm.leave_subsection();
+
     }
 
 
@@ -363,6 +384,26 @@ namespace WorldBuilder
 
                             break;
                           }
+                          case 8: // indicator
+                          {
+                            for (const auto &indicator_model: indicator_models)
+                              {
+                                output[entry_in_output[i_property]] = indicator_model->get_indicator(position_in_cartesian_coordinates,
+                                                                                                     position_in_natural_coordinates,
+                                                                                                     depth,
+                                                                                                     properties[i_property][1],
+                                                                                                     output[entry_in_output[i_property]],
+                                                                                                     min_depth_local,
+                                                                                                     max_depth_local);
+
+                                WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Indicator is not a number: " << output[entry_in_output[i_property]]
+                                         << ", based on a indicator model with the name " << indicator_model->get_name() << ", in feature " << this->name);
+                                WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Indicator is not a finite: " << output[entry_in_output[i_property]]
+                                         << ", based on a indicator model with the name " << indicator_model->get_name() << ", in feature " << this->name);
+                              }
+                            break;
+                          }
+                          break;
                           case 6:  // topography: handled outside, so just fall through to the default error if it gets to here
                           default:
                           {

@@ -101,6 +101,23 @@ namespace WorldBuilder
       this->type_name = Types::type::Segment;
     }
 
+    Segment::Segment(const double default_length_,
+                     const WorldBuilder::Point<2> &default_thickness_,
+                     const WorldBuilder::Point<2> &default_top_truncation_,
+                     const WorldBuilder::Point<2> &default_angle_,
+                     const Types::Interface &temperature_plugin_system_,
+                     const Types::Interface &composition_plugin_system_,
+                     const Types::Interface &grains_plugin_system_,
+                     const Types::Interface &velocity_plugin_system_,
+                     const Types::Interface &density_plugin_system_,
+                     const Types::Interface &indicator_plugin_system_)
+      : Segment(default_length_, default_thickness_, default_top_truncation_, default_angle_,
+                temperature_plugin_system_, composition_plugin_system_, grains_plugin_system_,
+                velocity_plugin_system_, density_plugin_system_)
+    {
+      indicator_plugin_system = indicator_plugin_system_.clone();
+    }
+
 
     Segment::Segment(Segment const &other)
       :
@@ -115,7 +132,8 @@ namespace WorldBuilder
       composition_plugin_system(other.composition_plugin_system->clone()),
       grains_plugin_system(other.grains_plugin_system->clone()),
       velocity_plugin_system(other.velocity_plugin_system->clone()),
-      density_plugin_system(other.density_plugin_system->clone())
+      density_plugin_system(other.density_plugin_system->clone()),
+      indicator_plugin_system(other.indicator_plugin_system != nullptr ? other.indicator_plugin_system->clone() : nullptr)
     {
       this->type_name = Types::type::Segment;
     }
@@ -184,6 +202,8 @@ namespace WorldBuilder
           grains_plugin_system->write_schema(prm, "grains models", "");
           velocity_plugin_system->write_schema(prm, "velocity models", "");
           density_plugin_system->write_schema(prm, "density models", "");
+          if (indicator_plugin_system != nullptr)
+            indicator_plugin_system->write_schema(prm, "indicator models", "");
         }
         prm.leave_subsection();
       }
@@ -192,4 +212,3 @@ namespace WorldBuilder
     }
   } // namespace Types
 } // namespace WorldBuilder
-

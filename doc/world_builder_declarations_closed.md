@@ -94,6 +94,44 @@
 
 ::::::::::::::::::::::::
 
+::::::::::::::::::::::::{dropdown} /indicator properties
+:name: closed_indicator-properties
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:The properties of the indicator. This stores user-defined indices (required), linked to indicator properties (optional) including name
+:::::::::::::::::::::::{dropdown} /indicator properties/items
+:name: closed_indicator-properties_items
+
+- **type**:object
+- **description**:
+- **additionalProperties**:false
+- **required**:[index]
+
+::::::::::::::::::::::{dropdown} /indicator properties/items/index
+:name: closed_indicator-properties_items_index
+
+- **type**:integer
+- **minimum**:0
+- **description**:The indicator index used in indicator lookups.
+::::::::::::::::::::::
+
+::::::::::::::::::::::{dropdown} /indicator properties/items/name
+:name: closed_indicator-properties_items_name
+
+- **type**:string
+- **default value**:
+- **description**:Optional indicator name. Defaults to <index>.
+::::::::::::::::::::::
+
+
+
+:::::::::::::::::::::::
+
+::::::::::::::::::::::::
+
 ::::::::::::::::::::::::{dropdown} /potential mantle temperature
 :name: closed_potential-mantle-temperature
 
@@ -18663,6 +18701,257 @@
 
 ::::::::::::::::::::
 
+::::::::::::::::::::{dropdown} /features/items/oneOf/4/indicator models
+:name: closed_features_items_oneOf_4_indicator-models
+
+- **description**:A list of indicator models.
+- **default value**:
+- **type**:array
+:::::::::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items
+:name: closed_features_items_oneOf_4_indicator-models_items
+
+::::::::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf
+
+:::::::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1
+
+- **type**:object
+- **description**:A depth-dependent indicator model. Sets a constant indicator value of 1 for the selected user-defined indicators.
+- **additionalProperties**:false
+- **required**:[model]
+
+::::::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/model
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the indicator model.
+- **enum**:[uniform]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/min depth
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_min-depth
+
+- **description**:The depth in meters from which the composition of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/min depth/oneOf
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_min-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/min depth/oneOf/1
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_min-depth_oneOf_1
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/min depth/oneOf/2
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_min-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/min depth/oneOf/2/items
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_min-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/min depth/oneOf/2/items/items
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_min-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/1
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:0.0
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items/items
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/min depth/oneOf/3
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/max depth
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_max-depth
+
+- **description**:The depth in meters to which the composition of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/max depth/oneOf
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_max-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/max depth/oneOf/1
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_max-depth_oneOf_1
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/max depth/oneOf/2
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_max-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/max depth/oneOf/2/items
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_max-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/max depth/oneOf/2/items/items
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_max-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/1
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:1.7976931348623157e308
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items/items
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/max depth/oneOf/3
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/indicators
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_indicators
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of user-defined indicator indices or names. If omitted, indicator 0 is selected. An explicitly empty list selects no indicators.
+:::::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/indicators/items
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_indicators_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/indicators/items/oneOf
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_indicators_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/indicators/items/oneOf/1
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_indicators_items_oneOf_1
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/indicators/items/oneOf/2
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_indicators_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/4/indicator models/items/oneOf/1/operation
+:name: closed_features_items_oneOf_4_indicator-models_items_oneOf_1_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all indicators not explicitly defined are set to zero. To only replace the defined indicators use the replace only defined option.
+- **enum**:[replace, replace defined only]
+::::::::::::::::
+
+
+
+:::::::::::::::::
+
+
+:::::::::::::::::::
+
+::::::::::::::::::::
+
 
 
 :::::::::::::::::::::
@@ -22099,6 +22388,105 @@
 
 ::::::::::::::::::
 
+::::::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/indicator models
+:name: closed_features_items_oneOf_6_segments_items_indicator-models
+
+- **description**:
+- **default value**:
+- **type**:array
+:::::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/indicator models/items
+:name: closed_features_items_oneOf_6_segments_items_indicator-models_items
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/indicator models/items/oneOf
+:name: closed_features_items_oneOf_6_segments_items_indicator-models_items_oneOf
+
+:::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/indicator models/items/oneOf/1
+:name: closed_features_items_oneOf_6_segments_items_indicator-models_items_oneOf_1
+
+- **type**:object
+- **description**:A distance-dependent indicator model. Sets a constant indicator value of 1 for the selected user-defined indicators.
+- **additionalProperties**:false
+- **required**:[model]
+
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/indicator models/items/oneOf/1/model
+:name: closed_features_items_oneOf_6_segments_items_indicator-models_items_oneOf_1_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the indicator model.
+- **enum**:[uniform]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/indicator models/items/oneOf/1/min distance slab top
+:name: closed_features_items_oneOf_6_segments_items_indicator-models_items_oneOf_1_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:The minimum distance in meters from the slab top where this model applies.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/indicator models/items/oneOf/1/max distance slab top
+:name: closed_features_items_oneOf_6_segments_items_indicator-models_items_oneOf_1_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The maximum distance in meters from the slab top where this model applies.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/indicator models/items/oneOf/1/indicators
+:name: closed_features_items_oneOf_6_segments_items_indicator-models_items_oneOf_1_indicators
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of user-defined indicator indices or names. If omitted, indicator 0 is selected. An explicitly empty list selects no indicators.
+:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/indicator models/items/oneOf/1/indicators/items
+:name: closed_features_items_oneOf_6_segments_items_indicator-models_items_oneOf_1_indicators_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/segments/items/indicator models/items/oneOf/1/indicators/items/oneOf
+:name: closed_features_items_oneOf_6_segments_items_indicator-models_items_oneOf_1_indicators_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/indicator models/items/oneOf/1/indicators/items/oneOf/1
+:name: closed_features_items_oneOf_6_segments_items_indicator-models_items_oneOf_1_indicators_items_oneOf_1
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/indicator models/items/oneOf/1/indicators/items/oneOf/2
+:name: closed_features_items_oneOf_6_segments_items_indicator-models_items_oneOf_1_indicators_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/indicator models/items/oneOf/1/operation
+:name: closed_features_items_oneOf_6_segments_items_indicator-models_items_oneOf_1_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether all indicator values are replaced or only explicitly selected indicators are replaced.
+- **enum**:[replace, replace defined only]
+::::::::::::::
+
+
+
+:::::::::::::::
+
+
+:::::::::::::::::
+
+::::::::::::::::::
+
 
 
 :::::::::::::::::::
@@ -23909,6 +24297,105 @@
 - **type**:string
 - **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, replace defined only, add, subtract]
+::::::::::::::::
+
+
+
+:::::::::::::::::
+
+
+:::::::::::::::::::
+
+::::::::::::::::::::
+
+::::::::::::::::::::{dropdown} /features/items/oneOf/6/indicator models
+:name: closed_features_items_oneOf_6_indicator-models
+
+- **description**:A list of indicator models.
+- **default value**:
+- **type**:array
+:::::::::::::::::::{dropdown} /features/items/oneOf/6/indicator models/items
+:name: closed_features_items_oneOf_6_indicator-models_items
+
+::::::::::::::::::{dropdown} /features/items/oneOf/6/indicator models/items/oneOf
+:name: closed_features_items_oneOf_6_indicator-models_items_oneOf
+
+:::::::::::::::::{dropdown} /features/items/oneOf/6/indicator models/items/oneOf/1
+:name: closed_features_items_oneOf_6_indicator-models_items_oneOf_1
+
+- **type**:object
+- **description**:A distance-dependent indicator model. Sets a constant indicator value of 1 for the selected user-defined indicators.
+- **additionalProperties**:false
+- **required**:[model]
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/indicator models/items/oneOf/1/model
+:name: closed_features_items_oneOf_6_indicator-models_items_oneOf_1_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the indicator model.
+- **enum**:[uniform]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/indicator models/items/oneOf/1/min distance slab top
+:name: closed_features_items_oneOf_6_indicator-models_items_oneOf_1_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:The minimum distance in meters from the slab top where this model applies.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/indicator models/items/oneOf/1/max distance slab top
+:name: closed_features_items_oneOf_6_indicator-models_items_oneOf_1_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The maximum distance in meters from the slab top where this model applies.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/indicator models/items/oneOf/1/indicators
+:name: closed_features_items_oneOf_6_indicator-models_items_oneOf_1_indicators
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of user-defined indicator indices or names. If omitted, indicator 0 is selected. An explicitly empty list selects no indicators.
+:::::::::::::::{dropdown} /features/items/oneOf/6/indicator models/items/oneOf/1/indicators/items
+:name: closed_features_items_oneOf_6_indicator-models_items_oneOf_1_indicators_items
+
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/6/indicator models/items/oneOf/1/indicators/items/oneOf
+:name: closed_features_items_oneOf_6_indicator-models_items_oneOf_1_indicators_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/6/indicator models/items/oneOf/1/indicators/items/oneOf/1
+:name: closed_features_items_oneOf_6_indicator-models_items_oneOf_1_indicators_items_oneOf_1
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/6/indicator models/items/oneOf/1/indicators/items/oneOf/2
+:name: closed_features_items_oneOf_6_indicator-models_items_oneOf_1_indicators_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/indicator models/items/oneOf/1/operation
+:name: closed_features_items_oneOf_6_indicator-models_items_oneOf_1_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether all indicator values are replaced or only explicitly selected indicators are replaced.
+- **enum**:[replace, replace defined only]
 ::::::::::::::::
 
 
@@ -25845,6 +26332,105 @@
 
 ::::::::::::::::
 
+::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/indicator models
+:name: closed_features_items_oneOf_6_sections_items_segments_items_indicator-models
+
+- **description**:
+- **default value**:
+- **type**:array
+:::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/indicator models/items
+:name: closed_features_items_oneOf_6_sections_items_segments_items_indicator-models_items
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/indicator models/items/oneOf
+:name: closed_features_items_oneOf_6_sections_items_segments_items_indicator-models_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/indicator models/items/oneOf/1
+:name: closed_features_items_oneOf_6_sections_items_segments_items_indicator-models_items_oneOf_1
+
+- **type**:object
+- **description**:A distance-dependent indicator model. Sets a constant indicator value of 1 for the selected user-defined indicators.
+- **additionalProperties**:false
+- **required**:[model]
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/indicator models/items/oneOf/1/model
+:name: closed_features_items_oneOf_6_sections_items_segments_items_indicator-models_items_oneOf_1_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the indicator model.
+- **enum**:[uniform]
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/indicator models/items/oneOf/1/min distance slab top
+:name: closed_features_items_oneOf_6_sections_items_segments_items_indicator-models_items_oneOf_1_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:The minimum distance in meters from the slab top where this model applies.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/indicator models/items/oneOf/1/max distance slab top
+:name: closed_features_items_oneOf_6_sections_items_segments_items_indicator-models_items_oneOf_1_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The maximum distance in meters from the slab top where this model applies.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/indicator models/items/oneOf/1/indicators
+:name: closed_features_items_oneOf_6_sections_items_segments_items_indicator-models_items_oneOf_1_indicators
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of user-defined indicator indices or names. If omitted, indicator 0 is selected. An explicitly empty list selects no indicators.
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/indicator models/items/oneOf/1/indicators/items
+:name: closed_features_items_oneOf_6_sections_items_segments_items_indicator-models_items_oneOf_1_indicators_items
+
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/indicator models/items/oneOf/1/indicators/items/oneOf
+:name: closed_features_items_oneOf_6_sections_items_segments_items_indicator-models_items_oneOf_1_indicators_items_oneOf
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/indicator models/items/oneOf/1/indicators/items/oneOf/1
+:name: closed_features_items_oneOf_6_sections_items_segments_items_indicator-models_items_oneOf_1_indicators_items_oneOf_1
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/indicator models/items/oneOf/1/indicators/items/oneOf/2
+:name: closed_features_items_oneOf_6_sections_items_segments_items_indicator-models_items_oneOf_1_indicators_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::
+
+
+:::::::::::
+
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/indicator models/items/oneOf/1/operation
+:name: closed_features_items_oneOf_6_sections_items_segments_items_indicator-models_items_oneOf_1_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether all indicator values are replaced or only explicitly selected indicators are replaced.
+- **enum**:[replace, replace defined only]
+::::::::::::
+
+
+
+:::::::::::::
+
+
+:::::::::::::::
+
+::::::::::::::::
+
 
 
 :::::::::::::::::
@@ -27655,6 +28241,105 @@
 - **type**:string
 - **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, replace defined only, add, subtract]
+::::::::::::::
+
+
+
+:::::::::::::::
+
+
+:::::::::::::::::
+
+::::::::::::::::::
+
+::::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/indicator models
+:name: closed_features_items_oneOf_6_sections_items_indicator-models
+
+- **description**:A list of indicator models.
+- **default value**:
+- **type**:array
+:::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/indicator models/items
+:name: closed_features_items_oneOf_6_sections_items_indicator-models_items
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/indicator models/items/oneOf
+:name: closed_features_items_oneOf_6_sections_items_indicator-models_items_oneOf
+
+:::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/indicator models/items/oneOf/1
+:name: closed_features_items_oneOf_6_sections_items_indicator-models_items_oneOf_1
+
+- **type**:object
+- **description**:A distance-dependent indicator model. Sets a constant indicator value of 1 for the selected user-defined indicators.
+- **additionalProperties**:false
+- **required**:[model]
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/indicator models/items/oneOf/1/model
+:name: closed_features_items_oneOf_6_sections_items_indicator-models_items_oneOf_1_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the indicator model.
+- **enum**:[uniform]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/indicator models/items/oneOf/1/min distance slab top
+:name: closed_features_items_oneOf_6_sections_items_indicator-models_items_oneOf_1_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:The minimum distance in meters from the slab top where this model applies.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/indicator models/items/oneOf/1/max distance slab top
+:name: closed_features_items_oneOf_6_sections_items_indicator-models_items_oneOf_1_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The maximum distance in meters from the slab top where this model applies.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/indicator models/items/oneOf/1/indicators
+:name: closed_features_items_oneOf_6_sections_items_indicator-models_items_oneOf_1_indicators
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of user-defined indicator indices or names. If omitted, indicator 0 is selected. An explicitly empty list selects no indicators.
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/indicator models/items/oneOf/1/indicators/items
+:name: closed_features_items_oneOf_6_sections_items_indicator-models_items_oneOf_1_indicators_items
+
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/indicator models/items/oneOf/1/indicators/items/oneOf
+:name: closed_features_items_oneOf_6_sections_items_indicator-models_items_oneOf_1_indicators_items_oneOf
+
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/indicator models/items/oneOf/1/indicators/items/oneOf/1
+:name: closed_features_items_oneOf_6_sections_items_indicator-models_items_oneOf_1_indicators_items_oneOf_1
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::::
+
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/indicator models/items/oneOf/1/indicators/items/oneOf/2
+:name: closed_features_items_oneOf_6_sections_items_indicator-models_items_oneOf_1_indicators_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::
+
+
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/indicator models/items/oneOf/1/operation
+:name: closed_features_items_oneOf_6_sections_items_indicator-models_items_oneOf_1_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether all indicator values are replaced or only explicitly selected indicators are replaced.
+- **enum**:[replace, replace defined only]
 ::::::::::::::
 
 

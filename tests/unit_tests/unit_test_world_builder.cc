@@ -1034,6 +1034,12 @@ TEST_CASE("WorldBuilder interface")
   CHECK(world.properties_output_size(properties) == world.properties({{1,2,3}},1., properties).size());
   CHECK(std::fabs(world.properties({{1,2,3}},1., properties)[0]) < std::numeric_limits<double>::epsilon());
 
+  properties = {{{{7,0,0}}}};
+  CHECK(world.properties_output_size(properties) == world.properties({{1,2,3}},1., properties).size());
+
+  properties = {{{{8,0,0}}}};
+  CHECK(world.properties_output_size(properties) == world.properties({{1,2,3}},1., properties).size());
+
   approval_tests_grains.emplace_back("",world.grains(std::array<double,3> {{750e3,250e3,100e3}},10e3,0,3));
   approval_tests_grains.emplace_back("",world.grains(std::array<double,2> {{750e3,100e3}},10e3,0,3));
 
@@ -8346,4 +8352,21 @@ TEST_CASE("WorldBuilder composition property maps")
 
   CHECK(world.composition_properties[1].name == "harzburgite");
   CHECK(world.composition_properties[3].reference_density == Approx(3350.0));
+}
+
+TEST_CASE("WorldBuilder indicator property maps")
+{
+  std::vector<std::pair<std::string,double>> approval_tests;
+
+  const std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/indicator_properties_map.wb";
+  WorldBuilder::World world(file_name);
+
+  world.parse_entries(world.parameters);
+
+  CHECK(world.indicator_properties[0].index == 0);
+  CHECK(world.indicator_properties[0].name == "temperature");
+
+  CHECK(world.indicator_properties[1].name == "velocity");
+
+  CHECK(world.indicator_properties[2].name == "composition");
 }
