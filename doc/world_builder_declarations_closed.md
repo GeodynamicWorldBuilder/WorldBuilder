@@ -18223,9 +18223,9 @@
 :name: closed_features_items_oneOf_4_topography-models_items_oneOf_2
 
 - **type**:object
-- **description**:Uniform topography model. Set the topography to a constant value.
+- **description**:Plate model topography
 - **additionalProperties**:false
-- **required**:[model, topography]
+- **required**:[model, ridge coordinates, spreading velocity, max depth, min ocean depth, bottom density]
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/model
 :name: closed_features_items_oneOf_4_topography-models_items_oneOf_2_model
@@ -18233,7 +18233,7 @@
 - **default value**:
 - **type**:string
 - **description**:The name of the topography model.
-- **enum**:[uniform]
+- **enum**:[plate model]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/operation
@@ -18413,8 +18413,357 @@
 
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/topography
-:name: closed_features_items_oneOf_4_topography-models_items_oneOf_2_topography
+::::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/min ocean depth
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_2_min-ocean-depth
+
+- **default value**:0.0
+- **type**:number
+- **description**:The minimum depth of the ocean or depthof the ridge below the ocean surface in meters.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/top temperature
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_2_top-temperature
+
+- **default value**:293.15
+- **type**:number
+- **description**:The actual surface temperature in degree Kelvin for this feature.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/bottom temperature
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_2_bottom-temperature
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The mantle temperature for the half-space cooling modelin degree Kelvin for this feature. If the model has an adiabatic gradientthis should be the mantle potential temperature, and T = Tad + Thalf. 
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/top density
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_2_top-density
+
+- **default value**:0.0
+- **type**:number
+- **description**:The density of the top or surface of the ridge in kg/m3
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/bottom density
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_2_bottom-density
+
+- **default value**:0.0
+- **type**:number
+- **description**:The density of the bottom of the ridge in kg/m3
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/spreading velocity
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_2_spreading-velocity
+
+- **description**:The spreading velocity of the plate in meter per year. This is the velocity with which one side moves away from the ridge.
+:::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/spreading velocity/oneOf
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_2_spreading-velocity_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/spreading velocity/oneOf/1
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_2_spreading-velocity_oneOf_1
+
+- **default value**:0.05
+- **type**:number
+- **description**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/spreading velocity/oneOf/2
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_2_spreading-velocity_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/spreading velocity/oneOf/2/items
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_2_spreading-velocity_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:18446744073709551615
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/spreading velocity/oneOf/2/items/items
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_2_spreading-velocity_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/spreading velocity/oneOf/2/items/items/anyOf
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_2_spreading-velocity_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/spreading velocity/oneOf/2/items/items/anyOf/1
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_2_spreading-velocity_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:0.05
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/spreading velocity/oneOf/2/items/items/anyOf/2
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_2_spreading-velocity_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/spreading velocity/oneOf/2/items/items/anyOf/2/items
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_2_spreading-velocity_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:18446744073709551615
+::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/spreading velocity/oneOf/2/items/items/anyOf/2/items/items
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_2_spreading-velocity_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/ridge coordinates
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_2_ridge-coordinates
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
+:::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/ridge coordinates/items
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_2_ridge-coordinates_items
+
+- **type**:array
+- **minItems**:2
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/ridge coordinates/items/items
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_2_ridge-coordinates_items_items
+
+- **type**:array
+- **minItems**:2
+- **maxItems**:2
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/2/ridge coordinates/items/items/items
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_2_ridge-coordinates_items_items_items
+
+- **type**:number
+:::::::::::::
+
+::::::::::::::
+
+:::::::::::::::
+
+::::::::::::::::
+
+
+
+:::::::::::::::::
+
+:::::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3
+
+- **type**:object
+- **description**:Uniform topography model. Set the topography to a constant value.
+- **additionalProperties**:false
+- **required**:[model, topography]
+
+::::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/model
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the topography model.
+- **enum**:[uniform]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/operation
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **enum**:[replace, add, subtract]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/min depth
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_min-depth
+
+- **description**:The depth in meters from which the composition of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/min depth/oneOf
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_min-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/min depth/oneOf/1
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_min-depth_oneOf_1
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/min depth/oneOf/2
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_min-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/min depth/oneOf/2/items
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_min-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/min depth/oneOf/2/items/items
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_min-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/min depth/oneOf/2/items/items/anyOf
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_min-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/min depth/oneOf/2/items/items/anyOf/1
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_min-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:0.0
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/min depth/oneOf/2/items/items/anyOf/2
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_min-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/min depth/oneOf/2/items/items/anyOf/2/items
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_min-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/min depth/oneOf/2/items/items/anyOf/2/items/items
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_min-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/min depth/oneOf/3
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/max depth
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_max-depth
+
+- **description**:The depth in meters to which the composition of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/max depth/oneOf
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_max-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/max depth/oneOf/1
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_max-depth_oneOf_1
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/max depth/oneOf/2
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_max-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/max depth/oneOf/2/items
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_max-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/max depth/oneOf/2/items/items
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_max-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/max depth/oneOf/2/items/items/anyOf
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_max-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/max depth/oneOf/2/items/items/anyOf/1
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_max-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:1.7976931348623157e308
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/max depth/oneOf/2/items/items/anyOf/2
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_max-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/max depth/oneOf/2/items/items/anyOf/2/items
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_max-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/max depth/oneOf/2/items/items/anyOf/2/items/items
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_max-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/max depth/oneOf/3
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/4/topography models/items/oneOf/3/topography
+:name: closed_features_items_oneOf_4_topography-models_items_oneOf_3_topography
 
 - **default value**:0.0
 - **type**:number

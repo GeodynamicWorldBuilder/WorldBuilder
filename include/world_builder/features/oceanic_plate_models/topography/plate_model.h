@@ -1,0 +1,99 @@
+/*
+  Copyright (C) 2018-2026 by the authors of the World Builder code.
+
+  This file is part of the World Builder.
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU Lesser General Public License as published
+   by the Free Software Foundation, either version 2 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public License
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+#ifndef WORLD_BUILDER_FEATURES_OCEANIC_PLATE_MODELS_TOPOGRAPHY_PLATE_MODEL
+#define WORLD_BUILDER_FEATURES_OCEANIC_PLATE_MODELS_TOPOGRAPHY_PLATE_MODEL
+
+#include "world_builder/features/oceanic_plate_models/topography/interface.h"
+#include "world_builder/features/feature_utilities.h"
+#include "world_builder/objects/surface.h"
+
+namespace WorldBuilder
+{
+  class Parameters;
+  class World;
+
+  namespace Features
+  {
+    using namespace FeatureUtilities;
+    namespace OceanicPlateModels
+    {
+      namespace Topography
+      {
+        /* This class implements the subsidence of the oceanic plate as it moves
+        and cools away from the ridge axis, following the plate cooling model.
+        In this model, the base of the plate is maintained at a constant temperature
+        while the plate cools through both vertical and horizontal heat conduction.
+        */
+        class PlateModel final: public Interface
+        {
+          public:
+            /**
+             * constructor
+             */
+            PlateModel(WorldBuilder::World *world);
+
+            /**
+             * Destructor
+             */
+            ~PlateModel() override final;
+
+            /**
+             * declare and read in the world builder file into the parameters class
+             */
+            static
+            void declare_entries(Parameters &prm, const std::string &parent_name = "");
+
+            /**
+             * declare and read in the world builder file into the parameters class
+             */
+            void parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates) override final;
+
+            /**
+             * Returns a temperature based on the given position, depth in the model,
+             * gravity and current temperature.
+             */
+            double get_topography(const Point<3> &position_in_cartesian_coordinates,
+                                  const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                                  const double current_height
+                                 ) const override final;
+
+          private:
+            // plate model temperature submodule parameters
+            double min_depth;
+            Objects::Surface min_depth_surface;
+            double max_depth;
+            Objects::Surface max_depth_surface;
+            double min_ocean_depth; // distance between ocean surface and ridge top
+            double top_temperature;
+            double bottom_temperature;
+            double top_density;
+            double bottom_density;
+            std::pair<std::vector<double>,std::vector<double>> spreading_velocities;
+            std::vector<std::vector<Point<2> > > mid_oceanic_ridges;
+            std::vector<std::vector<double>> spreading_velocities_at_each_ridge_point;
+            Operations operation;
+
+        };
+      } // namespace Topography
+    } // namespace OceanicPlateModels
+  } // namespace Features
+} // namespace WorldBuilder
+
+#endif
