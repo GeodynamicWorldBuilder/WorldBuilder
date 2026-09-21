@@ -20,6 +20,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - Added an `along surface` velocity model for subducting plates that follows the local slab dip and azimuth in Cartesian and spherical coordinate systems. \[Haoyuan Li; 2026-09-15; [#903](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/903)\]
 
+- Added perlin topography models for continental and oceanic plates . \[Tilman May; 2025-03-31; [#922](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/922)\]
+
 ### Changed
 
 ### Fixed
