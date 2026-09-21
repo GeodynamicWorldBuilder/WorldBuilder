@@ -2,6 +2,13 @@
 Continental plate
 ==========
 
-```{todo}
-Explain how a continental plate works.
-```
+## Temperature
+
+## Composition
+
+## Grains
+
+## Velocity
+
+
+
