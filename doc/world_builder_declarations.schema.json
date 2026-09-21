@@ -12337,6 +12337,233 @@
                                         },
                                         {
                                             "type": "object",
+                                            "description": "Half space cooled topography",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "ridge coordinates",
+                                                "spreading velocity",
+                                                "max depth",
+                                                "min ocean depth",
+                                                "bottom density",
+                                                "top density"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the topography model.",
+                                                    "enum": [
+                                                        "half space cooling"
+                                                    ]
+                                                },
+                                                "operation": {
+                                                    "default value": "replace",
+                                                    "type": "string",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "enum": [
+                                                        "replace",
+                                                        "add",
+                                                        "subtract"
+                                                    ]
+                                                },
+                                                "min depth": {
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 0.0,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 0.0
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
+                                                        }
+                                                    ]
+                                                },
+                                                "max depth": {
+                                                    "description": "The depth in meters to which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 1.7976931348623157e308,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 1.7976931348623157e308
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
+                                                        }
+                                                    ]
+                                                },
+                                                "min ocean depth": {
+                                                    "default value": 0.0,
+                                                    "type": "number",
+                                                    "description": "The minimum depth of the ocean or depthof the ridge below the ocean surface in meters."
+                                                },
+                                                "top temperature": {
+                                                    "default value": 293.15,
+                                                    "type": "number",
+                                                    "description": "The actual surface temperature in degree Kelvin for this feature."
+                                                },
+                                                "bottom temperature": {
+                                                    "default value": -1.0,
+                                                    "type": "number",
+                                                    "description": "The mantle temperature for the half-space cooling modelin degree Kelvin for this feature. If the model has an adiabatic gradientthis should be the mantle potential temperature, and T = Tad + Thalf. "
+                                                },
+                                                "top density": {
+                                                    "default value": 0.0,
+                                                    "type": "number",
+                                                    "description": "The density of the top or surface of the ridge in kg/m3"
+                                                },
+                                                "bottom density": {
+                                                    "default value": 0.0,
+                                                    "type": "number",
+                                                    "description": "The density of the bottom of the ridge in kg/m3"
+                                                },
+                                                "spreading velocity": {
+                                                    "description": "The spreading velocity of the plate in meter per year. This is the velocity with which one side moves away from the ridge.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 0.05,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 18446744073709551615,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 0.05
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 18446744073709551615,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "ridge coordinates": {
+                                                    "type": "array",
+                                                    "minItems": 1,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].",
+                                                    "items": {
+                                                        "type": "array",
+                                                        "minItems": 2,
+                                                        "maxItems": 4294967295,
+                                                        "uniqueItems": false,
+                                                        "description": "",
+                                                        "items": {
+                                                            "type": "array",
+                                                            "minItems": 2,
+                                                            "maxItems": 2,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "number"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
                                             "description": "Uniform topography model. Set the topography to a constant value.",
                                             "additionalProperties": false,
                                             "required": [
