@@ -24,6 +24,7 @@
 #include "world_builder/types/array.h"
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"
+#include "world_builder/types/one_of.h"
 #include "world_builder/types/unsigned_int.h"
 #include "world_builder/utilities.h"
 #include "world_builder/world.h"
@@ -57,8 +58,8 @@ namespace WorldBuilder
         Uniform::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
           // Document plugin and require entries if needed.
-          prm.declare_entry("compositions", Types::Array(Types::UnsignedInt(),0),
-                            "A list with the labels of the composition which are present there.");
+          prm.declare_entry("compositions", Types::Array(Types::OneOf(Types::UnsignedInt(), Types::String("")),0),
+                            "A list of indices or names of the composition which are present there.");
 
           prm.declare_entry("min distance slab top", Types::Double(0),
                             "todo The depth in meters from which the composition of this feature is present.");
@@ -79,7 +80,7 @@ namespace WorldBuilder
           min_depth = prm.get<double>("min distance slab top");
           max_depth = prm.get<double>("max distance slab top");
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
-          compositions = prm.get_vector<unsigned int>("compositions");
+          compositions = prm.get_vector<unsigned int>("compositions", this->world->composition_properties);
         }
 
 

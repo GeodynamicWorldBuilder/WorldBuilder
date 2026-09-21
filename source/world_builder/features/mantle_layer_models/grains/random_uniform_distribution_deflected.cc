@@ -30,6 +30,7 @@
 #include "world_builder/utilities.h"
 #include "world_builder/world.h"
 
+
 namespace WorldBuilder
 {
   using namespace Utilities;
@@ -68,8 +69,8 @@ namespace WorldBuilder
           prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max(),2))),
                             "The depth in meters to which the composition of this feature is present.");
 
-          prm.declare_entry("compositions", Types::Array(Types::UnsignedInt(),0),
-                            "A list with the integer labels of the composition which are present there.");
+          prm.declare_entry("compositions", Types::Array(Types::OneOf(Types::UnsignedInt(), Types::String("")),0),
+                            "A list of indices or names of the composition which are present there.");
 
           prm.declare_entry("orientation operation", Types::String("replace", std::vector<std::string> {"replace"}),
                             "Whether the value should replace any value previously defined at this location (replace) or "
@@ -103,7 +104,7 @@ namespace WorldBuilder
           min_depth = min_depth_surface.minimum;
           max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
           max_depth = max_depth_surface.maximum;
-          compositions = prm.get_vector<unsigned int>("compositions");
+          compositions = prm.get_vector<unsigned int>("compositions", this->world->composition_properties);
 
           const bool set_euler_angles = prm.check_entry("basis Euler angles z-x-z");
           const bool set_rotation_matrices = prm.check_entry("basis rotation matrices");

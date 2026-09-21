@@ -55,8 +55,8 @@ namespace WorldBuilder
         Uniform::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
           // Document plugin and require entries if needed.
-          prm.declare_entry("compositions", Types::Array(Types::UnsignedInt(),0),
-                            "A list with the labels of the composition which are present there.");
+          prm.declare_entry("compositions", Types::Array(Types::OneOf(Types::UnsignedInt(), Types::String("")),0),
+                            "A list of indices or names of the composition which are present there.");
 
           // Declare entries of this plugin
           prm.declare_entry("min depth", Types::OneOf(Types::Double(0),
@@ -84,7 +84,7 @@ namespace WorldBuilder
           max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
           max_depth = max_depth_surface.maximum;
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
-          compositions = prm.get_vector<unsigned int>("compositions");
+          compositions = prm.get_vector<unsigned int>("compositions", this->world->composition_properties);
         }
 
         double

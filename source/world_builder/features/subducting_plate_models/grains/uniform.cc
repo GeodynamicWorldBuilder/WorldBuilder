@@ -26,6 +26,7 @@
 #include "world_builder/types/object.h"
 #include "world_builder/types/unsigned_int.h"
 #include "world_builder/utilities.h"
+#include "world_builder/world.h"
 
 
 namespace WorldBuilder
@@ -92,7 +93,7 @@ namespace WorldBuilder
         {
           min_depth = prm.get<double>("min distance slab top");
           max_depth = prm.get<double>("max distance slab top");
-          compositions = prm.get_vector<unsigned int>("compositions");
+          compositions = prm.get_vector<unsigned int>("compositions", this->world->composition_properties);
 
           const bool set_euler_angles = prm.check_entry("Euler angles z-x-z");
           const bool set_rotation_matrices = prm.check_entry("rotation matrices");
