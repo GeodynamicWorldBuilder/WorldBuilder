@@ -256,7 +256,7 @@ namespace WorldBuilder
 
       /**
       * Return all composition properties from its index.
-      * If the index is unknown, returns fallback properties with a generated name.
+      * If the index is unknown, returns fallback properties.
       */
       Parameters::composition_property get_composition_properties(const unsigned int composition_index) const;
 
@@ -348,9 +348,9 @@ namespace WorldBuilder
       std::vector<std::string> feature_tags;
 
       /**
-       * A map from composition index to its properties for quick lookups.
+       * Composition names and properties organized by index.
        */
-      std::map<unsigned int, Parameters::composition_property> composition_properties;
+      Parameters::composition_metadata compositions;
 
     private:
       /**

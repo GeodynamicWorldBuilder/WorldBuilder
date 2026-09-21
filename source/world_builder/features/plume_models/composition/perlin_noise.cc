@@ -91,7 +91,7 @@ namespace WorldBuilder
           min_depth = prm.get<double>("min depth");
           max_depth = prm.get<double>("max depth");
 
-          compositions = prm.get_vector<unsigned int>("compositions");
+          compositions = prm.get_vector<unsigned int>("compositions", this->world->compositions.name_to_index);
           min_value = prm.get_vector<double>("min value");
           max_value = prm.get_vector<double>("max value");
           frequency = prm.get<double>("frequency");
@@ -228,4 +228,3 @@ namespace WorldBuilder
     }
   }
 }
-

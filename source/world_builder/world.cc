@@ -318,15 +318,7 @@ namespace WorldBuilder
     if (local_seed>=0)
       random_number_engine.seed(static_cast<unsigned int>(local_seed+MPI_RANK));
 
-    /**
-     * A map storing composition indices (required) and their properties (optional).
-     * Parsing is handled in parameters.cc
-     * Struct with default values is defined in types/composition_property
-     */
-    for (const Parameters::composition_property &cp_parsed : prm.get_composition_properties("composition properties"))
-      {
-        composition_properties.emplace(cp_parsed.index, cp_parsed);
-      }
+    compositions = prm.get_composition_properties("composition properties");
 
     /**
     * Now load the features. Some features use for example temperature values,

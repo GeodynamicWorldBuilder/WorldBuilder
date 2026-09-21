@@ -98,6 +98,24 @@ namespace WorldBuilder
       void initialize(std::stringstream &input_stream, bool has_output_dir = false, const std::string &output_dir = "");
 
       /**
+       * A struct to store all properties of a composition.
+       * \param reference_density The reference density of the composition (default to 3300 kg/m^3)
+       */
+      struct composition_property
+      {
+        double reference_density;
+      };
+
+      /**
+       * A struct to store composition names and properties by their indices.
+       */
+      struct composition_metadata
+      {
+        std::map<std::string, unsigned int> name_to_index;
+        std::map<unsigned int, composition_property> properties;
+      };
+
+      /**
        * A generic get function to retrieve setting from the parameter file.
        * Note that this is dependent on the current path/subsection which you are in.
        * \param name The name of the entry to retrieved
@@ -141,6 +159,15 @@ namespace WorldBuilder
       std::vector<T> get_vector(const std::string &name, std::vector<std::shared_ptr<A> > &, std::vector<std::shared_ptr<B> > &, std::vector<std::shared_ptr<C> > &, std::vector<std::shared_ptr<D> > &, std::vector<std::shared_ptr<E> > &);
 
       /**
+       * A specialized version of get which can return vectors/arrays.
+       * \param name The name of the entry to retrieved
+       * \param name_to_index The map from user-defined composition names to indices
+       */
+      template<class T>
+      std::vector<T> get_vector(const std::string &name,
+                                const std::map<std::string, unsigned int> &name_to_index);
+
+      /**
        * A specialized version of get which can return unique pointers.
        * \param name The name of the entry to retrieved
        */
@@ -181,20 +208,14 @@ namespace WorldBuilder
       bool
       check_entry(const std::string &name) const;
 
-      struct composition_property
-      {
-        unsigned int index;
-        std::string name;
-        double reference_density;
-      };
-
       /**
-       * Parse composition properties.
-       * The index is required, while name and reference density are optional.
-       * If the entry is absent, the vector is empty.
+       * Parse composition properties into separate name-to-index and
+       * index-to-property maps. The index is required, while name and
+       * reference density are optional. If the entry is absent, both maps
+       * are empty.
        * \param name The name of the entry to be declared
        */
-      std::vector<composition_property>
+      composition_metadata
       get_composition_properties(const std::string &name) const;
 
       /**

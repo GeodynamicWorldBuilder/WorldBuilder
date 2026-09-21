@@ -213,24 +213,19 @@ namespace WorldBuilder
     return Pointer((this->get_full_json_path() + "/" + name).c_str()).Get(parameters) != nullptr;
   }
 
-  std::vector<Parameters::composition_property>
+  Parameters::composition_metadata
   Parameters::get_composition_properties(const std::string &name) const
   {
-    // parse entries as indices linked to names and reference densities
-    // struct data type allows easy extension for more properties in the future
-    std::vector<Parameters::composition_property> cp_output;
+    Parameters::composition_metadata parsed_compositions;
 
     const std::string base = this->get_full_json_path();
     const Value *cp_entries = Pointer((base + "/" + name).c_str()).Get(parameters);
 
     if (cp_entries == nullptr)
-      return cp_output;
+      return parsed_compositions;
 
     WBAssertThrow(cp_entries->IsArray(),
                   "Invalid entry \"" << name << "\": expected an array of objects with required key \"index\" and optional keys \"name\" and \"reference density\".");
-
-    std::map<unsigned int, bool> seen_indexes;
-    cp_output.reserve(cp_entries->Size());
 
     for (SizeType i = 0; i < cp_entries->Size(); ++i)
       {
@@ -238,23 +233,21 @@ namespace WorldBuilder
 
         // index must be unique
         const unsigned int composition_index = entry["index"].GetUint();
-        WBAssertThrow(seen_indexes.find(composition_index) == seen_indexes.end(),
+        const double reference_density = entry.HasMember("reference density") ? entry["reference density"].GetDouble() : Types::CompositionProperty::get_default_reference_density();
+        const auto property_insertion = parsed_compositions.properties.emplace(composition_index,
+                                                                               Parameters::composition_property {reference_density});
+        WBAssertThrow(property_insertion.second,
                       "Duplicate composition index " << composition_index << " in \"" << name << "\".");
-        seen_indexes[composition_index] = true;
 
         // name defaults to index (as string) unless user defined
         const std::string composition_name = entry.HasMember("name") ? entry["name"].GetString() : std::to_string(composition_index);
-
-        // reference density defaults to value in CompositionProperty unless user defined
-        const double reference_density = entry.HasMember("reference density") ? entry["reference density"].GetDouble() : Types::CompositionProperty::get_default_reference_density();
-
-        cp_output.emplace_back(Parameters::composition_property {composition_index,
-                                                                 composition_name,
-                                                                 reference_density
-                                                                });
+        const auto name_insertion = parsed_compositions.name_to_index.emplace(composition_name,
+                                                                              composition_index);
+        WBAssertThrow(name_insertion.second,
+                      "Duplicate composition name " << composition_name << " in \"" << name << "\".");
       }
 
-    return cp_output;
+    return parsed_compositions;
   }
 
 
@@ -1991,6 +1984,67 @@ namespace WorldBuilder
     return vector;
   }
 
+  template<>
+  std::vector<unsigned int>
+  Parameters::get_vector(const std::string &name,
+                         const std::map<std::string, unsigned int> &name_to_index)
+  {
+    std::vector<unsigned int> vector;
+
+    const std::string strict_base = this->get_full_json_path();
+    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr)
+      {
+        Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+        for (size_t i = 0; i < array->Size(); ++i )
+          {
+            const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
+            Value *entry = Pointer(base.c_str()).Get(parameters);
+
+            // user can define either an index (unsigned int)
+            // or a composition name (string)
+            // if latter, assign the corresponding index in the composition properties
+            if (entry->IsUint())
+              {
+                vector.push_back(entry->GetUint());
+              }
+            else if (entry->IsString())
+              {
+                const std::string feature_composition_name = entry->GetString();
+                const auto composition = name_to_index.find(feature_composition_name);
+                WBAssertThrow(composition != name_to_index.end(),
+                              "internal error: could not find the value \"" << feature_composition_name << "\" in the composition properties at: "
+                              << this->get_full_json_schema_path() + "/" + name + "/items/enum");
+                vector.push_back(composition->second);
+              }
+            else
+              {
+                WBAssertThrow(false,
+                              "internal error: expected an unsigned int or a string for the value at: "
+                              << base);
+              }
+          }
+      }
+    else
+      {
+        const Value *value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/minItems").c_str()).Get(declarations);
+        WBAssertThrow(value != nullptr,
+                      "internal error: could not retrieve the minItems value at: "
+                      << this->get_full_json_schema_path() + "/" + name + "/minItems value");
+
+        const size_t min_size = value->GetUint();
+
+        const unsigned int default_value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/items/default value").c_str()).Get(declarations)->GetUint();
+
+        // set to min size
+        for (size_t i = 0; i < min_size; ++i)
+          {
+            vector.push_back(default_value);
+          }
+      }
+    return vector;
+  }
+
   template<class T>
   std::unique_ptr<T>
   Parameters::get_unique_pointer(const std::string &name)
@@ -2705,4 +2759,3 @@ namespace WorldBuilder
 
 
 } // namespace WorldBuilder
-
