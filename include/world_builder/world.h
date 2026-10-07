@@ -128,6 +128,9 @@ namespace WorldBuilder
                                      const double depth,
                                      const std::vector<std::array<unsigned int,3>> &properties) const;
 
+      void properties(const std::array<double, 2> &point,
+                      const double depth,
+                      const std::vector<std::array<unsigned int,3>> &properties,std::vector<double> &output) const;
       /**
        * Returns different values at a single point in one go stored in a vector of doubles.
        *
@@ -169,6 +172,10 @@ namespace WorldBuilder
                                      const double depth,
                                      const std::vector<std::array<unsigned int,3>> &properties) const;
 
+      void properties(const std::array<double, 3> &point,
+                      const double depth,
+                      const std::vector<std::array<unsigned int,3>> &properties,
+                      std::vector<double> &output) const;
       /**
        * Returns the temperature based on a 2d Cartesian point, the depth in the
        * model at that point and the gravity norm at that point.

@@ -397,12 +397,21 @@ namespace WorldBuilder
     return n_output_entries;
   }
 
-
-
   std::vector<double>
-  World::properties(const std::array<double, 2> &point,
+  World::properties(const std::array<double, 2> &point_,
                     const double depth,
                     const std::vector<std::array<unsigned int,3>> &properties) const
+  {
+
+    std::vector<double> output(World::properties_output_size(properties));
+    this->properties(point_,depth,properties,output);
+    return output;
+  }
+
+  void
+  World::properties(const std::array<double, 2> &point,
+                    const double depth,
+                    const std::vector<std::array<unsigned int,3>> &properties,std::vector<double> &output) const
   {
     // turn it into a 3d coordinate and call the 3d temperature function
     WBAssertThrow(dim == 2, "This function can only be called when the cross section "
@@ -435,7 +444,8 @@ namespace WorldBuilder
 
     const std::array<double, 3> point_3d_cartesian = this->parameters.coordinate_system->natural_to_cartesian_coordinates(coord_3d.get_array());
 
-    std::vector<double> results = this->properties(point_3d_cartesian, depth, properties);
+    this->properties(point_3d_cartesian, depth, properties,output);
+    std::vector<double> &results = output;
     unsigned int counter = 0;
     for (auto property : properties)
       {
@@ -493,14 +503,24 @@ namespace WorldBuilder
           }
 
       }
-    return results;
   }
-
 
   std::vector<double>
   World::properties(const std::array<double, 3> &point_,
                     const double depth,
                     const std::vector<std::array<unsigned int,3>> &properties) const
+  {
+    std::vector<double> output(World::properties_output_size(properties));
+    this->properties(point_,depth,properties,output);
+    return output;
+  }
+
+
+  void
+  World::properties(const std::array<double, 3> &point_,
+                    const double depth,
+                    const std::vector<std::array<unsigned int,3>> &properties,
+                    std::vector<double> &output) const
   {
     // We receive the cartesian points from the user.
     const Point<3> point(point_,cartesian);
@@ -517,10 +537,12 @@ namespace WorldBuilder
     const Objects::NaturalCoordinate natural_coordinate = Objects::NaturalCoordinate(point,*(this->parameters.coordinate_system));
 
     // create output vector
-    std::vector<double> output;
-    std::vector<size_t> entry_in_output;
-    std::vector<std::array<unsigned int,3>> properties_local;
+    //thread_local static std::vector<size_t> entry_in_output(properties.size(),0);
+    //thread_local static std::vector<std::array<unsigned int,3>> properties_local(properties.size(),{{0,0,0}});
+    std::vector<size_t> entry_in_output(properties.size(),0);
+    std::vector<std::array<unsigned int,3>> properties_local(properties.size(), {{0,0,0}});
     const double gravity_norm = this->parameters.gravity_model->gravity_norm(point);
+    size_t output_location_index = 0;
     for (unsigned int i_property = 0; i_property < properties.size(); ++i_property)
       {
         switch (properties[i_property][0])
@@ -528,62 +550,70 @@ namespace WorldBuilder
             case 1: // Temperature
               if (std::fabs(depth) < 2.0 * std::numeric_limits<double>::epsilon() && force_surface_temperature)
                 {
-                  entry_in_output.emplace_back(output.size());
-                  output.emplace_back(this->surface_temperature);
+                  entry_in_output[i_property] = output_location_index;
+                  output[output_location_index]=this->surface_temperature;
+                  output_location_index++;
                   if (properties.size() == 1)
-                    return output;
+                    return;
                 }
               else
                 {
-                  entry_in_output.emplace_back(output.size());
-                  output.emplace_back(potential_mantle_temperature * std::exp(((thermal_expansion_coefficient * gravity_norm) / specific_heat) * depth));
+                  entry_in_output[i_property] = output_location_index;
+                  output[output_location_index] = potential_mantle_temperature * std::exp(((thermal_expansion_coefficient * gravity_norm) / specific_heat) * depth);
+                  output_location_index++;
                 }
-              properties_local.emplace_back(properties[i_property]);
+              properties_local[i_property] = properties[i_property];
               break;
             case 2: // composition
-              entry_in_output.emplace_back(output.size());
-              output.emplace_back(0.);
-              properties_local.emplace_back(properties[i_property]);
+              entry_in_output[i_property] = output_location_index;
+              output[output_location_index] = 0.;
+              output_location_index++;
+              properties_local[i_property] = properties[i_property];
               break;
             case 3: // grains (10 entries per grain)
             {
-              entry_in_output.emplace_back(output.size());
-              const std::vector<double> tmp_vector(properties[i_property][2]*10,0.);
-              output.insert(output.end(), tmp_vector.begin(), tmp_vector.end());
-              properties_local.emplace_back(properties[i_property]);
+              entry_in_output[i_property] =output_location_index;
+              output_location_index+=properties[i_property][2]*10;
+              //const std::vector<double> tmp_vector(properties[i_property][2]*10,0.);
+              //output.insert(output.end(), tmp_vector.begin(), tmp_vector.end());
+              properties_local[i_property] =properties[i_property];
               break;
             }
             case 4: // tag
             {
-              entry_in_output.emplace_back(output.size());
-              output.emplace_back(-1);
-              properties_local.emplace_back(properties[i_property]);
+              entry_in_output[i_property] = output_location_index;
+              output[output_location_index] = -1;
+              output_location_index++;
+              properties_local[i_property] = properties[i_property];
               break;
             }
             case 5: // velocity
             {
-              entry_in_output.emplace_back(output.size());
-              output.emplace_back(0);
-              output.emplace_back(0);
-              output.emplace_back(0);
-              properties_local.emplace_back(properties[i_property]);
+              entry_in_output[i_property] = output_location_index;
+              //output.emplace_back(0);
+              //output.emplace_back(0);
+              //output.emplace_back(0);
+              output_location_index+=3;
+              properties_local[i_property] = properties[i_property];
               break;
             }
             case 6: // topography
             {
-              entry_in_output.emplace_back(output.size());
-              output.emplace_back(0);
-              properties_local.emplace_back(properties[i_property]);
+              entry_in_output[i_property] = output_location_index;
+              //output.emplace_back(0);
+              output_location_index++;
+              properties_local[i_property] = properties[i_property];
               break;
             }
             case 7: // density
             {
-              entry_in_output.emplace_back(output.size());
+              entry_in_output[i_property] = output_location_index;
 
               // TODO: If a mantle adiabatic temperature is used then the background
               // density should account for it.
-              output.emplace_back(background_density);
-              properties_local.emplace_back(properties[i_property]);
+              output[output_location_index] =background_density;
+              output_location_index++;
+              properties_local[i_property] = properties[i_property];
               break;
             }
             default:
@@ -593,12 +623,12 @@ namespace WorldBuilder
                             "Provided property number was: " << properties[i_property][0]);
           }
       }
+    //std::cout << "entry_in_output.size() = " << entry_in_output.size() << ", output.size() = " << output.size() << std::endl;
     for (auto &&it : parameters.features)
       {
         it->properties(point, natural_coordinate, depth, properties_local, gravity_norm, entry_in_output, output);
       }
 
-    return output;
   }
 
   double
