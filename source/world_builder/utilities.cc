@@ -42,6 +42,8 @@ namespace WorldBuilder
 {
   namespace Utilities
   {
+
+
     bool
     polygon_contains_point(const std::vector<Point<2> > &point_list,
                            const Point<2> &point)

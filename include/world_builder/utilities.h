@@ -26,6 +26,8 @@
 #include "world_builder/objects/natural_coordinate.h"
 #include "world_builder/objects/bezier_curve.h"
 #include <iostream>
+#include <list>
+#include <mutex>
 
 
 namespace WorldBuilder
@@ -37,6 +39,65 @@ namespace WorldBuilder
   } // namespace CoordinateSystems
   namespace Utilities
   {
+    template <typename T>
+    class ScratchSpace
+    {
+      public:
+        class ScopedScratchObject
+        {
+          public:
+            ScopedScratchObject (ScratchSpace<T> &space_)
+              : space (space_),
+                t (space.get_object_from_pool())
+            {}
+
+            ~ScopedScratchObject()
+            {
+              space.return_object_to_pool(t);
+            }
+
+            operator T &()
+            {
+              return t;
+            }
+
+          private:
+            ScratchSpace &space;
+            T &t;
+        };
+
+        T &get_object_from_pool()
+        {
+          //std::lock_guard<std::mutex> lock(mutex);
+          for (auto &pair : object_list)
+            if (pair.second == false)
+              {
+                pair.second = true;
+                return pair.first;
+              }
+
+          object_list.emplace_back (T(), true);
+          return object_list.back().first;
+        }
+
+        void return_object_to_pool (T &t)
+        {
+          //std::lock_guard<std::mutex> lock(mutex);
+          for (auto &pair : object_list)
+            if (&pair.first == &t)
+              {
+                pair.second = false;
+                return;
+              }
+          // TODO: assert that we never get here
+        }
+
+      private:
+        std::mutex mutex;
+        static thread_local std::list<std::pair<T,bool>> object_list;
+    };
+
+    template<typename T> thread_local std::list<std::pair<T,bool>> ScratchSpace<T>::object_list = {};
 
     /**
      * provide a short way to test if two doubles are equal.
