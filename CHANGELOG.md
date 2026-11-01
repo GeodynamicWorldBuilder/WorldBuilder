@@ -23,6 +23,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Changed
 
 ### Fixed
+- gwb-dat printed the 2D compositions one column off: column c0 was always 0 and the last composition was missing. \[Eh Tan; 2026-11-01; [#948](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/948), [#949](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/949)\]
 
 
 ## [1.1.0]
