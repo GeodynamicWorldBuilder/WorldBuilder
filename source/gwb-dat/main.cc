@@ -265,7 +265,7 @@ int main(int argc, char **argv)
 
                   for (unsigned int c = 0; c < compositions; ++c)
                     {
-                      std::cout << output[4+c]  << ' ';
+                      std::cout << output[5+c]  << ' ';
                     }
 
                   // Grains
